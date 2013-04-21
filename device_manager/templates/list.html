@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script src="/resources/list.js"></script>
+<div id='table_content'>
+    <div id='table_title'>
+        <h3>Salas</h3>
+        <ul id='add_button'>
+            <li class='active'>
+                <a href='/room/edit/'><span>ADD</span></a>
+            </li>
+        </ul>
+    </div>
+    <table>
+        <tr>
+        {% for header_name in header_name_list %}
+            <th>{{ header_name }}</th>
+        {% endfor %}
+        </tr>
+    {% for room in room_list %}
+        <tr>
+            <td onClick="linkTo('/room/edit/', {{ room.id }})">{{ room.number }}</td>
+            <td onClick="linkTo('/room/edit/', {{ room.id }})">{{ room.description }}</td>
+            <td onClick="linkTo('/room/edit/', {{ room.id }})">{{ room.stall_set.all }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/resources/base.css" media="screen" />
+    <title>Gerenciador de Recursos</title>
+</head>
+<body>
+    <div id='header'>
+        <div id='left_image'>
+            <img border="0" src="/resources/inf.jpg" width="90%" height="100">
+        </div>
+        <div id='center_header'>
+        </div>
+        <div id='right_image'>
+            <img border="0" src="/resources/ufrgs.jpg" width="90%" height="100">
+        </div>
+    </div>
+    <div id='page'>
+        <ul id=menu>
+            <li class='active'><a href="/room/list"><span id='active'>Salas</span></a>
+            <li class='active'><a href="/people/list"><span id='active'>Pessoas</span></a>
+            <li class='active'><a href="/reports"><span id='active'>Relatório</span></a>
+        </ul>
+        <div id='content'>
+        {% block content %}{% endblock %}
+        </div>
+        <div id='footer'>
+            <span>Copyright 2013 INF - UFRGS (UFRGS, Guilherme Martini) Usage policies apply.</span>
+        </div>
+    </div>
+</body>
+</html>
+
