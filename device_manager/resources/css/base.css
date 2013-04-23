@@ -96,6 +96,21 @@ body {
     float: left;
     width: 50%;
     list-style: none;
+    height: 24px;
+    line-height: 24px;
+}
+
+#form_div ul li label{
+    width: 100px;
+    float: left;
+}
+
+#form_div ul li input{
+    width: 60%;
+}
+
+#form_div ul li select{
+    width: 60%;
 }
 
 #list {

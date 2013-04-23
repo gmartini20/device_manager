@@ -4,22 +4,24 @@
 <div id='title'>
 </div>
 <div id='form_div'>
-    <h3>Salas</h3>
-    <form id='form' action='/room/edit/' method='post'>
+    <h3>Baia</h3>
+    <form id='form' action='/stall/edit/' method='post'>
         <input id='is_submit' name='is_submit' type='hidden' value="True">
+        <input id='id' name='id' type='hidden'>
+        <input id='room' name='room' type='hidden'>
         <ul>
-            {{ room_fields }}
+            {{ fields }}
         </ul>
         <input type='submit' value="Salvar">
     </form>
 </div>
-{% if room and room.id %}
+{% if stall and stall.id %}
 <div id='list'>
     <div id='list_title'>
-        <h3>Baias</h3>
+        <h3>Bolsistas</h3>
         <ul id='add_button'>
             <li class='active'>
-                <a href='/stall/edit/'><span>ADD</span></a>
+                <a href='/trainee/edit/'><span>ADD</span></a>
             </li>
         </ul>
     </div>
@@ -29,11 +31,11 @@
             <th>{{ header_name }}</th>
         {% endfor %}
         </tr>
-    {% for stall in stall_list %}
+    {% for trainee in trainee_list %}
         <tr>
-            <td>{{ stall.computer.patrimony_number }}</td>
-            <td>{{ stall.leader.name }}</td>
-            <td>{{ stall.obs }}</td>
+            <td>{{ trainee.name }}</td>
+            <td>{{ trainee.date_start }}</td>
+            <td>{{ trainee.date_finish }}</td>
         </tr>
     {% endfor %}
     </table>
