@@ -11,9 +11,10 @@ urlpatterns = patterns('',
     #url(r'^hello/$', hello)
     url(r'^room/list/$', list_rooms),
     url(r'^room/edit/$', edit_rooms),
-    url(r'^room/edit/(\d+)/$', edit_rooms),
+    url(r'^room/edit/(?P<id>\d+)/$', edit_rooms),
     url(r'^stall/edit/$', edit_stalls),
-    url(r'^stall/edit/(\d+)/$', edit_stalls),
+    url(r'^stall/edit/(?P<id>\d+)/$', edit_stalls),
+    
     
     # Examples:
     # url(r'^$', 'device_manager.views.home', name='home'),

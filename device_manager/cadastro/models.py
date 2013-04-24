@@ -1,6 +1,7 @@
 from django.db import models
 
 class Room(models.Model):
+    id = models.AutoField(primary_key=True)
     number = models.CharField(max_length=50)
     description = models.CharField(max_length=100)
 

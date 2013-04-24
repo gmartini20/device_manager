@@ -22,6 +22,7 @@ def edit_rooms(request, id=None):
         if form.is_valid():
             cd = form.cleaned_data
             room = Room()
+            room.id = id
             room.number = cd['number']
             room.description = cd['description']
             room.save()
@@ -34,6 +35,10 @@ def edit_rooms(request, id=None):
     return HttpResponse(html)
 
 def edit_stalls(request, id=None):
+    id_room = request.GET.get('id_room', None)
+    room = None
+    if id_room:
+        room = Room.objects.get(id = id_room)
     t = get_template('edit_stall.html')
     stall = None
     form = StallForm()
@@ -45,7 +50,7 @@ def edit_stalls(request, id=None):
             stall.obs = cd['obs']
             stall.computer = cd['computer']
             stall.leader = cd['leader']
-            stall.room = cd['room']
+            stall.room = room
             stall.save()
             html = t.render(Context({'header_name_list': [u'Nome', u'Hora Início', 'Hora Fim'], 'trainee_list': [], 'fields': form.as_ul(), 'stall': stall}))
             return HttpResponse(html)

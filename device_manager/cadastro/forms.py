@@ -17,7 +17,7 @@ class RoomForm(forms.Form):
 
 class StallForm(forms.Form):
     #TODO ver como fazer com computadores
-    id = forms.HiddenInput()
+    room = forms.HiddenInput()
     obs = forms.CharField(label=u"Observação", required=False)
     leader = PersonModelChoiceField(queryset=Person.objects.filter(role=u'Orientador'), label=u'Orientador', required=True)
     computer = ComputerModelChoiceField(queryset=Computer.objects.filter(stall=None), label=u'Computador', required=True)

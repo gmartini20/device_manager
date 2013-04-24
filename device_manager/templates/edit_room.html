@@ -5,8 +5,8 @@
 </div>
 <div id='form_div'>
     <h3>Salas</h3>
-    <form id='form' action='/room/edit/' method='post'>
-        <input id='is_submit' name='is_submit' type='hidden' value="True">
+    <form id='form' action='/room/edit/{{ room.id }}/' method='post'>
+        <input id='id' name='id' type='hidden' value="{{ room.id }}">
         <ul>
             {{ room_fields }}
         </ul>
@@ -19,7 +19,7 @@
         <h3>Baias</h3>
         <ul id='add_button'>
             <li class='active'>
-                <a href='/stall/edit/'><span>ADD</span></a>
+                <a href='/stall/edit/?id_room={{ room.id }}'><span>ADD</span></a>
             </li>
         </ul>
     </div>
