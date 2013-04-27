@@ -11,14 +11,15 @@ class ComputerModelChoiceField(forms.ModelChoiceField):
          return "%s - %s" % (obj.patrimony_number, obj.processor)
 
 class RoomForm(forms.Form):
-    id = forms.HiddenInput()
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
     number = forms.CharField(label=u"Número")
     description = forms.CharField(label=u"Descrição", required=False)
 
 class StallForm(forms.Form):
     #TODO ver como fazer com computadores
-    room = forms.HiddenInput()
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    room = forms.CharField(widget=forms.HiddenInput())
     obs = forms.CharField(label=u"Observação", required=False)
     leader = PersonModelChoiceField(queryset=Person.objects.filter(role=u'Orientador'), label=u'Orientador', required=True)
-    computer = ComputerModelChoiceField(queryset=Computer.objects.filter(stall=None), label=u'Computador', required=True)
+    computer = ComputerModelChoiceField(queryset=Computer.objects.all(), label=u'Computador', required=True)
 

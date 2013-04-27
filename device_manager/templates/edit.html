@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script src="/resources/list.js"></script>
+<div id='title'>
+</div>
+<div id='form_div'>
+    <h3>{{ page_title }}</h3>
+    <form id='form' action='/{{ edit_name }}/edit/' method='post'>
+        <ul>
+            {{ fields }}
+        </ul>
+        <input type='submit' value="Salvar">
+        {% if has_back %}
+            <input onClick="linkTo('/{{ back_page_name }}/edit/', {{ parent_object_id }})" type='button' value="Voltar">
+        {% endif %}
+    </form>
+</div>
+{% if has_list %}
+<div id='list'>
+    <div id='list_title'>
+        <h3>{{ list_title }}</h3>
+        <ul id='add_button'>
+            <li class='active'>
+                <a href='/{{ list_edit_name }}/edit/?parent_object_id={{ object_id }}'><span>ADD</span></a>
+            </li>
+        </ul>
+    </div>
+    <table>
+        <tr>
+        {% for header_name in header_name_list %}
+            <th>{{ header_name }}</th>
+        {% endfor %}
+        </tr>
+    {% for child_object in child_object_list %}
+        <tr>
+        {% for value in child_object.list_values %}
+            <td onClick="linkTo('/{{ list_edit_name }}/edit/', {{ child_object.id }})">{{ value }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endif %}
+{% endblock %}
