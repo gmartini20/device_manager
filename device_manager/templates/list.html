@@ -7,7 +7,7 @@
         <h3>Salas</h3>
         <ul id='add_button'>
             <li class='active'>
-                <a href='/room/edit/'><span>ADD</span></a>
+                <a href='/{{ edit_name }}/edit/'><span>ADD</span></a>
             </li>
         </ul>
     </div>
@@ -17,11 +17,11 @@
             <th>{{ header_name }}</th>
         {% endfor %}
         </tr>
-    {% for room in room_list %}
+    {% for object in object_list %}
         <tr>
-            <td onClick="linkTo('/room/edit/', {{ room.id }})">{{ room.number }}</td>
-            <td onClick="linkTo('/room/edit/', {{ room.id }})">{{ room.description }}</td>
-            <td onClick="linkTo('/room/edit/', {{ room.id }})">{{ room.stall_set.all }}</td>
+        {% for value in object.list_values %}
+            <td onClick="linkTo('/{{ edit_name }}/edit/', {{ object.id }})">{{ value }}</td>
+        {% endfor %}
         </tr>
     {% endfor %}
     </table>
