@@ -5,12 +5,13 @@ class Room(models.Model):
     number = models.CharField(max_length=50)
     description = models.CharField(max_length=100)
 
-class Computer(models.Model):
+class DeviceCategory(models.Model):
+    name = models.CharField(max_length=90) 
+
+class Device(models.Model):
     patrimony_number = models.CharField(max_length=50)
-    processor = models.CharField(max_length=50)
-    memory = models.CharField(max_length=50)
-    video_card = models.CharField(max_length=50)
-    hard_disk = models.CharField(max_length=50)
+    description = models.CharField(max_length=555)
+    category = models.ForeignKey(DeviceCategory)
 
 class Person(models.Model):
     name = models.CharField(max_length=90) 
@@ -19,13 +20,15 @@ class Person(models.Model):
 
 class Stall(models.Model):
     obs = models.CharField(max_length=200)
-    computer = models.ForeignKey(Computer)
+    device = models.ForeignKey(Device)
     leader = models.ForeignKey(Person)
     room = models.ForeignKey(Room)
 
 class StallTrainee(models.Model):
     trainee = models.ForeignKey(Person)
     stall = models.ForeignKey(Stall)
-    date_start = models.DateField()
-    date_finish = models.DateField()
+    hour_start = models.TimeField()
+    hour_finish = models.TimeField()
+    start_period = models.DateField()
+    finish_period = models.DateField()
 
