@@ -83,8 +83,8 @@ body {
 
 #form_div{
     float: left;
-    width: 90%;
-    margin: 0 5% 0 5%;
+    width: 96%;
+    margin: 0 2% 0 2%;
 }
 
 #form_div ul{
@@ -96,13 +96,15 @@ body {
     float: left;
     width: 50%;
     list-style: none;
-    height: 24px;
+    min-height: 24px;
     line-height: 24px;
+    margin-top: 10px;
 }
 
 #form_div ul li label{
-    width: 100px;
+    width: 180px;
     float: left;
+    font-size: 90%;
 }
 
 #form_div ul li input{
@@ -110,6 +112,10 @@ body {
 }
 
 #form_div ul li select{
+    width: 60%;
+}
+
+#form_div ul li textarea{
     width: 60%;
 }
 

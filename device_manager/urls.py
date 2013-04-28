@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 #from device_manager.views import hello
 from django.conf import settings
-from device_manager.cadastro.views import list_rooms, edit_rooms, edit_stalls, list_people, edit_people
+from device_manager.cadastro.views import list_rooms, edit_rooms, edit_stalls, list_people, edit_people, list_device_category, edit_device_category, list_device, edit_device
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -17,6 +17,12 @@ urlpatterns = patterns('',
     url(r'^people/list/$', list_people),
     url(r'^people/edit/$', edit_people),
     url(r'^people/edit/(?P<id>\d+)/$', edit_people),
+    url(r'^categorydevice/list/$', list_device_category),
+    url(r'^categorydevice/edit/$', edit_device_category),
+    url(r'^categorydevice/edit/(?P<id>\d+)/$', edit_device_category),
+    url(r'^device/list/$', list_device),
+    url(r'^device/edit/$', edit_device),
+    url(r'^device/edit/(?P<id>\d+)/$', edit_device),
     
     
     # Examples:
