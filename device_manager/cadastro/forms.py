@@ -42,3 +42,12 @@ class DeviceForm(forms.Form):
     patrimony_number = forms.CharField(label=u"Número de patrimônio", required=True)
     category = CategoryModelChoiceField(queryset=DeviceCategory.objects.all(), label=u'Categoria', required=True)
     description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide'}), label=u"Descrição", required=True)
+
+class TraineeForm(forms.Form):
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    stall = forms.CharField(widget=forms.HiddenInput())
+    trainee = PersonModelChoiceField(widget=forms.widgets.Select(attrs={'class': 'wide'}), queryset=Person.objects.filter(role=u'Bolsista'), label=u'Bolsista', required=True)
+    start_period = forms.DateField(label=u"Data de Início", widget=forms.widgets.DateInput(attrs={'class': 'date-pick'}, format='%d/%m/%Y'), required=True)
+    finish_period = forms.DateField(label=u"Data de Fim", widget=forms.widgets.DateInput(attrs={'class': 'date-pick'}, format='%d/%m/%Y'), required=True)
+    hour_start = forms.TimeField(label=u"Hora de Início", widget=forms.widgets.TimeInput(attrs={'class': 'time-pick'}), input_formats=['%H:%M'], required=True)
+    hour_finish = forms.TimeField(label=u"Hora de Fim", widget=forms.widgets.TimeInput(attrs={'class': 'time-pick'}), input_formats=['%H:%M'], required=True)
