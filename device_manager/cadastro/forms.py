@@ -8,7 +8,7 @@ class PersonModelChoiceField(forms.ModelChoiceField):
 
 class DeviceModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
-         return (obj.id, "%s" % (obj.category.name))
+         return ("%s - %s" % (obj.patrimony_number, obj.category.name))
 
 class CategoryModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
@@ -22,7 +22,7 @@ class RoomForm(forms.Form):
 class StallForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(StallForm, self).__init__(*args, **kwargs)
-        self.fields['device'].queryset = Device.objects.all()
+#        self.fields['device'].queryset = Device.objects.all()
 
     #TODO ver como fazer com computadores
     id = forms.CharField(widget=forms.HiddenInput(), required=False)

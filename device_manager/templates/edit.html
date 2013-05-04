@@ -6,6 +6,15 @@
 <script src="/resources/jquery-ui-timepicker-addon.js"></script>
 <script src="/resources/list.js"></script>
 <script src="/resources/edit.js"></script>
+{% if messages %}
+<div id='messages'>
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 <div id='title'>
 </div>
 <div id='form_div'>

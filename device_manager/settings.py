@@ -101,10 +101,10 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
 #   'django.middleware.common.CommonMiddleware',
-#   'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 #   'django.middleware.csrf.CsrfViewMiddleware',
 #   'django.contrib.auth.middleware.AuthenticationMiddleware',
-#   'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 ROOT_URLCONF = 'device_manager.urls'
@@ -114,6 +114,16 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     "/home/guilherme/TCC/project/device_manager/templates",
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
 )
 
 INSTALLED_APPS = (

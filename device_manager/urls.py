@@ -1,14 +1,17 @@
 from django.conf.urls.defaults import patterns, include, url
-#from device_manager.views import hello
 from django.conf import settings
-from device_manager.cadastro.views import list_rooms, edit_rooms, edit_stalls, list_people, edit_people, list_device_category, edit_device_category, list_device, edit_device, edit_trainees
+from device_manager.cadastro.room import list_rooms, edit_rooms
+from device_manager.cadastro.stall import edit_stalls
+from device_manager.cadastro.trainee import edit_trainees
+from device_manager.cadastro.people import list_people, edit_people
+from device_manager.cadastro.device_category import list_device_category, edit_device_category
+from device_manager.cadastro.device import list_device, edit_device
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    #url(r'^hello/$', hello)
     url(r'^room/list/$', list_rooms),
     url(r'^room/edit/$', edit_rooms),
     url(r'^room/edit/(?P<id>\d+)/$', edit_rooms),

@@ -17,6 +17,30 @@ body {
     cursor: pointer;
 }
 
+#messages {
+    width: 80%;
+    text-align: center;
+    font-size: 110%;
+    margin: 0 10%;
+    height: 30px;
+    background-color: lightgray;
+}
+
+.messages {
+    list-style: none;
+    font-weight: bold;
+}
+
+.success {
+    color: #22AA22;
+    padding-top: 5px;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
+
 #header #left_image {
     float: left;
     width: 25%;

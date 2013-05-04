@@ -20,7 +20,7 @@ class Person(models.Model):
 
 class Stall(models.Model):
     obs = models.CharField(max_length=200)
-    device = models.ForeignKey(Device)
+    devices = models.ManyToManyField(Device)
     leader = models.ForeignKey(Person)
     room = models.ForeignKey(Room)
 
