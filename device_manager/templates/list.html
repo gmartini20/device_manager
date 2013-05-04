@@ -18,7 +18,7 @@
         {% endfor %}
         </tr>
     {% for object in object_list %}
-        <tr>
+        <tr class='clickable'>
         {% for value in object.list_values %}
             <td onClick="linkTo('/{{ edit_name }}/edit/', {{ object.id }})">{{ value }}</td>
         {% endfor %}

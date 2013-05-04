@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script type="text/javascript" src="/resources/jquery.ui.core.js"></script>
+<script type="text/javascript" src="/resources/jquery.ui.datepicker.js"></script>
+<script src="/resources/jquery-ui-timepicker-addon.js"></script>
 <script src="/resources/list.js"></script>
+<script src="/resources/edit.js"></script>
 <div id='title'>
 </div>
 <div id='form_div'>
@@ -33,7 +37,7 @@
         {% endfor %}
         </tr>
     {% for child_object in child_object_list %}
-        <tr>
+        <tr class='clickable'>
         {% for value in child_object.list_values %}
             <td onClick="linkTo('/{{ list_edit_name }}/edit/', {{ child_object.id }})">{{ value }}</td>
         {% endfor %}

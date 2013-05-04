@@ -6,9 +6,9 @@ class PersonModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
          return obj.name
 
-class DeviceModelChoiceField(forms.ModelChoiceField):
+class DeviceModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
-         return "%s - %s" % (obj.patrimony_number, obj.category.name)
+         return (obj.id, "%s" % (obj.category.name))
 
 class CategoryModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
@@ -20,12 +20,16 @@ class RoomForm(forms.Form):
     description = forms.CharField(label=u"Descrição", required=False)
 
 class StallForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(StallForm, self).__init__(*args, **kwargs)
+        self.fields['device'].queryset = Device.objects.all()
+
     #TODO ver como fazer com computadores
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     room = forms.CharField(widget=forms.HiddenInput())
     obs = forms.CharField(label=u"Observação", required=False)
     leader = PersonModelChoiceField(queryset=Person.objects.filter(role=u'Orientador'), label=u'Orientador', required=True)
-    device = DeviceModelChoiceField(queryset=Device.objects.all(), label=u'Dispositivo', required=True)
+    device = DeviceModelMultipleChoiceField(queryset=Device.objects.all(), label=u'Dispositivo', required=True)
 
 class PersonForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -47,7 +51,7 @@ class TraineeForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     stall = forms.CharField(widget=forms.HiddenInput())
     trainee = PersonModelChoiceField(widget=forms.widgets.Select(attrs={'class': 'wide'}), queryset=Person.objects.filter(role=u'Bolsista'), label=u'Bolsista', required=True)
-    start_period = forms.DateField(label=u"Data de Início", widget=forms.widgets.DateInput(attrs={'class': 'date-pick'}, format='%d/%m/%Y'), required=True)
-    finish_period = forms.DateField(label=u"Data de Fim", widget=forms.widgets.DateInput(attrs={'class': 'date-pick'}, format='%d/%m/%Y'), required=True)
-    hour_start = forms.TimeField(label=u"Hora de Início", widget=forms.widgets.TimeInput(attrs={'class': 'time-pick'}), input_formats=['%H:%M'], required=True)
-    hour_finish = forms.TimeField(label=u"Hora de Fim", widget=forms.widgets.TimeInput(attrs={'class': 'time-pick'}), input_formats=['%H:%M'], required=True)
+    start_period = forms.DateField(label=u"Data de Início", widget=forms.widgets.DateInput(attrs={'class': 'date'}), input_formats=['%d/%m/%Y'], required=True)
+    finish_period = forms.DateField(label=u"Data de Fim", widget=forms.widgets.DateInput(attrs={'class': 'date'}), input_formats=['%d/%m/%Y'], required=True)
+    hour_start = forms.TimeField(label=u"Hora de Início", widget=forms.widgets.TimeInput(attrs={'class': 'time'}), input_formats=['%H:%M'], required=True)
+    hour_finish = forms.TimeField(label=u"Hora de Fim", widget=forms.widgets.TimeInput(attrs={'class': 'time'}), input_formats=['%H:%M'], required=True)

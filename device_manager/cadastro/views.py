@@ -131,7 +131,7 @@ def _set_stall_form_context(stall, form, context):
 def _get_trainee_list(trainee_list):
     new_list = []
     for trainee in trainee_list:
-        trainee.list_values = [trainee.name, trainee.date_start, trainee.date_finish]
+        trainee.list_values = [trainee.trainee.name, trainee.start_period, trainee.finish_period]
         new_list.append(trainee)
     return new_list
 
@@ -276,18 +276,19 @@ def _set_device_form_context(device, form, context):
     return context
 
 def edit_trainees(request, id=None):
-    import pdb
-    pdb.set_trace()
     context = {'page_title': u'Bolsistas', 'edit_name': 'trainee', 'has_back': True, 'back_page_name': u'stall'}
     id_stall = request.GET.get('parent_object_id', None)
     stall = None
     trainee = StallTrainee()
+    form = None
     if id_stall:
         stall = Stall.objects.get(id = id_stall)
         trainee.stall = stall
         form = TraineeForm(initial={'stall': stall.id})
     t = get_template('edit.html')
     if request.method == 'POST':
+        import pdb
+        pdb.set_trace()
         form = TraineeForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
@@ -304,7 +305,7 @@ def edit_trainees(request, id=None):
     return HttpResponse(html)
 
 def _get_trainee_form_initial_value(trainee):
-    initial = stall.__dict__
+    initial = trainee.__dict__
     initial['id'] = trainee.id
     initial['trainee'] = trainee.trainee.id
     initial['stall'] = trainee.stall.id
