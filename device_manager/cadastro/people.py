@@ -12,7 +12,7 @@ people_list_header = [u'Nome', u'Nível', u'Papel']
 
 def list_people(request):
     t = get_template('list.html')
-    people_list = Person.objects.all()
+    people_list = Person.objects.all().order_by('name')
     values_dict = {}
     for person in people_list:
         person.list_values = [person.name, person.level, person.role]

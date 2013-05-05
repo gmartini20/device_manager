@@ -12,7 +12,7 @@ device_list_header = [u'Descrição', u'Número de Patrimônio', u'Categoria']
 
 def list_device(request):
     t = get_template('list.html')
-    device_list = Device.objects.all()
+    device_list = Device.objects.all().order_by('category')
     values_dict = {}
     for device in device_list:
         device.list_values = [device.description, device.patrimony_number, device.category.name]

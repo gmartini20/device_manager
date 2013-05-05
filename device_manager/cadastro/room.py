@@ -14,7 +14,7 @@ stall_list_header = [u'Computador', u'Professor Responsável', u'Observação']
 
 def list_rooms(request):
     t = get_template('list.html')
-    room_list = Room.objects.all()
+    room_list = Room.objects.all().order_by('number')
     values_dict = {}
     for room in room_list:
         room.list_values = [room.number, room.description, len(room.stall_set.all())]
@@ -56,7 +56,7 @@ def _set_room_form_context(room, form, context):
     child_object_list = None
     if room:
         has_list = room.id is not None
-        child_object_list = _get_stall_list(room.stall_set.all())
+        child_object_list = _get_stall_list(room.stall_set.all().order_by('id'))
         context['object_id'] = room.id
     
     context['has_list'] = has_list

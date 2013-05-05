@@ -31,10 +31,8 @@ def edit_trainees(request, id=None):
         trainee = StallTrainee.objects.get(id=id)
         initial = _get_trainee_form_initial_value(trainee)
         form = TraineeForm(initial=initial)
-#   form.fields['trainee'].queryset = Person.objects.filter(Q(stalltrainee_set=None))
+    form.fields['trainee'].queryset = Person.objects.filter((Q(stalltrainee=None) | Q(stalltrainee=trainee)) & Q(role='Bolsista'))
     context = _set_trainee_form_context(trainee, form, context)
-#   html = t.render(Context(context))
-#   return HttpResponse(html)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _get_trainee_form_initial_value(trainee):
@@ -42,6 +40,10 @@ def _get_trainee_form_initial_value(trainee):
     initial['id'] = trainee.id
     initial['trainee'] = trainee.trainee.id
     initial['stall'] = trainee.stall.id
+    initial['start_period'] = trainee.start_period.strftime("%d/%m/%Y")
+    initial['finish_period'] = trainee.finish_period.strftime("%d/%m/%Y")
+    initial['hour_start'] = trainee.hour_start.strftime("%H:%M")
+    initial['hour_finish'] = trainee.hour_finish.strftime("%H:%M")
     return initial
 
 def _save_trainee(cd):

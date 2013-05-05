@@ -34,8 +34,6 @@ def edit_stalls(request, id=None):
         form = StallForm(initial=initial)
     form.fields['device'].queryset = Device.objects.filter(Q(stall=None) | Q(stall=stall))
     context = _set_stall_form_context(stall, form, context)
-#   html = t.render(Context(context))
-#   return HttpResponse(html)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _get_stall_form_initial_value(stall):
@@ -62,7 +60,7 @@ def _set_stall_form_context(stall, form, context):
     child_object_list = None
     if stall:
         has_list = stall.id is not None
-        child_object_list = _get_trainee_list(stall.stalltrainee_set.all())
+        child_object_list = _get_trainee_list(stall.stalltrainee_set.all().order_by('id'))
         context['object_id'] = stall.id
         context['parent_object_id'] = stall.room.id
     
@@ -74,6 +72,6 @@ def _set_stall_form_context(stall, form, context):
 def _get_trainee_list(trainee_list):
     new_list = []
     for trainee in trainee_list:
-        trainee.list_values = [trainee.trainee.name, trainee.start_period, trainee.finish_period]
+        trainee.list_values = [trainee.trainee.name, trainee.start_period.strftime("%d/%m/%Y"), trainee.finish_period.strftime("%d/%m/%Y")]
         new_list.append(trainee)
     return new_list

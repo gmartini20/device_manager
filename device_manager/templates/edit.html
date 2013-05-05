@@ -27,6 +27,9 @@
         {% if has_back %}
             <input onClick="linkTo('/{{ back_page_name }}/edit/', {{ parent_object_id }})" type='button' value="Voltar">
         {% endif %}
+        {% if not has_back %}
+            <input onClick="linkTo('/{{ edit_name }}/list', '')" type='button' value="Voltar">
+        {% endif %}
     </form>
 </div>
 {% if has_list %}

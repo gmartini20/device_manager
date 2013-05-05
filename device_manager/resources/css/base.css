@@ -17,6 +17,10 @@ body {
     cursor: pointer;
 }
 
+.errorlist{
+    color: red;
+}
+
 #messages {
     width: 80%;
     text-align: center;
@@ -141,6 +145,7 @@ body {
 
 #form_div ul li select{
     width: 60%;
+    background-color: white;
 }
 
 #form_div ul li textarea{

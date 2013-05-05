@@ -12,7 +12,7 @@ category_list_header = [u'Nome']
 
 def list_device_category(request):
     t = get_template('list.html')
-    category_list = DeviceCategory.objects.all()
+    category_list = DeviceCategory.objects.all().order_by('name')
     values_dict = {}
     for category in category_list:
         category.list_values = [category.name]
