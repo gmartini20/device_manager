@@ -10,7 +10,7 @@ from django.shortcuts import render_to_response
 
 
 room_list_header = [u'Número', u'Descrição', u'Quantidade de baias']
-stall_list_header = [u'Computador', u'Professor Responsável', u'Observação']
+stall_list_header = [u'Computador', u'Professor Responsável', u'Bolsistas', u'Observação']
 
 def list_rooms(request):
     t = get_template('list.html')
@@ -39,8 +39,6 @@ def edit_rooms(request, id=None):
         form = RoomForm(initial=room.__dict__)
 
     context = _set_room_form_context(room, form, context)
-#   html = t.render(RequestContext(context))
-#   return HttpResponse(html)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _save_room(cd):
@@ -67,6 +65,11 @@ def _set_room_form_context(room, form, context):
 def _get_stall_list(stall_list):
     new_list = []
     for stall in stall_list:
-        stall.list_values = [stall.devices.all()[0].patrimony_number, stall.leader.name, stall.obs]
+        trainee_names = ''
+        trainee_list = []
+        for trainee in stall.stalltrainee_set.all():
+            trainee_list.append(trainee.trainee.name)
+        trainee_names = ', '.join(trainee_list)
+        stall.list_values = [stall.devices.all()[0].patrimony_number, stall.leader.name, trainee_names, stall.obs]
         new_list.append(stall)
     return new_list

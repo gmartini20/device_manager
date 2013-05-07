@@ -23,8 +23,11 @@ def edit_trainees(request, id=None):
         form = TraineeForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            trainee = _save_trainee(cd)
-            messages.success(request, 'Bolsista salvo com sucesso.')
+            trainee, is_valid = _save_trainee(cd)
+            if is_valid:
+                messages.success(request, 'Bolsista salvo com sucesso.')
+            else:
+                messages.error(request, 'Erro ao salvar bolsista.')
             initial = _get_trainee_form_initial_value(trainee)
             form = TraineeForm(initial=initial)
     elif id:
@@ -55,8 +58,15 @@ def _save_trainee(cd):
     trainee.start_period = cd['start_period']
     trainee.finish_period = cd['finish_period']
     trainee.stall = Stall.objects.get(id = cd['stall'])
-    trainee.save()
-    return trainee
+#   is_valid = validate_trainee(trainee)
+#   if is_valid:
+    if True:
+        trainee.save()
+    return trainee, is_valid
+
+def validate_trainee(trainee):
+    objects = StallTrainee.objects.filter(Q(stall=trainee.stall) & (Q(start_period__gte=trainee.start_period) | Q(finish_period__lte=trainee.finish_period)) & (Q(hour_start__gte=trainee.hour_start) | Q(hour_finish__lte=trainee.hour_finish)))
+    return len(objects) == 0
 
 def _set_trainee_form_context(trainee, form, context):
     if trainee:
