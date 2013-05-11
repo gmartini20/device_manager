@@ -13,6 +13,31 @@ body {
     border-left: 1px solid #D3D3D3;
 }
 
+#welcome{
+    background-color: lightgray;
+    float: left;
+    margin: 6% 10% 0;
+    min-height: 100px;
+    text-align: center;
+    width: 80%;
+}
+
+#welcome h3{
+    margin-top: 4.5%;
+}
+
+#message{
+    border: 1px solid #D3D3D3;
+    float: left;
+    margin: 3% 3%;
+    min-height: 80px;
+    width: 93%;
+}
+
+#message h6{
+    margin-top: 4.5%;
+}
+
 .clickable {
     cursor: pointer;
 }
@@ -141,6 +166,7 @@ body {
 
 #form_div ul li input{
     width: 60%;
+    padding: 0;
 }
 
 #form_div ul li select{

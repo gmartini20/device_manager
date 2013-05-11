@@ -8,14 +8,14 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
 
-people_list_header = [u'Nome', u'Nível', u'Papel']
+people_list_header = [u'Nome', u'Nível', u'Papel', u'Instituição']
 
 def list_people(request):
     t = get_template('list.html')
     people_list = Person.objects.all().order_by('name')
     values_dict = {}
     for person in people_list:
-        person.list_values = [person.name, person.level, person.role]
+        person.list_values = [person.name, person.level, person.role, person.institution.name]
     html = t.render(Context({'page_title': u'Pessoas', 'header_name_list': people_list_header, 'object_list': people_list, 'edit_name': 'people'}))
     return HttpResponse(html)
 
@@ -30,15 +30,16 @@ def edit_people(request, id=None):
             cd = form.cleaned_data
             person = _save_person(cd)
             messages.success(request, 'Pessoa salva com sucesso.')
-            form = PersonForm(initial=person.__dict__)
-
+            initial = person.__dict__
+            initial['institution'] = person.institution.id
+            form = PersonForm(initial=initial)
     elif id:
         person = Person.objects.get(id=id)
-        form = PersonForm(initial=person.__dict__)
+        initial = person.__dict__
+        initial['institution'] = person.institution.id
+        form = PersonForm(initial=initial)
 
     context = _set_person_form_context(person, form, context)
-#   html = t.render(Context(context))
-#   return HttpResponse(html)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _save_person(cd):
@@ -47,6 +48,8 @@ def _save_person(cd):
     person.name = cd['name']
     person.level = cd['level']
     person.role = cd['role']
+    person.institution = cd['institution']
+    person.observation = cd['observation']
     person.save()
     return person
 

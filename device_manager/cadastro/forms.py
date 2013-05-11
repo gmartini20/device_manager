@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 from django import forms
-from models import Person, Device, DeviceCategory, Period
+from models import Person, Device, DeviceCategory, Period, Institution
+from country_options import *
 
 my_default_errors = {
     'required': u'Este campo é obrigatório',
@@ -16,6 +17,10 @@ class DeviceModelMultipleChoiceField(forms.ModelMultipleChoiceField):
          return ("%s - %s" % (obj.patrimony_number, obj.category.name))
 
 class CategoryModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+         return "%s" % (obj.name)
+
+class InstitutionModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
          return "%s" % (obj.name)
 
@@ -38,8 +43,10 @@ class StallForm(forms.Form):
 class PersonForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     name = forms.CharField(label=u"Nome", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'maxlength':'90'}))
-    level = forms.ChoiceField(label=u"Nível", widget=forms.Select(), choices=[('', u'--------'), (u'Graduação', u'Graduação'), (u'Mestrado', u'Mestrado'), (u'Doutorado', u'Doutorado')], required=True, error_messages=my_default_errors)
-    role = forms.ChoiceField(label=u"Papel", widget=forms.Select(), choices=[('', u'--------'), (u'Bolsista', u'Bolsista'), (u'Orientador', u'Orientador')], required=True, error_messages=my_default_errors)
+    level = forms.ChoiceField(label=u"Nível", widget=forms.Select(), choices=[('', u'--------'), (u'Graduação', u'Graduação'), (u'Mestrado', u'Mestrado'), (u'Doutorado', u'Doutorado'), (u'Doutorado Sanduíche', u'Doutorado Sanduíche'), (u'Pós-Doutorado', u'Pós-Doutorado')], required=True, error_messages=my_default_errors)
+    role = forms.ChoiceField(label=u"Papel", widget=forms.Select(), choices=[('', u'--------'), (u'Bolsista', u'Bolsista'), (u'Orientador', u'Orientador'), (u'Visitante', u'Visitante')], required=True, error_messages=my_default_errors)
+    institution = InstitutionModelChoiceField(queryset=Institution.objects.all(), label=u'Instituição', required=True, error_messages=my_default_errors)
+    observation = forms.CharField(widget=forms.Textarea(attrs={'class' :'wide', 'maxlength': '555'}), label=u"Observação", required=True, error_messages=my_default_errors)
 
 class DeviceCategoryForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -67,3 +74,9 @@ class StallTraineePeriodForm(forms.Form):
     thursday = forms.BooleanField(initial=False, label=u"Quinta", required=False)
     friday = forms.BooleanField(initial=False, label=u"Sexta", required=False)
     periods = PeriodModelMultipleChoiceField(queryset=Period.objects.all(), label=u'Períodos', required=False, error_messages=my_default_errors)
+
+class InstitutionForm(forms.Form):
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    name = forms.CharField(label=u"Nome", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'maxlength':'50'}))
+    country = forms.ChoiceField(label=u'País', required=True, error_messages=my_default_errors, choices=COUNTRY_CHOICES)
+    observation = forms.CharField(widget=forms.Textarea(attrs={'class' :'wide', 'maxlength': '555'}), label=u"Observação", required=True, error_messages=my_default_errors)

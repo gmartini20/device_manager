@@ -6,7 +6,7 @@ class Room(models.Model):
     description = models.CharField(max_length=100)
 
 class DeviceCategory(models.Model):
-    name = models.CharField(max_length=90) 
+    name = models.CharField(max_length=90)
 
 class Device(models.Model):
     patrimony_number = models.CharField(max_length=50)
@@ -18,10 +18,17 @@ class Period(models.Model):
     time_start = models.TimeField()
     time_finish = models.TimeField()
 
+class Institution(models.Model):
+    name = models.CharField(max_length=155)
+    observation = models.CharField(max_length=555)
+    country = models.CharField(max_length=155)
+
 class Person(models.Model):
     name = models.CharField(max_length=90) 
     level = models.CharField(max_length=50)
     role = models.CharField(max_length=50)
+    observation = models.CharField(max_length=555)
+    institution = models.ForeignKey(Institution)
 
 class Stall(models.Model):
     obs = models.CharField(max_length=200)
@@ -36,10 +43,10 @@ class StallTrainee(models.Model):
     finish_period = models.DateField()
 
 class StallTraineePeriod(models.Model):
-    monday = models.BooleanField() 
-    tuesday = models.BooleanField() 
-    wednesday = models.BooleanField() 
+    monday = models.BooleanField()
+    tuesday = models.BooleanField()
+    wednesday = models.BooleanField()
     thursday = models.BooleanField()
-    friday = models.BooleanField() 
+    friday = models.BooleanField()
     periods = models.ManyToManyField(Period)
     stall_trainee = models.ForeignKey(StallTrainee)
