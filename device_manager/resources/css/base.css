@@ -152,6 +152,36 @@ body {
     width: 60%;
 }
 
+#form_div #wrapper{
+    float: left;
+    width: 100%;
+}
+
+#form_div #aux{
+    margin-left: 20%;
+    margin-bottom: 2%;
+    width: 80%;
+}
+
+#form_div #aux li{
+    width: 15%;
+}
+
+#form_div #aux li label{
+    width: 80px;
+    float: left;
+    font-size: 90%;
+}
+
+#form_div #aux li input{
+    width: 10%;
+}
+
+#form_div #aux li select{
+    width: 20%;
+    background-color: white;
+}
+
 #list {
     margin-left: 5%;
     margin-right: 5%;

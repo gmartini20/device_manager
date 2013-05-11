@@ -6,6 +6,7 @@ from device_manager.cadastro.trainee import edit_trainees
 from device_manager.cadastro.people import list_people, edit_people
 from device_manager.cadastro.device_category import list_device_category, edit_device_category
 from device_manager.cadastro.device import list_device, edit_device
+from device_manager.cadastro.period import edit_period
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -28,6 +29,8 @@ urlpatterns = patterns('',
     url(r'^device/edit/(?P<id>\d+)/$', edit_device),
     url(r'^trainee/edit/$', edit_trainees),
     url(r'^trainee/edit/(?P<id>\d+)/$', edit_trainees),
+    url(r'^period/edit/$', edit_period),
+    url(r'^period/edit/(?P<id>\d+)/$', edit_period),
     
     
     # Examples:

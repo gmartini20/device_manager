@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 from django import forms
-from models import Person, Device, DeviceCategory
+from models import Person, Device, DeviceCategory, Period
 
 my_default_errors = {
     'required': u'Este campo é obrigatório',
@@ -18,6 +18,10 @@ class DeviceModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 class CategoryModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
          return "%s" % (obj.name)
+
+class PeriodModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+         return ("%s" % obj.name)
 
 class RoomForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -53,5 +57,13 @@ class TraineeForm(forms.Form):
     trainee = PersonModelChoiceField(widget=forms.widgets.Select(attrs={'class': 'wide'}), queryset=Person.objects.filter(role=u'Bolsista'), label=u'Bolsista', required=True, error_messages=my_default_errors)
     start_period = forms.DateField(label=u"Data de Início", widget=forms.widgets.DateInput(attrs={'class': 'date'}), input_formats=['%d/%m/%Y'], required=True, error_messages=my_default_errors)
     finish_period = forms.DateField(label=u"Data de Fim", widget=forms.widgets.DateInput(attrs={'class': 'date'}), input_formats=['%d/%m/%Y'], required=True, error_messages=my_default_errors)
-    hour_start = forms.TimeField(label=u"Hora de Início", widget=forms.widgets.TimeInput(attrs={'class': 'time'}), input_formats=['%H:%M'], required=True, error_messages=my_default_errors)
-    hour_finish = forms.TimeField(label=u"Hora de Fim", widget=forms.widgets.TimeInput(attrs={'class': 'time'}), input_formats=['%H:%M'], required=True, error_messages=my_default_errors)
+
+class StallTraineePeriodForm(forms.Form):
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    stalltrainee = forms.CharField(widget=forms.HiddenInput(), required=False)
+    monday = forms.BooleanField(initial=False, label=u"Segunda", required=False)
+    tuesday = forms.BooleanField(initial=False, label=u"Terça", required=False)
+    wednesday = forms.BooleanField(initial=False, label=u"Quarta", required=False)
+    thursday = forms.BooleanField(initial=False, label=u"Quinta", required=False)
+    friday = forms.BooleanField(initial=False, label=u"Sexta", required=False)
+    periods = PeriodModelMultipleChoiceField(queryset=Period.objects.all(), label=u'Períodos', required=False, error_messages=my_default_errors)

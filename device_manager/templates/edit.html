@@ -23,6 +23,14 @@
         <ul>
             {{ fields }}
         </ul>
+        {% if has_auxiliar_form %}
+            <div id='wrapper'>
+                <ul id='aux'>
+                    {{ aux_fields }}
+               </ul>
+            </div>
+        {% endif %}
+        
         <input type='submit' value="Salvar">
         {% if has_back %}
             <input onClick="linkTo('/{{ back_page_name }}/edit/', {{ parent_object_id }})" type='button' value="Voltar">
@@ -32,6 +40,7 @@
         {% endif %}
     </form>
 </div>
+
 {% if has_list %}
 <div id='list'>
     <div id='list_title'>

@@ -13,6 +13,11 @@ class Device(models.Model):
     description = models.CharField(max_length=555)
     category = models.ForeignKey(DeviceCategory)
 
+class Period(models.Model):
+    name = models.CharField(max_length=200)
+    time_start = models.TimeField()
+    time_finish = models.TimeField()
+
 class Person(models.Model):
     name = models.CharField(max_length=90) 
     level = models.CharField(max_length=50)
@@ -27,8 +32,14 @@ class Stall(models.Model):
 class StallTrainee(models.Model):
     trainee = models.ForeignKey(Person)
     stall = models.ForeignKey(Stall)
-    hour_start = models.TimeField()
-    hour_finish = models.TimeField()
     start_period = models.DateField()
     finish_period = models.DateField()
 
+class StallTraineePeriod(models.Model):
+    monday = models.BooleanField() 
+    tuesday = models.BooleanField() 
+    wednesday = models.BooleanField() 
+    thursday = models.BooleanField()
+    friday = models.BooleanField() 
+    periods = models.ManyToManyField(Period)
+    stall_trainee = models.ForeignKey(StallTrainee)
