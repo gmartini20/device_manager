@@ -74,9 +74,6 @@ def _save_trainee(cd):
     trainee.start_period = cd['start_period']
     trainee.finish_period = cd['finish_period']
     trainee.stall = Stall.objects.get(id = cd['stall'])
-    is_valid = True#validate_trainee(trainee)
-    if is_valid:
-        trainee.save()
     period = StallTraineePeriod()
     period.monday = cd['monday']
     period.tuesday = cd['tuesday']
@@ -84,16 +81,22 @@ def _save_trainee(cd):
     period.thursday = cd['thursday']
     period.friday = cd['friday']
     period.stall_trainee = trainee
-    period.save()
-    period.periods = cd['periods']
-    period.save()
+    is_valid = validate_trainee(trainee, period, cd['periods'])
+    if is_valid:
+        trainee.save()
+        period.stall_trainee = trainee
+        period.save()
+        period.periods = cd['periods']
+        period.save()
     return trainee, is_valid
 
-def validate_trainee(trainee):
-    start_period_comp = datetime.datetime.combine(trainee.start_period, datetime.time.min.min)
-    finish_period_comp = datetime.datetime.combine(trainee.finish_period, datetime.time.min.min)
-    objects = StallTrainee.objects.filter(Q(stall=trainee.stall), ((Q(start_period__gte=start_period_comp) | Q(finish_period__lte=finish_period_comp)))) #& (Q(hour_start__gte=trainee.hour_start) | Q(hour_finish__lte=trainee.hour_finish))))
-    return len(objects) == 0
+def validate_trainee(trainee, period, period_list):
+    stall_trainees = StallTrainee.objects.filter(stall = trainee.stall, start_period__gte=trainee.start_period, finish_period__lte=trainee.finish_period)
+    for trainee in stall_trainees:
+        period = StallTraineePeriod.objects.filter(Q(monday = period.monday) | Q(tuesday = period.tuesday) | Q(wednesday = period.wednesday) | Q(thursday = period.thursday) | Q(friday = period.friday)).filter(periods__in=period_list)
+        if len(period):
+            return False
+    return True
 
 def _set_period_form_context(trainee, form, context):
     if trainee and trainee.id:

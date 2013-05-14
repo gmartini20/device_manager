@@ -18,17 +18,19 @@ def edit_period(request, id=None):
     form = StallTraineePeriodForm()
     if id_trainee:
         trainee = StallTrainee.objects.get(id = id_trainee)
-        period.stalltrainee = trainee
+        period.stall_trainee = trainee
         form = StallTraineePeriodForm(initial={'stalltrainee': trainee.id})
     if request.method == 'POST':
         form = StallTraineePeriodForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            peroid = _save_stall_trainee_period(cd)
+            period, is_valid = _save_stall_trainee_period(cd)
             initial = period.__dict__
-            messages.success(request, 'Período salvo com sucesso.')
             form = StallTraineePeriodForm(initial=initial)
-
+            if is_valid:
+                messages.success(request, 'Período salvo com sucesso.')
+            else:
+                messages.error(request, 'Erro ao salvar Período, já existe outro período nesta baia.')
     elif id:
         period = StallTraineePeriod.objects.get(id=id)
         initial = period.__dict__
@@ -49,10 +51,13 @@ def _save_stall_trainee_period(cd):
     period.wednesday = cd['wednesday']
     period.thursday = cd['thursday']
     period.friday = cd['friday']
-    period.save()
-    period.periods = cd['periods']
-    period.save()    
-    return period
+    period.stall_trainee = StallTrainee.objects.get(id = cd['stalltrainee'])
+    is_valid = validate_period(period, cd['periods'])
+    if is_valid:
+        period.save()
+        period.periods = cd['periods']
+        period.save()    
+    return period, is_valid
 
 def _set_period_form_context(period, form, context):
     if period:
@@ -62,3 +67,15 @@ def _set_period_form_context(period, form, context):
     context['has_list'] = False
     context['fields'] = form.as_ul()
     return context
+
+def validate_period(period, period_list):
+    stall = period.stall_trainee.stall
+    stall_trainees = StallTrainee.objects.filter(stall = stall, start_period__gte=period.stall_trainee.start_period, finish_period__lte=period.stall_trainee.finish_period)
+    for trainee in stall_trainees:
+        period = StallTraineePeriod.objects.filter(stall_trainee = trainee).filter(Q(monday = period.monday) | Q(tuesday = period.tuesday) | Q(wednesday = period.wednesday) | Q(thursday = period.thursday) | Q(friday = period.friday)).filter(periods__in=period_list)
+        if len(period):
+            return False
+    return True
+
+    objects = StallTraineePeriod.objects.filter(Q(stall=trainee.stall), ((Q(start_period__gte=start_period_comp) | Q(finish_period__lte=finish_period_comp)))) #& (Q(hour_start__gte=trainee.hour_start) | Q(hour_finish__lte=trainee.hour_finish))))
+    return len(objects) == 0
