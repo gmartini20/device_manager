@@ -7,6 +7,7 @@ from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceFor
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
+from datetime import date
 
 trainee_list_header = [u'Nome', u'Hora Início', u'Hora Fim']
 
@@ -60,7 +61,7 @@ def _set_stall_form_context(stall, form, context):
     child_object_list = None
     if stall:
         has_list = stall.id is not None
-        child_object_list = _get_trainee_list(stall.stalltrainee_set.all().order_by('id'))
+        child_object_list = _get_trainee_list(stall)
         context['object_id'] = stall.id
         context['parent_object_id'] = stall.room.id
     
@@ -69,7 +70,9 @@ def _set_stall_form_context(stall, form, context):
     context['fields'] = form.as_ul()
     return context
 
-def _get_trainee_list(trainee_list):
+def _get_trainee_list(stall):
+    today = date.today()
+    trainee_list = stall.stalltrainee_set.filter(stall = stall, start_period__lte=today, finish_period__gte=today).order_by('id')
     new_list = []
     for trainee in trainee_list:
         trainee.list_values = [trainee.trainee.name, trainee.start_period.strftime("%d/%m/%Y"), trainee.finish_period.strftime("%d/%m/%Y")]

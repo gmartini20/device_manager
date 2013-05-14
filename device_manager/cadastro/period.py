@@ -14,6 +14,7 @@ def edit_period(request, id=None):
     id_trainee = request.GET.get('parent_object_id', None)
     t = get_template('edit.html')
     trainee = None
+    new_form_initial = {}
     period = StallTraineePeriod()
     form = StallTraineePeriodForm()
     if id_trainee:
@@ -35,8 +36,9 @@ def edit_period(request, id=None):
         period = StallTraineePeriod.objects.get(id=id)
         initial = period.__dict__
         form = StallTraineePeriodForm(initial=initial)
-    
-    new_form = forms.Form()
+    if period:
+        new_form_initial['periods'] = period.periods.all() 
+    new_form = forms.Form(initial=new_form_initial)
     new_form.fields['periods'] = form.fields.pop('periods')
     context = _set_period_form_context(period, form, context)
     context['fields'] = new_form.as_ul()
