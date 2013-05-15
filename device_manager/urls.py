@@ -4,8 +4,8 @@ from device_manager.cadastro.room import list_rooms, edit_rooms
 from device_manager.cadastro.stall import edit_stalls
 from device_manager.cadastro.trainee import edit_trainees
 from device_manager.cadastro.people import list_people, edit_people
-from device_manager.cadastro.device_category import list_device_category, edit_device_category
-from device_manager.cadastro.device import list_device, edit_device
+from device_manager.cadastro.device_category import list_device_category, edit_device_category, remove_category_device
+from device_manager.cadastro.device import list_device, edit_device, remove_device
 from device_manager.cadastro.period import edit_period
 from device_manager.cadastro.institution import list_institution, edit_institution
 from device_manager.cadastro.home import show_home
@@ -27,8 +27,10 @@ urlpatterns = patterns('',
     url(r'^categorydevice/list/$', list_device_category),
     url(r'^categorydevice/edit/$', edit_device_category),
     url(r'^categorydevice/edit/(?P<id>\d+)/$', edit_device_category),
+    url(r'^categorydevice/remove/(?P<id>\d+)/$', remove_category_device),
     url(r'^device/list/$', list_device),
     url(r'^device/edit/$', edit_device),
+    url(r'^device/remove/(?P<id>\d+)/$', remove_device),
     url(r'^device/edit/(?P<id>\d+)/$', edit_device),
     url(r'^trainee/edit/$', edit_trainees),
     url(r'^trainee/edit/(?P<id>\d+)/$', edit_trainees),

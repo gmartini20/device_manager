@@ -70,6 +70,9 @@ def _get_stall_list(stall_list):
         for trainee in stall.stalltrainee_set.all():
             trainee_list.append(trainee.trainee.name)
         trainee_names = ', '.join(trainee_list)
-        stall.list_values = [stall.devices.all()[0].patrimony_number, stall.leader.name, trainee_names, stall.obs]
+        device_name = ""
+        if len(stall.devices.all()):
+            device_name = stall.devices.all()[0].patrimony_number
+        stall.list_values = [device_name, stall.leader.name, trainee_names, stall.obs]
         new_list.append(stall)
     return new_list

@@ -16,8 +16,12 @@ def list_device(request):
     values_dict = {}
     for device in device_list:
         device.list_values = [device.description, device.patrimony_number, device.category.name]
-    html = t.render(Context({'page_title': u'Dispositivos', 'header_name_list': device_list_header, 'object_list': device_list, 'edit_name': 'device'}))
+    html = t.render(Context({'page_title': u'Dispositivos', 'header_name_list': device_list_header, 'object_list': device_list, 'edit_name': 'device', 'can_remove': True}))
     return HttpResponse(html)
+
+def remove_device(request, id):
+    Device.objects.get(id=id).delete()
+    return list_device(request)
 
 def edit_device(request, id=None):
     context = {'page_title': u'Dispositivos', 'edit_name': 'device', 'has_back': False}
@@ -41,8 +45,6 @@ def edit_device(request, id=None):
         form = DeviceForm(initial=initial)
 
     context = _set_device_form_context(device, form, context)
-#   html = t.render(Context(context))
-#   return HttpResponse(html)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _save_device(cd):

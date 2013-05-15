@@ -22,6 +22,9 @@
         {% for value in object.list_values %}
             <td onClick="linkTo('/{{ edit_name }}/edit/', {{ object.id }})">{{ value }}</td>
         {% endfor %}
+        {% if can_remove %}
+            <td onClick="linkTo('/{{ edit_name }}/remove/{{ object.id }}', '')"><img src='/resources/delete.png' width=20 height=20/></td>
+        {% endif %}
         </tr>
     {% endfor %}
     </table>

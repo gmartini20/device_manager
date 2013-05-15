@@ -16,8 +16,14 @@ def list_device_category(request):
     values_dict = {}
     for category in category_list:
         category.list_values = [category.name]
-    html = t.render(Context({'page_title': u'Categorias de Dispositivos', 'header_name_list': category_list_header, 'object_list': category_list, 'edit_name': 'categorydevice'}))
+    html = t.render(Context({'page_title': u'Categorias de Dispositivos', 'header_name_list': category_list_header, 'object_list': category_list, 'edit_name': 'categorydevice', 'can_remove': True}))
     return HttpResponse(html)
+
+def remove_category_device(request, id):
+    import pdb
+    pdb.set_trace()
+    DeviceCategory.objects.get(id=id).delete()
+    return list_device_category(request)
 
 def edit_device_category(request, id=None):
     context = {'page_title': u'Categoria de Dispositivos', 'edit_name': 'categorydevice', 'has_back': False}
