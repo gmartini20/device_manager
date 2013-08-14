@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script src="/resources/report.js"></script>
+<div id="filter">
+    <label>Filtro</label>
+    <select id="filterKind">
+        {% for filter_name in filters %}
+            <option>{{ filter_name }}</option>
+        {% endfor %}
+    <select>
+    <input id="filterText" name="filterText"/>
+    <input type="hidden" id="acumulatedFilter" name="acumulatedFilter">
+    <button id="filterButton" type="button"> Filtrar </button>
+</div>
+<div id='table_content'>
+    <div id='table_title'>
+        <h3>{{page_title}}</h3>
+        <ul id='add_button'>
+            <li class='active'>
+                <a href='/{{ edit_name }}/edit/'><span>ADD</span></a>
+            </li>
+        </ul>
+    </div>
+    <table>
+        <tr>
+        {% for header_name in header_name_list %}
+            <th>{{ header_name }}</th>
+        {% endfor %}
+        </tr>
+    {% for object in object_list %}
+        <tr class='clickable'>
+        {% for value in object.list_values %}
+            <td onClick="linkTo('/{{ edit_name }}/edit/', {{ object.id }})">{{ value }}</td>
+        {% endfor %}
+        {% if can_remove %}
+            <td onClick="linkTo('/{{ edit_name }}/remove/{{ object.id }}', '')"><img src='/resources/delete.png' width=20 height=20/></td>
+        {% endif %}
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}
