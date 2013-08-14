@@ -9,6 +9,7 @@ from device_manager.cadastro.device import list_device, edit_device, remove_devi
 from device_manager.cadastro.period import edit_period
 from device_manager.cadastro.institution import list_institution, edit_institution
 from device_manager.cadastro.home import show_home
+from device_manager.cadastro.reports import occupacy_report
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -39,6 +40,8 @@ urlpatterns = patterns('',
     url(r'^institution/list/$', list_institution),
     url(r'^institution/edit/$', edit_institution),
     url(r'^institution/edit/(?P<id>\d+)/$', edit_institution),
+    url(r'^reports/occupacy_report/$', occupacy_report),
+    url(r'^reports/occupacy_report/(?P<id>.+)/$', occupacy_report),
     
     
     # Examples:
