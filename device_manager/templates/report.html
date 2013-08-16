@@ -10,17 +10,12 @@
         {% endfor %}
     <select>
     <input id="filterText" name="filterText"/>
-    <input type="hidden" id="acumulatedFilter" name="acumulatedFilter">
+    <input type="hidden" id="acumulatedFilter" name="acumulatedFilter" value='{{ acumulated_value }}'>
     <button id="filterButton" type="button"> Filtrar </button>
 </div>
 <div id='table_content'>
     <div id='table_title'>
         <h3>{{page_title}}</h3>
-        <ul id='add_button'>
-            <li class='active'>
-                <a href='/{{ edit_name }}/edit/'><span>ADD</span></a>
-            </li>
-        </ul>
     </div>
     <table>
         <tr>

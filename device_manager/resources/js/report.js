@@ -20,12 +20,13 @@ $('#filterButton').click(function(){
             url = document.URL
         }
         else{
-            url = document.URL.split(acumulatedValue)[0]
+            //TODO tirar HTML encode
+            url = document.URL.split(replaceAll(acumulatedValeu, ' ', '%20'))[0]
             acumulatedValeu += "&";
         }
         console.log(selectedOption);
         console.log(textFilter);
-        acumulatedValeu = selectedOption + "=" + textFilter;
+        acumulatedValeu += selectedOption + "=" + textFilter;
         console.log("url", url);
         console.log("filtro", acumulatedValeu);
         window.location.href = url + acumulatedValeu + '/';
@@ -33,3 +34,10 @@ $('#filterButton').click(function(){
 })
 
 })
+
+function replaceAll(string, token, newtoken) {
+    while (string.indexOf(token) != -1) {
+        string = string.replace(token, newtoken);
+    }
+    return string;
+}
