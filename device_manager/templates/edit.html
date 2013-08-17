@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<script type="text/javascript" src="/resources/jquery.ui.core.js"></script>
-<script type="text/javascript" src="/resources/jquery.ui.datepicker.js"></script>
-<script src="/resources/jquery-ui-timepicker-addon.js"></script>
 <script src="/resources/list.js"></script>
 <script src="/resources/edit.js"></script>
 {% if messages %}
@@ -31,13 +28,15 @@
             </div>
         {% endif %}
         
-        <input type='submit' value="Salvar">
-        {% if has_back %}
-            <input onClick="linkTo('/{{ back_page_name }}/edit/', {{ parent_object_id }})" type='button' value="Voltar">
-        {% endif %}
-        {% if not has_back %}
-            <input onClick="linkTo('/{{ edit_name }}/list', '')" type='button' value="Voltar">
-        {% endif %}
+        <div id="buttons">
+            {% if has_back %}
+                <input class='btn btn-inverse' onClick="linkTo('/{{ back_page_name }}/edit/', {{ parent_object_id }})" type='button' value="Voltar">
+            {% endif %}
+            {% if not has_back %}
+                <input class='btn btn-inverse' onClick="linkTo('/{{ edit_name }}/list', '')" type='button' value="Voltar">
+            {% endif %}
+            <input type='submit' class='btn btn-primary btn-large' value="Salvar">
+        </div>
     </form>
 </div>
 
@@ -47,23 +46,28 @@
         <h3>{{ list_title }}</h3>
         <ul id='add_button'>
             <li class='active'>
-                <a href='/{{ list_edit_name }}/edit/?parent_object_id={{ object_id }}'><span>ADD</span></a>
+                <button onclick="window.location='/{{ list_edit_name }}/edit/?parent_object_id={{ object_id }}';" class='btn btn-info'>Adicionar</button>
+                <!--<a href='/{{ list_edit_name }}/edit/?parent_object_id={{ object_id }}'><span>ADD</span></a>-->
             </li>
         </ul>
     </div>
     <table>
+        <thead>
         <tr>
         {% for header_name in header_name_list %}
-            <th>{{ header_name }}</th>
+            <th style='text-align: center;'>{{ header_name }}</th>
         {% endfor %}
         </tr>
-    {% for child_object in child_object_list %}
-        <tr class='clickable'>
-        {% for value in child_object.list_values %}
-            <td onClick="linkTo('/{{ list_edit_name }}/edit/', {{ child_object.id }})">{{ value }}</td>
-        {% endfor %}
-        </tr>
-    {% endfor %}
+        </thead>
+        <tbody>
+            {% for child_object in child_object_list %}
+                <tr class='clickable'>
+                {% for value in child_object.list_values %}
+                    <td onClick="linkTo('/{{ list_edit_name }}/edit/', {{ child_object.id }})">{{ value }}</td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 </div>
 {% endif %}

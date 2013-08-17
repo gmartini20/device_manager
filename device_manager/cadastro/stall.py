@@ -63,7 +63,8 @@ def _set_stall_form_context(stall, form, context):
         has_list = stall.id is not None
         child_object_list = _get_trainee_list(stall)
         context['object_id'] = stall.id
-        context['parent_object_id'] = stall.room.id
+        if hasattr(stall, 'room'):
+            context['parent_object_id'] = stall.room.id
     
     context['has_list'] = has_list
     context['child_object_list'] = child_object_list

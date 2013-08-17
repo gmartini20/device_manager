@@ -12,7 +12,7 @@ for (var i=0;i< elements.length; i++){
 $('#filterButton').click(function(){
     var acumulatedValeu = $("#acumulatedFilter").val();
     var textFilter = $("#filterText").val();
-    var selectedOption = $("#filterKind").find(":selected").text();
+    var selectedOption = $("#filterKind").find(":selected").val();
     var url = ""
     if(textFilter && selectedOption){
         if(!acumulatedValeu || acumulatedValeu == ""){
@@ -20,7 +20,6 @@ $('#filterButton').click(function(){
             url = document.URL
         }
         else{
-            //TODO tirar HTML encode
             url = document.URL.split(replaceAll(acumulatedValeu, ' ', '%20'))[0]
             acumulatedValeu += "&";
         }

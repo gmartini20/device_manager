@@ -7,26 +7,31 @@
         <h3>{{page_title}}</h3>
         <ul id='add_button'>
             <li class='active'>
-                <a href='/{{ edit_name }}/edit/'><span>ADD</span></a>
+                    <button onclick="window.location='/{{ edit_name }}/edit/';" class='btn btn-info'>Adicionar</button>
+                <!--<a href='/{{ edit_name }}/edit/'><span>ADD</span></a>-->
             </li>
         </ul>
     </div>
     <table>
+        <thead>
         <tr>
         {% for header_name in header_name_list %}
-            <th>{{ header_name }}</th>
+            <th style='text-align: center'>{{ header_name }}</th>
         {% endfor %}
         </tr>
-    {% for object in object_list %}
-        <tr class='clickable'>
-        {% for value in object.list_values %}
-            <td onClick="linkTo('/{{ edit_name }}/edit/', {{ object.id }})">{{ value }}</td>
-        {% endfor %}
-        {% if can_remove %}
-            <td onClick="linkTo('/{{ edit_name }}/remove/{{ object.id }}', '')"><img src='/resources/delete.png' width=20 height=20/></td>
-        {% endif %}
-        </tr>
-    {% endfor %}
+        </thead>
+        <tbody>
+            {% for object in object_list %}
+                <tr class='clickable'>
+                {% for value in object.list_values %}
+                    <td onClick="linkTo('/{{ edit_name }}/edit/', {{ object.id }})">{{ value }}</td>
+                {% endfor %}
+                {% if can_remove %}
+                    <td onClick="if(confirm('Tem certeza que deseja apagar?'))linkTo('/{{ edit_name }}/remove/{{ object.id }}', '')"><img src='/resources/delete.png' width=20 height=20/></td>
+                {% endif %}
+                </tr>
+            {% endfor %}
+        <tbody>
     </table>
 </div>
 {% endblock %}

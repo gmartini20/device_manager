@@ -13,6 +13,11 @@ body {
     border-left: 1px solid #D3D3D3;
 }
 
+.btn-inverse {
+    background-color: #454545;
+    color: white;
+}
+
 #welcome{
     background-color: lightgray;
     float: left;

@@ -1,9 +1,9 @@
 $(document).ready(
 function(){
-    var $date_element = $('.date')
+    var $date_element = $('.datepicker')
     if($date_element && $date_element.length > 0){
         $date_element.datepicker({
-            dateFormat: 'dd/mm/yy'
+            format: 'dd/mm/yyyy'
         });
     }
 
