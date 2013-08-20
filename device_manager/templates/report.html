@@ -2,22 +2,26 @@
 
 {% block content %}
 <script src="/resources/report.js"></script>
-<div id="filter">
-    <label>Filtro</label>
-    <select id="filterKind">
+<div id="filter" style="margin-top: 10px;">
+    <label style="float: left; margin-left: 10px; height: 15px; line-height: 33px;">Filtro</label>
+    <select style="width: 25%; float: left; margin-left: 10px;" class='form-control' id="filterKind">
         {% for filter_name in filters %}
             <option value="{{ filter_name.Valor }}">{{ filter_name.Nome }}</option>
         {% endfor %}
     <select>
-    <input id="filterText" name="filterText"/>
+    <input id="filterText" style="width: 25%; float: left; margin-left: 10px;" class='form-control' name="filterText"/>
     <input type="hidden" id="acumulatedFilter" name="acumulatedFilter" value='{{ acumulated_value }}'>
-    <button class='btn btn-info' id="filterButton" type="button"> Filtrar </button>
+    <button style="float:left; margin-left: 10px;" class='btn btn-info' id="filterButton" type="button"> Filtrar </button>
+</div>
+<div>
+    <ul id="choosen_filters">
+    </ul>
 </div>
 <div id='table_content'>
     <div id='table_title'>
         <h3>{{page_title}}</h3>
     </div>
-    <table>
+    <table class='table'>
         <thead>
         <tr>
         {% for header_name in header_name_list %}
