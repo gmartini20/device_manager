@@ -50,3 +50,15 @@ class StallTraineePeriod(models.Model):
     friday = models.BooleanField()
     periods = models.ManyToManyField(Period)
     stall_trainee = models.ForeignKey(StallTrainee)
+
+class Profile(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=555)
+    #TODO funcionalidades
+    #category = models.ForeignKey(DeviceCategory)
+
+class User(models.Model):
+    username = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
+    person = models.ForeignKey(Person)
+    profiles = models.ManyToManyField(Profile)
