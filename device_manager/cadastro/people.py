@@ -7,9 +7,11 @@ from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceFor
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
+from decorator import my_login_required
 
 people_list_header = [u'Nome', u'Nível', u'Papel', u'Instituição']
 
+@my_login_required
 def list_people(request):
     t = get_template('list.html')
     people_list = Person.objects.all().order_by('name')
@@ -19,6 +21,7 @@ def list_people(request):
     html = t.render(Context({'page_title': u'Pessoas', 'header_name_list': people_list_header, 'object_list': people_list, 'edit_name': 'people'}))
     return HttpResponse(html)
 
+@my_login_required
 def edit_people(request, id=None):
     context = {'page_title': u'Pessoas', 'edit_name': 'people', 'has_back': False}
     t = get_template('edit.html')

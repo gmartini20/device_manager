@@ -7,6 +7,7 @@ from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceFor
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
+from decorator import my_login_required
 import datetime
 
 period_list_header = [u'Períodos do dia', u'Dias da Semana']
@@ -18,6 +19,7 @@ translate_weekday = {
     'friday': 'Sexta',
 }
 
+@my_login_required
 def edit_trainees(request, id=None):
     context = {'page_title': u'Bolsistas', 'edit_name': 'trainee', 'list_title': u'Períodos', 'list_edit_name': 'period', 'header_name_list': period_list_header, 'has_back': True, 'back_page_name': u'stall'}
     id_stall = request.GET.get('parent_object_id', None)

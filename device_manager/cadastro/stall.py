@@ -8,9 +8,11 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from datetime import date
+from decorator import my_login_required
 
 trainee_list_header = [u'Nome', u'Hora Início', u'Hora Fim']
 
+@my_login_required
 def edit_stalls(request, id=None):
     context = {'page_title': u'Baias', 'edit_name': 'stall', 'list_title': u'Bolsistas', 'list_edit_name': 'trainee', 'header_name_list': trainee_list_header, 'has_back': True, 'back_page_name': u'room'}
     id_room = request.GET.get('parent_object_id', None)

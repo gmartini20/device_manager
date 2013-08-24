@@ -20,6 +20,10 @@ class CategoryModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
          return "%s" % (obj.name)
 
+class PersonModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+         return "%s" % (obj.name)
+
 class InstitutionModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
          return "%s" % (obj.name)
@@ -55,7 +59,7 @@ class DeviceCategoryForm(forms.Form):
 class DeviceForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     patrimony_number = forms.CharField(label=u"Número de patrimônio", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'50'}))
-    category = CategoryModelChoiceField(queryset=DeviceCategory.objects.all(), label=u'Categoria', required=True, error_messages=my_default_errors)
+    category = CategoryModelChoiceField(queryset=DeviceCategory.objects.all(), label=u'Categoria', required=True, error_messages=my_default_errors, widget=forms.Select(attrs={'class': 'form-control'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'class' :'wide form-control', 'maxlength': '555'}), label=u"Descrição", required=True, error_messages=my_default_errors)
 
 class TraineeForm(forms.Form):
@@ -80,3 +84,10 @@ class InstitutionForm(forms.Form):
     name = forms.CharField(label=u"Nome", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'50'}))
     country = forms.ChoiceField(label=u'País', widget=forms.Select(attrs={'class': 'form-control'}), required=True, error_messages=my_default_errors, choices=COUNTRY_CHOICES)
     observation = forms.CharField(widget=forms.Textarea(attrs={'class' :'wide form-control', 'maxlength': '555'}), label=u"Observação", required=True, error_messages=my_default_errors)
+
+class UserForm(forms.Form):
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    username = forms.CharField(label=u"Username", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'50'}))
+    person = PersonModelChoiceField(queryset=Person.objects.all(), label=u'Pessoa', required=True, error_messages=my_default_errors, widget=forms.Select(attrs={'class': 'form-control'}))
+    password = forms.CharField(label=u"Senha", required=True, error_messages=my_default_errors, widget=forms.PasswordInput(attrs={'class': 'form-control', 'maxlength':'50'}))
+    confirmed_password = forms.CharField(label=u"Confirme a Senha", required=True, error_messages=my_default_errors, widget=forms.PasswordInput(attrs={'class': 'form-control', 'maxlength':'50'}))

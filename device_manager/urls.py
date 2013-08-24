@@ -10,6 +10,7 @@ from device_manager.cadastro.period import edit_period
 from device_manager.cadastro.institution import list_institution, edit_institution
 from device_manager.cadastro.home import show_home
 from device_manager.cadastro.login import login
+from device_manager.cadastro.users import list_user, edit_user
 from device_manager.cadastro.reports import occupacy_report
 
 # Uncomment the next two lines to enable the admin:
@@ -44,6 +45,9 @@ urlpatterns = patterns('',
     url(r'^institution/edit/(?P<id>\d+)/$', edit_institution),
     url(r'^reports/occupacy_report/$', occupacy_report),
     url(r'^reports/occupacy_report/(?P<id>.+)/$', occupacy_report),
+    url(r'^user/list/$', list_user),
+    url(r'^user/edit/$', edit_user),
+    url(r'^user/edit/(?P<id>\d+)/$', edit_user),
     
     
     # Examples:

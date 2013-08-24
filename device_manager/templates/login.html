@@ -7,20 +7,27 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
      
     <!-- StyleSheet -->
-    <link rel="stylesheet" href="/resources/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap.min.css" media="screen" />
     <!-- JavaScript -->
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="/resources/bootstrap.js"></script>
+    <script type="text/javascript" src="/resources/bootstrap.min.js"></script>
+    <script src="/resources/login.js"></script>
+    <script src="/resources/security/cryptoHelpers.js"></script>
+    <script src="/resources/security/crypto.js"></script>
+    <script src="/resources/security/aes.js"></script>
     <style type="text/css">
       /* Override some defaults */
       html, body {
         background-color: #eee;
+        min-height: 100%;
       }
       body {
         padding-top: 40px; 
       }
       .container {
         width: 300px;
+        margin-left: 33%;
+        text-align: center;
       }
 
       /* The white background content wrapper */
@@ -38,6 +45,7 @@
 
       .login-form {
         margin-left: 65px;
+        text-align: center;
       }
     
       legend {
@@ -50,26 +58,58 @@
 </head>
 <body>
 <!-- Main Container -->
-  <div class="container">
-    <div class="content">
-      <div class="row">
-        <div class="login-form">
-          <h2>Login</h2>
-          <form action="">
-            <fieldset>
-              <div class="clearfix">
-                <input type="text" placeholder="Username">
-              </div>
-              <div class="clearfix">
-                <input type="password" placeholder="Password">
-              </div>
-              <button class="btn primary" type="submit">Sign in</button>
-            </fieldset>
-          </form>
-        </div>
-      </div>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+ 
+            </a>
+ 
+    <a href="#" class="brand">Gerenciador de Dispositivos</a>
+ 
+    <div class="nav-collapse collapse pull-right">
+        <ul class="nav">
+        </ul>
     </div>
-  </div> <!-- /container -->
+ 
+    </div>
+  </div>
+</div>
+
+<section>
+<div class="container login">
+    <div class="row ">
+        <div class="center span4 well">
+            <legend>Please Sign In</legend>
+            <form method="POST" action="/login/" accept-charset="UTF-8">
+            <div class="control-group">
+                <label class="control-label">Usuário</label>
+                <div class="controls first-focus">
+                    <input type="text" id="username" class="span4" name="username" placeholder="Username" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Senha</label>
+                <div class="controls">
+                    <input type="password" id="password" class="span4" name="password" placeholder="Password" />
+                </div>
+            </div>
+            <div id='error-message' class="alert alert-danger" style="display:none; margin-top:10px;">
+                <span>Usuário ou senha errados</span>
+            </div>
+            <div class="form-actions" style='margin-top: 20px;'>
+                <button type='submit' name="submit" class="btn btn-primary btn-block">Sign in</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</section>
+
 <!-- Main Container Ends -->
 </body
 </html>

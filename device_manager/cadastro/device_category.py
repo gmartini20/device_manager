@@ -7,9 +7,11 @@ from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceFor
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
+from decorator import my_login_required
 
 category_list_header = [u'Nome']
 
+@my_login_required
 def list_device_category(request):
     t = get_template('list.html')
     category_list = DeviceCategory.objects.all().order_by('name')
@@ -19,12 +21,12 @@ def list_device_category(request):
     html = t.render(Context({'page_title': u'Categorias de Dispositivos', 'header_name_list': category_list_header, 'object_list': category_list, 'edit_name': 'categorydevice', 'can_remove': True}))
     return HttpResponse(html)
 
+@my_login_required
 def remove_category_device(request, id):
-    import pdb
-    pdb.set_trace()
     DeviceCategory.objects.get(id=id).delete()
     return list_device_category(request)
 
+@my_login_required
 def edit_device_category(request, id=None):
     context = {'page_title': u'Categoria de Dispositivos', 'edit_name': 'categorydevice', 'has_back': False}
     t = get_template('edit.html')

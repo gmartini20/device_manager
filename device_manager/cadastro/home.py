@@ -7,7 +7,9 @@ from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceFor
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
+from decorator import my_login_required
 
+@my_login_required
 def show_home(request):
     t = get_template('home.html')
     messages = []

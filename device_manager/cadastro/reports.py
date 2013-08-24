@@ -8,12 +8,14 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from reports_model import RoomsOccupacyReport
+from decorator import my_login_required
 
 occupacy_report_query = Stall.objects.select_related() 
 occupacy_report_list_header = [u'Número da Sala', u'Professor', u'Quantidade de baias do Professor', u'Total de Baias']
 filter_list = {u'room_number' :'obj.room.number', u'professor_name': 'obj.leader.name'}
 screen_filter_list = [{'Nome': u'Número da Sala', 'Valor' :'room_number'}, {'Nome': u'Nome do professor', 'Valor': 'professor_name'}]
 
+@my_login_required
 def occupacy_report(request, id=None):
     t = get_template('report.html')
     obj_list = occupacy_report_query.select_related().all()

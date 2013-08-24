@@ -12,8 +12,8 @@ def login(request, id=None):
     t = get_template('login.html')
     device = None
     if request.method == 'POST':
-        if request['username'] and request['password']:
-            user = _check_login(request['username'], request['password'])
+        if request.POST['username'] and request.POST['password']:
+            user = _check_login(request.POST['username'], request.POST['password'])
             if user:
                 response = render_to_response('login.html', context, context_instance=RequestContext(request))
                 response.set_cookie('logged_user', user.username)
@@ -22,14 +22,17 @@ def login(request, id=None):
                 #redirect_to_somewhere
             else:
                 messages.error(request, u'Login ou senha inválidos')
+                return HttpResponse(status=400)
         else:
             messages.error(request, u'Login e senha são campos obrigatórios')
-    return render_to_response('login.html', context, context_instance=RequestContext(request))
+            return HttpResponse(status=400)
+    response = render_to_response('login.html', context, context_instance=RequestContext(request))
+    return response
 
-def _check_login(cd):
-    user = User.objects.get(username=cd['username'])
+def _check_login(username, password):
+    user = User.objects.get(username=username)
     if not user:
         return None
-    elif user.password == cd['password']:
+    elif user.password == password:
         return user
     return None
