@@ -12,6 +12,7 @@ from device_manager.cadastro.home import show_home
 from device_manager.cadastro.login import login
 from device_manager.cadastro.users import list_user, edit_user
 from device_manager.cadastro.reports import occupacy_report
+from device_manager.cadastro.profile import list_profile, edit_profile
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -48,6 +49,9 @@ urlpatterns = patterns('',
     url(r'^user/list/$', list_user),
     url(r'^user/edit/$', edit_user),
     url(r'^user/edit/(?P<id>\d+)/$', edit_user),
+    url(r'^profile/list/$', list_profile),
+    url(r'^profile/edit/$', edit_profile),
+    url(r'^profile/edit/(?P<id>\d+)/$', edit_profile),
     
     
     # Examples:

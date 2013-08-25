@@ -18,13 +18,9 @@ def login(request, id=None):
                 response = render_to_response('login.html', context, context_instance=RequestContext(request))
                 response.set_cookie('logged_user', user.username)
                 return response
-                #TODO
-                #redirect_to_somewhere
             else:
-                messages.error(request, u'Login ou senha inválidos')
                 return HttpResponse(status=400)
         else:
-            messages.error(request, u'Login e senha são campos obrigatórios')
             return HttpResponse(status=400)
     response = render_to_response('login.html', context, context_instance=RequestContext(request))
     return response

@@ -51,14 +51,19 @@ class StallTraineePeriod(models.Model):
     periods = models.ManyToManyField(Period)
     stall_trainee = models.ForeignKey(StallTrainee)
 
+class Feature(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=555)
+    uri = models.CharField(max_length=50)
+
 class Profile(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=555)
     #TODO funcionalidades
-    #category = models.ForeignKey(DeviceCategory)
+    features = models.ManyToManyField(Feature)
 
 class User(models.Model):
     username = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
     person = models.ForeignKey(Person)
-    profiles = models.ManyToManyField(Profile)
+    profile = models.ForeignKey(Profile, null=True)

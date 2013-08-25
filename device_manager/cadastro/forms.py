@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 from django import forms
-from models import Person, Device, DeviceCategory, Period, Institution
+from models import Person, Device, DeviceCategory, Period, Institution, Feature
 from country_options import *
 
 my_default_errors = {
@@ -15,6 +15,10 @@ class PersonModelChoiceField(forms.ModelChoiceField):
 class DeviceModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
          return ("%s - %s" % (obj.patrimony_number, obj.category.name))
+
+class FeatureModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+         return ("%s" % (obj.name))
 
 class CategoryModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
@@ -91,3 +95,9 @@ class UserForm(forms.Form):
     person = PersonModelChoiceField(queryset=Person.objects.all(), label=u'Pessoa', required=True, error_messages=my_default_errors, widget=forms.Select(attrs={'class': 'form-control'}))
     password = forms.CharField(label=u"Senha", required=True, error_messages=my_default_errors, widget=forms.PasswordInput(attrs={'class': 'form-control', 'maxlength':'50'}))
     confirmed_password = forms.CharField(label=u"Confirme a Senha", required=True, error_messages=my_default_errors, widget=forms.PasswordInput(attrs={'class': 'form-control', 'maxlength':'50'}))
+
+class ProfileForm(forms.Form):
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    name = forms.CharField(label=u"Nome", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'50'}))
+    description = forms.CharField(label=u"Descrição", required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'200'}))
+    features = FeatureModelMultipleChoiceField(queryset=Feature.objects.all(), label=u'Funcionalidades', required=True, error_messages=my_default_errors)
