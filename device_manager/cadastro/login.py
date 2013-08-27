@@ -32,3 +32,8 @@ def _check_login(username, password):
     elif user.password == password:
         return user
     return None
+
+def logout(request):
+    response = render_to_response('login.html', {}, context_instance=RequestContext(request))
+    response.delete_cookie('logged_user')
+    return response

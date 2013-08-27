@@ -51,6 +51,7 @@ def _save_profile(cd):
     profile.id = cd['id'] or None
     profile.description = cd['description']
     profile.name = cd['name']
+    profile.save()
     profile.features = cd['features']
     profile.save()
     return profile

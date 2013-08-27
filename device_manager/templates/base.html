@@ -27,9 +27,9 @@
     </div>
     <div id='page'>
         <ul id='menu-bar'>
-            <li><a href="/home/"><span id='active'>Home</span></a>
-            <li><a href="/room/list/"><span id='active'>Salas</span></a>
-            <li><a href="/people/list/"><span id='active'>Pessoas</span></a>
+            <li><a href="/home/"><span id='active'>Home</span></a></li>
+            <li><a href="/room/list/"><span id='active'>Salas</span></a></li>
+            <li><a href="/people/list/"><span id='active'>Pessoas</span></a></li>
             <li>
                 <a href="#">Dispositivos</a>
                 <ul style='margin-top: -5px;'>
@@ -41,9 +41,20 @@
                     </li>
                 </ul>
             </li>
-            <li><a href="/institution/list/"><span id='active'>Instituições</span></a>
-            <li><a href="/reports/occupacy_report/"><span id='active'>Relatório</span></a>
-            <li><a href="/user/list/"><span id='active'>Gerenciar Usuários</span></a>
+            <li><a href="/institution/list/"><span id='active'>Instituições</span></a></li>
+            <li><a href="/reports/occupacy_report/"><span id='active'>Relatório</span></a></li>
+            <li>
+                <a href="#">Gerenciar</a>
+                <ul style='margin-top: -5px;'>
+                    <li>
+                        <a href="/user/list/"><span id='active'>Usuários</span></a>
+                    </li>
+                    <li>
+                        <a href="/profile/list/"><span id='active'>Perfis</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li style="float: right"><a href="/logout/"><span id='active'>Sair</span></a></li>
         </ul>
         <div id='content'>
         {% block content %}{% endblock %}

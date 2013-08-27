@@ -12,7 +12,7 @@ function(){
         $time_element.timepicker();
     }
 
-    if ($("input[name='password']")){
+    if ($("input[name='password']") && $("input[name='password']").length > 0){
         $("input[type=submit]").click(function(event){
             event.preventDefault();
             event.stopPropagation();
@@ -26,8 +26,10 @@ function(){
                 var url = "http://localhost:8080" + $($('form')[0]).attr('action');
                 var crypted_pass = criptografar(pass);
                 var username = $("input[name='username']").val();
+                var id = $("input[name='id']").val();
                 var person = $("select[name='person']").val();
-                var data = {"username": username, "password": crypted_pass, "confirmed_password": crypted_pass, "person": person};
+                var profile = $("select[name='profile']").val();
+                var data = {"id": id, "username": username, "password": crypted_pass, "confirmed_password": crypted_pass, "person": person, "profile": profile};
                 console.log("pass crypted ", crypted_pass);
                 $.ajax({
                   type: "POST",

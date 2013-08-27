@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import Context, RequestContext
-from models import User, Person
+from models import User, Person, Profile
 from forms import UserForm
 from django.db.models import Q
 from django.contrib import messages
@@ -38,6 +38,7 @@ def edit_user(request, id=None):
         user = User.objects.get(id=id)
         initial = user.__dict__
         initial['person'] = user.person.id
+        initial['profile'] = user.profile and user.profile.id or ""
         form = UserForm(initial=initial)
 
     context = _set_user_form_context(user, form, context)
@@ -48,12 +49,8 @@ def _save_user(cd):
     user.id = cd.POST.has_key('id') and cd.POST['id'] or None
     user.username = cd.POST['username']
     user.password = cd.POST['password']
-    print "*"*100
-    print cd.POST['person']
-    print cd.POST.has_key('person')
-    print Person.objects.get(id=4)
-    print Person.objects.get(id=cd.POST['person'])
     user.person = cd.POST.has_key('person') and Person.objects.get(id=cd.POST['person']) or None
+    user.profile = cd.POST.has_key('profile') and Profile.objects.get(id=cd.POST['profile']) or None
     user.save()
     return user
 

@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 from django import forms
-from models import Person, Device, DeviceCategory, Period, Institution, Feature
+from models import Person, Device, DeviceCategory, Period, Institution, Feature, Profile
 from country_options import *
 
 my_default_errors = {
@@ -24,10 +24,6 @@ class CategoryModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
          return "%s" % (obj.name)
 
-class PersonModelChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj):
-         return "%s" % (obj.name)
-
 class InstitutionModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
          return "%s" % (obj.name)
@@ -35,6 +31,10 @@ class InstitutionModelChoiceField(forms.ModelChoiceField):
 class PeriodModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
          return ("%s" % obj.name)
+
+class ProfileModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+         return obj.name
 
 class RoomForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -95,6 +95,7 @@ class UserForm(forms.Form):
     person = PersonModelChoiceField(queryset=Person.objects.all(), label=u'Pessoa', required=True, error_messages=my_default_errors, widget=forms.Select(attrs={'class': 'form-control'}))
     password = forms.CharField(label=u"Senha", required=True, error_messages=my_default_errors, widget=forms.PasswordInput(attrs={'class': 'form-control', 'maxlength':'50'}))
     confirmed_password = forms.CharField(label=u"Confirme a Senha", required=True, error_messages=my_default_errors, widget=forms.PasswordInput(attrs={'class': 'form-control', 'maxlength':'50'}))
+    profile = ProfileModelChoiceField(queryset=Profile.objects.all(), label=u'Perfil', required=False, error_messages=my_default_errors, widget=forms.Select(attrs={'class': 'form-control'}))
 
 class ProfileForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)

@@ -9,7 +9,7 @@ from device_manager.cadastro.device import list_device, edit_device, remove_devi
 from device_manager.cadastro.period import edit_period
 from device_manager.cadastro.institution import list_institution, edit_institution
 from device_manager.cadastro.home import show_home
-from device_manager.cadastro.login import login
+from device_manager.cadastro.login import login, logout
 from device_manager.cadastro.users import list_user, edit_user
 from device_manager.cadastro.reports import occupacy_report
 from device_manager.cadastro.profile import list_profile, edit_profile
@@ -20,6 +20,7 @@ from device_manager.cadastro.profile import list_profile, edit_profile
 
 urlpatterns = patterns('',
     url(r'^login/$', login),
+    url(r'^logout/$', logout),
     url(r'^home/$', show_home),
     url(r'^room/list/$', list_rooms),
     url(r'^room/edit/$', edit_rooms),
