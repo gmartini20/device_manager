@@ -18,7 +18,7 @@ def my_login_required(function):
                     for feature in user.profile.features.all():
                         if path.find(feature.uri) != -1:
                             return function(request, *args, **kw)
-                return HttpResponseRedirect('/forbiden/')
+                return HttpResponseRedirect('/forbidden/')
     return wrapper
 
 #ef test_access_permission(function):

@@ -13,6 +13,7 @@ from device_manager.cadastro.login import login, logout
 from device_manager.cadastro.users import list_user, edit_user
 from device_manager.cadastro.reports import occupacy_report
 from device_manager.cadastro.profile import list_profile, edit_profile
+from device_manager.cadastro.forbidden import forbidden
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -21,6 +22,7 @@ from device_manager.cadastro.profile import list_profile, edit_profile
 urlpatterns = patterns('',
     url(r'^login/$', login),
     url(r'^logout/$', logout),
+    url(r'^forbidden/$', forbidden),
     url(r'^home/$', show_home),
     url(r'^room/list/$', list_rooms),
     url(r'^room/edit/$', edit_rooms),
