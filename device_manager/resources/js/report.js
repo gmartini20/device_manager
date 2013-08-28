@@ -62,23 +62,37 @@ function deleteFilter(e){
     e.parentNode.removeChild(e);
     $("#acumulatedFilter").val(new_filter);
     var splited_urls = document.URL.split(text);
-    var splited_url = splited_urls[0] + splited_urls[1];
+    if(splited_urls[1])
+        var splited_url = splited_urls[0] + splited_urls[1];
+    else
+        var splited_url = splited_urls[0];
     splited_url = splited_url.split('&');
     var url = "";
+    var is_first = true;
     for (var i = 0; i < splited_url.length; i++){
-        if (i == 0 && (splited_url[i])){
+        if (i == 0 && (splited_url[i] && splited_url[i] != "")){
             url = splited_url[i];
+            if(splited_url[i].indexOf('=') != -1)
+                is_first = false;
         }
         else{
-            console.log(splited_url[i])
-            if (splited_url[i] && splited_url.indexOf('=') != -1){
-                console.log('novo_filtro', splited_url[i]);
-                url += '&' + splited_url[i];
+            if (splited_url[i] && splited_url[i].indexOf('=') != -1){
+                if (is_first){
+                    url += splited_url[i];
+                    is_first = false;
+                }
+                else{
+                    url += '&' + splited_url[i];
+                }
             }
         }
     }
-    url += '/'
-    console.log('urlk', url);
+    if (url.indexOf('/', url.length -1) === -1){
+        url += '/'
+    }
+    else if(url.indexOf('//', url.length -2) !== -1){
+        url = url.substring(0, url.length - 1);
+    }
     window.location.href = url;
 };
 
