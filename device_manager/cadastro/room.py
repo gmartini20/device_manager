@@ -7,8 +7,8 @@ from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceFor
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
-from django.contrib.auth.decorators import login_required, user_passes_test
 from decorator import my_login_required
+from users import get_user_features
 
 
 room_list_header = [u'Número', u'Descrição', u'Quantidade de baias']
@@ -21,12 +21,12 @@ def list_rooms(request):
     values_dict = {}
     for room in room_list:
         room.list_values = [room.number, room.description, len(room.stall_set.all())]
-    html = t.render(Context({'page_title': u'Salas', 'header_name_list': room_list_header, 'object_list': room_list, 'edit_name': 'room'}))
+    html = t.render(Context({'page_title': u'Salas', 'header_name_list': room_list_header, 'object_list': room_list, 'edit_name': 'room', 'features':get_user_features(request)}))
     return HttpResponse(html)
 
 @my_login_required
 def edit_rooms(request, id=None):
-    context = {'page_title': u'Salas', 'edit_name': 'room', 'list_title': u'Baias', 'list_edit_name': 'stall', 'header_name_list': stall_list_header, 'has_back': False}
+    context = {'page_title': u'Salas', 'edit_name': 'room', 'list_title': u'Baias', 'list_edit_name': 'stall', 'header_name_list': stall_list_header, 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')
     room = None
     form = RoomForm()

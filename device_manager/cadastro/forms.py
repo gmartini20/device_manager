@@ -53,7 +53,7 @@ class PersonForm(forms.Form):
     name = forms.CharField(label=u"Nome", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'90'}))
     level = forms.ChoiceField(label=u"Nível", widget=forms.Select(attrs={'class': 'form-control'}), choices=[('', u'--------'), (u'Graduação', u'Graduação'), (u'Mestrado', u'Mestrado'), (u'Doutorado', u'Doutorado'), (u'Doutorado Sanduíche', u'Doutorado Sanduíche'), (u'Pós-Doutorado', u'Pós-Doutorado')], required=True, error_messages=my_default_errors)
     role = forms.ChoiceField(label=u"Papel", widget=forms.Select(attrs={'class': 'form-control'}), choices=[('', u'--------'), (u'Bolsista', u'Bolsista'), (u'Orientador', u'Orientador'), (u'Visitante', u'Visitante')], required=True, error_messages=my_default_errors)
-    institution = InstitutionModelChoiceField(queryset=Institution.objects.all(), label=u'Instituição', required=True, error_messages=my_default_errors)
+    institution = InstitutionModelChoiceField(queryset=Institution.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), label=u'Instituição', required=True, error_messages=my_default_errors)
     observation = forms.CharField(widget=forms.Textarea(attrs={'class' :'wide form-control', 'maxlength': '555'}), label=u"Observação", required=True, error_messages=my_default_errors)
 
 class DeviceCategoryForm(forms.Form):

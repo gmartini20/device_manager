@@ -9,10 +9,11 @@ from django.contrib import messages
 from django.shortcuts import render_to_response
 from django import forms
 from decorator import my_login_required
+from users import get_user_features
 
 @my_login_required
 def edit_period(request, id=None):
-    context = {'page_title': u'Períodos', 'edit_name': 'period', 'has_back': True, 'back_page_name': u'trainee'}
+    context = {'page_title': u'Períodos', 'edit_name': 'period', 'has_back': True, 'back_page_name': u'trainee', 'features':get_user_features(request)}
     id_trainee = request.GET.get('parent_object_id', None)
     t = get_template('edit.html')
     trainee = None

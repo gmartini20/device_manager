@@ -3,8 +3,6 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/resources/menu.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="/resources/base.css" media="screen" />
-    <!--<link rel="stylesheet" type="text/css" href="/resources/jquery.ui.datepicker.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/resources/jquery.ui.theme.css" media="screen" />-->
     <link rel="stylesheet" type="text/css" href="/resources/bootstrap.min.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="/resources/bootstrap-select.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="/resources/datepicker.css" media="screen" />
@@ -27,33 +25,55 @@
     </div>
     <div id='page'>
         <ul id='menu-bar'>
+            {% if features.home %}
             <li><a href="/home/"><span id='active'>Home</span></a></li>
+            {% endif %}
+            {% if features.room %}
             <li><a href="/room/list/"><span id='active'>Salas</span></a></li>
+            {% endif %}
+            {% if features.people %}
             <li><a href="/people/list/"><span id='active'>Pessoas</span></a></li>
+            {% endif %}
+            {% if features.device or features.categorydevice %}
             <li>
                 <a href="#">Dispositivos</a>
                 <ul style='margin-top: -5px;'>
+                    {% if features.device %}
                     <li>
                         <a href="/device/list/"><span id='active'>Dispositivos</span></a>
                     </li>
+                    {% endif %}
+                    {% if features.categorydevice %}
                     <li>
                         <a href="/categorydevice/list/"><span id='active'>Categoria de Dispositivo</span></a>
                     </li>
+                    {% endif %}
                 </ul>
             </li>
+            {% endif %}
+            {% if features.institution %}
             <li><a href="/institution/list/"><span id='active'>Instituições</span></a></li>
+            {% endif %}
+            {% if features.occupacy_report %}
             <li><a href="/reports/occupacy_report/"><span id='active'>Relatório</span></a></li>
+            {% endif %}
+            {% if features.user or features.profile %}
             <li>
                 <a href="#">Gerenciar</a>
                 <ul style='margin-top: -5px;'>
+                    {% if features.user %}
                     <li>
                         <a href="/user/list/"><span id='active'>Usuários</span></a>
                     </li>
+                    {% endif %}
+                    {% if features.profile %}
                     <li>
                         <a href="/profile/list/"><span id='active'>Perfis</span></a>
                     </li>
+                    {% endif %}
                 </ul>
             </li>
+            {% endif %}
             <li style="float: right"><a href="/logout/"><span id='active'>Sair</span></a></li>
         </ul>
         <div id='content'>

@@ -8,5 +8,6 @@ insert into cadastro_feature (name, description, uri) VALUES ('device', 'Listar,
 insert into cadastro_feature (name, description, uri) VALUES ('categorydevice', 'Listar, criar e editar categorias de dispositivos', 'categorydevice');
 insert into cadastro_feature (name, description, uri) VALUES ('institution', 'Listar, criar e editar instituições', 'institution');
 insert into cadastro_feature (name, description, uri) VALUES ('user', 'Listar, criar e editar usuários', 'user');
+insert into cadastro_feature (name, description, uri) VALUES ('profile', 'Listar, criar e editar perfis', 'profile');
 insert into cadastro_feature (name, description, uri) VALUES ('report', 'Visualizar relatórios', 'report');
 insert into cadastro_feature (name, description, uri) VALUES ('occupacy_report', 'Visualizar relatório por ocupação', 'occupacy_report');

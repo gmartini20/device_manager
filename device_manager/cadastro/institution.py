@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from decorator import my_login_required
+from users import get_user_features
 
 institution_list_header = [u'Nome', u'País', u'Observação']
 
@@ -18,12 +19,12 @@ def list_institution(request):
     values_dict = {}
     for institution in institution_list:
         institution.list_values = [institution.name, institution.country, institution.observation]
-    html = t.render(Context({'page_title': u'Instituições', 'header_name_list': institution_list_header, 'object_list': institution_list, 'edit_name': 'institution'}))
+    html = t.render(Context({'page_title': u'Instituições', 'header_name_list': institution_list_header, 'object_list': institution_list, 'edit_name': 'institution', 'features':get_user_features(request)}))
     return HttpResponse(html)
 
 @my_login_required
 def edit_institution(request, id=None):
-    context = {'page_title': u'Instituição', 'edit_name': 'institution', 'has_back': False}
+    context = {'page_title': u'Instituição', 'edit_name': 'institution', 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')
     institution = None
     form = InstitutionForm()

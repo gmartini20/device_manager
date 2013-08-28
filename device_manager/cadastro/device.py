@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from decorator import my_login_required
+from users import get_user_features
 
 device_list_header = [u'Descrição', u'Número de Patrimônio', u'Categoria']
 
@@ -18,7 +19,7 @@ def list_device(request):
     values_dict = {}
     for device in device_list:
         device.list_values = [device.description, device.patrimony_number, device.category.name]
-    html = t.render(Context({'page_title': u'Dispositivos', 'header_name_list': device_list_header, 'object_list': device_list, 'edit_name': 'device', 'can_remove': True}))
+    html = t.render(Context({'page_title': u'Dispositivos', 'header_name_list': device_list_header, 'object_list': device_list, 'edit_name': 'device', 'can_remove': True, 'features':get_user_features(request)}))
     return HttpResponse(html)
 
 @my_login_required
@@ -28,7 +29,7 @@ def remove_device(request, id):
 
 @my_login_required
 def edit_device(request, id=None):
-    context = {'page_title': u'Dispositivos', 'edit_name': 'device', 'has_back': False}
+    context = {'page_title': u'Dispositivos', 'edit_name': 'device', 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')
     device = None
     form = DeviceForm()

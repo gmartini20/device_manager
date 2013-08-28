@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.shortcuts import render_to_response
 from reports_model import RoomsOccupacyReport
 from decorator import my_login_required
+from users import get_user_features
 
 occupacy_report_query = Stall.objects.select_related() 
 occupacy_report_list_header = [u'Número da Sala', u'Professor', u'Quantidade de baias do Professor', u'Total de Baias']
@@ -35,5 +36,5 @@ def occupacy_report(request, id=None):
     for obj in obj_list:
         #TODO setar valor de baias por professor
         obj.list_values = [obj.room.number, obj.leader.name, 1, len(obj.room.stall_set.all())]
-    html = t.render(Context({'page_title': u'Relatório por ocupação', 'header_name_list': occupacy_report_list_header, 'object_list': obj_list, 'filters': screen_filter_list, 'acumulated_value': id and id or ""}))
+    html = t.render(Context({'page_title': u'Relatório por ocupação', 'header_name_list': occupacy_report_list_header, 'object_list': obj_list, 'filters': screen_filter_list, 'acumulated_value': id and id or "", 'features':get_user_features(request)}))
     return HttpResponse(html)

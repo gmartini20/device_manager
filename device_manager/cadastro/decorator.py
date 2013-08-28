@@ -2,6 +2,7 @@
 from models import User
 from django.http import HttpResponseRedirect, HttpResponse
 
+
 def my_login_required(function):
     def wrapper(request, *args, **kw):
         username=request.COOKIES.get("logged_user");
@@ -13,9 +14,10 @@ def my_login_required(function):
                 return HttpResponseRedirect('/login/')
             else:
                 path = request.path
-                for feature in user.profile.features.all():
-                    if path.find(feature.uri) != -1:
-                        return function(request, *args, **kw)
+                if user.profile:
+                    for feature in user.profile.features.all():
+                        if path.find(feature.uri) != -1:
+                            return function(request, *args, **kw)
                 return HttpResponseRedirect('/forbiden/')
     return wrapper
 

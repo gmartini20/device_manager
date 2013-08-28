@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.shortcuts import render_to_response
 from decorator import my_login_required
 import datetime
+from users import get_user_features
 
 period_list_header = [u'Períodos do dia', u'Dias da Semana']
 translate_weekday = {
@@ -21,7 +22,7 @@ translate_weekday = {
 
 @my_login_required
 def edit_trainees(request, id=None):
-    context = {'page_title': u'Bolsistas', 'edit_name': 'trainee', 'list_title': u'Períodos', 'list_edit_name': 'period', 'header_name_list': period_list_header, 'has_back': True, 'back_page_name': u'stall'}
+    context = {'page_title': u'Bolsistas', 'edit_name': 'trainee', 'list_title': u'Períodos', 'list_edit_name': 'period', 'header_name_list': period_list_header, 'has_back': True, 'back_page_name': u'stall', 'features':get_user_features(request)}
     id_stall = request.GET.get('parent_object_id', None)
     stall = None
     trainee = StallTrainee()

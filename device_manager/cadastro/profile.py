@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from decorator import my_login_required
+from users import get_user_features
 
 profile_list_header = [u'Nome', u'Descrição']
 
@@ -18,12 +19,12 @@ def list_profile(request):
     values_dict = {}
     for profile in profile_list:
         profile.list_values = [profile.name, profile.description]
-    html = t.render(Context({'page_title': u'Perfis', 'header_name_list': profile_list_header, 'object_list': profile_list, 'edit_name': 'profile', 'can_remove': False}))
+    html = t.render(Context({'page_title': u'Perfis', 'header_name_list': profile_list_header, 'object_list': profile_list, 'edit_name': 'profile', 'can_remove': False, 'features':get_user_features(request)}))
     return HttpResponse(html)
 
 @my_login_required
 def edit_profile(request, id=None):
-    context = {'page_title': u'Perfis', 'edit_name': 'profile', 'has_back': True}
+    context = {'page_title': u'Perfis', 'edit_name': 'profile', 'has_back': True, 'features':get_user_features(request)}
     t = get_template('edit.html')
     profile = None
     form = ProfileForm()
