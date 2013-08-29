@@ -24,7 +24,7 @@ def list_profile(request):
 
 @my_login_required
 def edit_profile(request, id=None):
-    context = {'page_title': u'Perfis', 'edit_name': 'profile', 'has_back': True, 'features':get_user_features(request)}
+    context = {'page_title': u'Perfis', 'edit_name': 'profile', 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')
     profile = None
     form = ProfileForm()

@@ -32,7 +32,7 @@ def list_user(request):
 
 @my_login_required
 def edit_user(request, id=None):
-    context = {'page_title': u'Usuários', 'edit_name': 'user', 'has_back': True, 'features':get_user_features(request)}
+    context = {'page_title': u'Usuários', 'edit_name': 'user', 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')
     user = None
     form = UserForm()
