@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 from django import forms
 from models import Person, Device, DeviceCategory, Period, Institution, Feature, Profile
+from django.db.models import Q
 from country_options import *
 
 my_default_errors = {
@@ -52,8 +53,8 @@ class StallForm(forms.Form):
 class PersonForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     name = forms.CharField(label=u"Nome", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'90'}))
-    level = forms.ChoiceField(label=u"Nível", widget=forms.Select(attrs={'class': 'form-control'}), choices=[('', u'--------'), (u'Graduação', u'Graduação'), (u'Mestrado', u'Mestrado'), (u'Doutorado', u'Doutorado'), (u'Doutorado Sanduíche', u'Doutorado Sanduíche'), (u'Pós-Doutorado', u'Pós-Doutorado')], required=True, error_messages=my_default_errors)
-    role = forms.ChoiceField(label=u"Papel", widget=forms.Select(attrs={'class': 'form-control'}), choices=[('', u'--------'), (u'Bolsista', u'Bolsista'), (u'Orientador', u'Orientador'), (u'Visitante', u'Visitante')], required=True, error_messages=my_default_errors)
+    level = forms.ChoiceField(label=u"Nível", widget=forms.Select(attrs={'class': 'form-control'}), choices=[('', u'--------'), (u'Graduação', u'Graduação'), (u'Especial', u'Especial'), (u'Mestrado', u'Mestrado'), (u'Doutorado', u'Doutorado'), (u'Doutorado Sanduíche', u'Doutorado Sanduíche'), (u'Pós-Doutorado', u'Pós-Doutorado')], required=True, error_messages=my_default_errors)
+    role = forms.ChoiceField(label=u"Papel", widget=forms.Select(attrs={'class': 'form-control'}), choices=[('', u'--------'), (u'Bolsista', u'Bolsista'), (u'Orientador', u'Orientador'), (u'Visitante', u'Visitante'), (u'Temporário', u'Temporário')], required=True, error_messages=my_default_errors)
     institution = InstitutionModelChoiceField(queryset=Institution.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), label=u'Instituição', required=True, error_messages=my_default_errors)
     observation = forms.CharField(widget=forms.Textarea(attrs={'class' :'wide form-control', 'maxlength': '555'}), label=u"Observação", required=True, error_messages=my_default_errors)
 
@@ -70,7 +71,7 @@ class DeviceForm(forms.Form):
 class TraineeForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     stall = forms.CharField(widget=forms.HiddenInput())
-    trainee = PersonModelChoiceField(widget=forms.widgets.Select(attrs={'class': 'wide form-control'}), queryset=Person.objects.filter(role=u'Bolsista'), label=u'Bolsista', required=True, error_messages=my_default_errors)
+    trainee = PersonModelChoiceField(widget=forms.widgets.Select(attrs={'class': 'wide form-control'}), queryset=Person.objects.all(), label=u'Bolsista', required=True, error_messages=my_default_errors)
     start_period = forms.DateField(label=u"Data de Início", widget=forms.widgets.DateInput(attrs={'class': 'datepicker form-control'}), input_formats=['%d/%m/%Y'], required=True, error_messages=my_default_errors)
     finish_period = forms.DateField(label=u"Data de Fim", widget=forms.widgets.DateInput(attrs={'class': 'datepicker form-control'}), input_formats=['%d/%m/%Y'], required=True, error_messages=my_default_errors)
 

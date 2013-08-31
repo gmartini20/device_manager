@@ -57,7 +57,7 @@ def edit_trainees(request, id=None):
         context['aux_fields'] = form_period.as_ul()
         context['has_auxiliar_form'] = True
         context['fields'] = form.as_ul()
-    form.fields['trainee'].queryset = Person.objects.filter(role='Bolsista')
+    form.fields['trainee'].queryset = Person.objects.exclude(role='Orientador')
     context = _set_period_form_context(trainee, form, context)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
