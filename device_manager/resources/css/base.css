@@ -96,10 +96,8 @@ body {
 #content{
     float: left;
     height: 100%;
-    width: 98%;
-    border: 1px solid #D3D3D3;
-    margin: 20px 1% 0 1%;
     min-height: 380px;
+    width: 100%;
 }
 
 #content table{
