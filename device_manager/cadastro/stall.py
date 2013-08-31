@@ -52,6 +52,7 @@ def _save_stall(cd):
     stall = Stall()
     stall.id = cd['id'] or None
     stall.obs = cd['obs']
+    stall.name = cd['name']
     stall.leader = cd['leader']
     stall.room = Room.objects.get(id = cd['room'])
     stall.save()

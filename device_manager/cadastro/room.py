@@ -12,7 +12,7 @@ from users import get_user_features
 
 
 room_list_header = [u'Número', u'Descrição', u'Quantidade de baias']
-stall_list_header = [u'Computador', u'Professor Responsável', u'Bolsistas', u'Observação']
+stall_list_header = [u'Localização', u'Computador', u'Professor Responsável', u'Bolsistas', u'Observação']
 
 @my_login_required
 def list_rooms(request):
@@ -77,6 +77,6 @@ def _get_stall_list(stall_list):
         device_name = ""
         if len(stall.devices.all()):
             device_name = stall.devices.all()[0].patrimony_number
-        stall.list_values = [device_name, stall.leader.name, trainee_names, stall.obs]
+        stall.list_values = [stall.name, device_name, stall.leader.name, trainee_names, stall.obs]
         new_list.append(stall)
     return new_list

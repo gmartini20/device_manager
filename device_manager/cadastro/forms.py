@@ -44,6 +44,7 @@ class RoomForm(forms.Form):
 class StallForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     room = forms.CharField(widget=forms.HiddenInput())
+    name = forms.CharField(label=u"Identificador de localização", required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'200'}))
     obs = forms.CharField(label=u"Observação", required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'200'}))
     leader = PersonModelChoiceField(queryset=Person.objects.filter(role=u'Orientador'), widget=forms.Select(attrs={'class': 'form-control'}), label=u'Orientador', required=True, error_messages=my_default_errors)
     device = DeviceModelMultipleChoiceField(queryset=Device.objects.all(), label=u'Dispositivo', required=True, error_messages=my_default_errors)

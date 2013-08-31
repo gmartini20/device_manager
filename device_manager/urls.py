@@ -11,7 +11,7 @@ from device_manager.cadastro.institution import list_institution, edit_instituti
 from device_manager.cadastro.home import show_home
 from device_manager.cadastro.login import login, logout
 from device_manager.cadastro.users import list_user, edit_user
-from device_manager.cadastro.reports import occupacy_report
+from device_manager.cadastro.reports import occupacy_report,trainee_report
 from device_manager.cadastro.profile import list_profile, edit_profile
 from device_manager.cadastro.forbidden import forbidden
 
@@ -49,6 +49,8 @@ urlpatterns = patterns('',
     url(r'^institution/edit/(?P<id>\d+)/$', edit_institution),
     url(r'^reports/occupacy_report/$', occupacy_report),
     url(r'^reports/occupacy_report/(?P<id>.+)/$', occupacy_report),
+    url(r'^reports/trainee_report/$', trainee_report),
+    url(r'^reports/trainee_report/(?P<id>.+)/$', trainee_report),
     url(r'^user/list/$', list_user),
     url(r'^user/edit/$', edit_user),
     url(r'^user/edit/(?P<id>\d+)/$', edit_user),

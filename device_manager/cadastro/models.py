@@ -31,6 +31,7 @@ class Person(models.Model):
     institution = models.ForeignKey(Institution)
 
 class Stall(models.Model):
+    name = models.CharField(max_length=200)
     obs = models.CharField(max_length=200)
     devices = models.ManyToManyField(Device)
     leader = models.ForeignKey(Person)
