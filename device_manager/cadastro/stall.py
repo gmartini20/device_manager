@@ -19,24 +19,28 @@ def edit_stalls(request, id=None):
     id_room = request.GET.get('parent_object_id', None)
     room = None
     stall = Stall()
-    if id_room:
-        room = Room.objects.get(id = id_room)
-        stall.room = room
-        form = StallForm(initial={'room': room.id})
-    t = get_template('edit.html')
-    if request.method == 'POST':
-        form = StallForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            stall = _save_stall(cd)
-            messages.success(request, 'Baia salva com sucesso.')
+    form = StallForm()
+    try:
+        if id_room:
+            room = Room.objects.get(id = id_room)
+            stall.room = room
+            form = StallForm(initial={'room': room.id})
+        t = get_template('edit.html')
+        if request.method == 'POST':
+            form = StallForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                stall = _save_stall(cd)
+                messages.success(request, 'Baia salva com sucesso.')
+                initial = _get_stall_form_initial_value(stall)
+                form = StallForm(initial=initial)
+        elif id:
+            stall = Stall.objects.get(id=id)
             initial = _get_stall_form_initial_value(stall)
             form = StallForm(initial=initial)
-    elif id:
-        stall = Stall.objects.get(id=id)
-        initial = _get_stall_form_initial_value(stall)
-        form = StallForm(initial=initial)
-    form.fields['device'].queryset = Device.objects.filter(Q(stall=None) | Q(stall=stall))
+        form.fields['device'].queryset = Device.objects.filter(Q(stall=None) | Q(stall=stall))
+    except:
+        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_stall_form_context(stall, form, context)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 

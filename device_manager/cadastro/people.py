@@ -28,21 +28,24 @@ def edit_people(request, id=None):
     t = get_template('edit.html')
     person = None
     form = PersonForm()
-    if request.method == 'POST':
-        form = PersonForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            person = _save_person(cd)
-            messages.success(request, 'Pessoa salva com sucesso.')
+    try:
+        if request.method == 'POST':
+            form = PersonForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                person = _save_person(cd)
+                messages.success(request, 'Pessoa salva com sucesso.')
+                initial = person.__dict__
+                initial['institution'] = person.institution.id
+                form = PersonForm(initial=initial)
+        elif id:
+            person = Person.objects.get(id=id)
             initial = person.__dict__
             initial['institution'] = person.institution.id
             form = PersonForm(initial=initial)
-    elif id:
-        person = Person.objects.get(id=id)
-        initial = person.__dict__
-        initial['institution'] = person.institution.id
-        form = PersonForm(initial=initial)
 
+    except:
+        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_person_form_context(person, form, context)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 

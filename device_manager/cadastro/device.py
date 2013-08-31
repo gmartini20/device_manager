@@ -33,22 +33,24 @@ def edit_device(request, id=None):
     t = get_template('edit.html')
     device = None
     form = DeviceForm()
-    if request.method == 'POST':
-        form = DeviceForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            device = _save_device(cd)
+    try:
+        if request.method == 'POST':
+            form = DeviceForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                device = _save_device(cd)
+                initial = device.__dict__
+                messages.success(request, 'Dispositivo salvo com sucesso.')
+                initial['category'] = device.category.id
+                form = DeviceForm(initial=initial)
+
+        elif id:
+            device = Device.objects.get(id=id)
             initial = device.__dict__
-            messages.success(request, 'Dispositivo salvo com sucesso.')
             initial['category'] = device.category.id
             form = DeviceForm(initial=initial)
-
-    elif id:
-        device = Device.objects.get(id=id)
-        initial = device.__dict__
-        initial['category'] = device.category.id
-        form = DeviceForm(initial=initial)
-
+    except:
+        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_device_form_context(device, form, context)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 

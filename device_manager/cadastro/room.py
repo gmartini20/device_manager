@@ -30,17 +30,20 @@ def edit_rooms(request, id=None):
     t = get_template('edit.html')
     room = None
     form = RoomForm()
-    if request.method == 'POST':
-        form = RoomForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            room = _save_room(cd)
-            messages.success(request, 'Sala salva com sucesso.')
-            form = RoomForm(initial=room.__dict__)
+    try:
+        if request.method == 'POST':
+            form = RoomForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                room = _save_room(cd)
+                messages.success(request, 'Sala salva com sucesso.')
+                form = RoomForm(initial=room.__dict__)
 
-    elif id:
-        room = Room.objects.get(id=id)
-        form = RoomForm(initial=room.__dict__)
+        elif id:
+            room = Room.objects.get(id=id)
+            form = RoomForm(initial=room.__dict__)
+    except:
+        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
 
     context = _set_room_form_context(room, form, context)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))

@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 from django import forms
 from models import Person, Device, DeviceCategory, Period, Institution, Feature, Profile
-from django.db.models import Q
 from country_options import *
 
 my_default_errors = {

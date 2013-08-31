@@ -52,6 +52,7 @@ function(){
                       url: url,
                       data: data,
                       success: function(data){ window.location.href = url.replace('edit', 'list')}
+                      error: setErrorMessage("Ocorreu um erro processando a requisição, por favor tente novamente.")
                     });
                 }
             }

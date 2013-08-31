@@ -33,21 +33,22 @@ def edit_device_category(request, id=None):
     t = get_template('edit.html')
     category = None
     form = DeviceCategoryForm()
-    if request.method == 'POST':
-        form = DeviceCategoryForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            category = _save_device_category(cd)
-            messages.success(request, 'Categoria salva com sucesso.')
+    try:
+        if request.method == 'POST':
+            form = DeviceCategoryForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                category = _save_device_category(cd)
+                messages.success(request, 'Categoria salva com sucesso.')
+                form = DeviceCategoryForm(initial=category.__dict__)
+
+        elif id:
+            category = DeviceCategory.objects.get(id=id)
             form = DeviceCategoryForm(initial=category.__dict__)
 
-    elif id:
-        category = DeviceCategory.objects.get(id=id)
-        form = DeviceCategoryForm(initial=category.__dict__)
-
+    except:
+        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_device_category_form_context(category, form, context)
-#   html = t.render(Context(context))
-#   return HttpResponse(html)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _save_device_category(cd):

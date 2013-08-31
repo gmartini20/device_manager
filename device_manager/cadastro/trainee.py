@@ -27,37 +27,40 @@ def edit_trainees(request, id=None):
     stall = None
     trainee = StallTrainee()
     form = None
-    if id_stall:
-        stall = Stall.objects.get(id = id_stall)
-        trainee.stall = stall
-        form = TraineeForm(initial={'stall': stall.id})
-    t = get_template('edit.html')
-    if request.method == 'POST':
-        form = TraineeForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            if not cd['id']:
-                form_period = StallTraineePeriodForm(request.POST)
-                if form_period and form_period.is_valid():
-                    cd = dict(cd.items() + form_period.cleaned_data.items())
-            trainee, is_valid = _save_trainee(cd)
-            if is_valid:
-                messages.success(request, 'Bolsista salvo com sucesso.')
-            else:
-                messages.error(request, 'Erro ao salvar bolsista.')
+    try:
+        if id_stall:
+            stall = Stall.objects.get(id = id_stall)
+            trainee.stall = stall
+            form = TraineeForm(initial={'stall': stall.id})
+        t = get_template('edit.html')
+        if request.method == 'POST':
+            form = TraineeForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                if not cd['id']:
+                    form_period = StallTraineePeriodForm(request.POST)
+                    if form_period and form_period.is_valid():
+                        cd = dict(cd.items() + form_period.cleaned_data.items())
+                trainee, is_valid = _save_trainee(cd)
+                if is_valid:
+                    messages.success(request, 'Bolsista salvo com sucesso.')
+                else:
+                    messages.error(request, 'Erro ao salvar bolsista.')
+                initial = _get_trainee_form_initial_value(trainee)
+                form = TraineeForm(initial=initial)
+        elif id:
+            trainee = StallTrainee.objects.get(id=id)
             initial = _get_trainee_form_initial_value(trainee)
             form = TraineeForm(initial=initial)
-    elif id:
-        trainee = StallTrainee.objects.get(id=id)
-        initial = _get_trainee_form_initial_value(trainee)
-        form = TraineeForm(initial=initial)
-    else:
-        form_period = StallTraineePeriodForm()
-        form.fields['periods'] = form_period.fields.pop('periods')
-        context['aux_fields'] = form_period.as_ul()
-        context['has_auxiliar_form'] = True
-        context['fields'] = form.as_ul()
-    form.fields['trainee'].queryset = Person.objects.exclude(role='Orientador')
+        else:
+            form_period = StallTraineePeriodForm()
+            form.fields['periods'] = form_period.fields.pop('periods')
+            context['aux_fields'] = form_period.as_ul()
+            context['has_auxiliar_form'] = True
+            context['fields'] = form.as_ul()
+        form.fields['trainee'].queryset = Person.objects.exclude(role='Orientador')
+    except:
+        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_period_form_context(trainee, form, context)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 

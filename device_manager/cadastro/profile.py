@@ -28,22 +28,25 @@ def edit_profile(request, id=None):
     t = get_template('edit.html')
     profile = None
     form = ProfileForm()
-    if request.method == 'POST':
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            profile = _save_profile(cd)
+    try:
+        if request.method == 'POST':
+            form = ProfileForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                profile = _save_profile(cd)
+                initial = profile.__dict__
+                messages.success(request, 'Perfil salvo com sucesso.')
+                initial['features'] = profile.features.all()
+                form = ProfileForm(initial=initial)
+
+        elif id:
+            profile = Profile.objects.get(id=id)
             initial = profile.__dict__
-            messages.success(request, 'Perfil salvo com sucesso.')
             initial['features'] = profile.features.all()
             form = ProfileForm(initial=initial)
 
-    elif id:
-        profile = Profile.objects.get(id=id)
-        initial = profile.__dict__
-        initial['features'] = profile.features.all()
-        form = ProfileForm(initial=initial)
-
+    except:
+        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_profile_form_context(profile, form, context)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 

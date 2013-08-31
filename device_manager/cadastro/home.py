@@ -14,6 +14,9 @@ from users import get_user_features
 def show_home(request):
     t = get_template('home.html')
     messages = []
-    messages.append(u'Aluno y está liberando a baia x na sala z.')
+    try:
+        messages.append(u'Aluno y está liberando a baia x na sala z.')
+    except:
+        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     html = t.render(Context({'welcome_message': u'Bem-vindo ao sistema de controle de dispositivos', 'message': messages, 'features':get_user_features(request)}))
     return HttpResponse(html)

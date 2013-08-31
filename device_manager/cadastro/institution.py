@@ -28,20 +28,23 @@ def edit_institution(request, id=None):
     t = get_template('edit.html')
     institution = None
     form = InstitutionForm()
-    if request.method == 'POST':
-        form = InstitutionForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            institution = _save_institution(cd)
+    try:
+        if request.method == 'POST':
+            form = InstitutionForm(request.POST)
+            if form.is_valid():
+                cd = form.cleaned_data
+                institution = _save_institution(cd)
+                initial = institution.__dict__
+                messages.success(request, 'Instituição salva com sucesso.')
+                form = InstitutionForm(initial=initial)
+
+        elif id:
+            institution = Institution.objects.get(id=id)
             initial = institution.__dict__
-            messages.success(request, 'Instituição salva com sucesso.')
             form = InstitutionForm(initial=initial)
 
-    elif id:
-        institution = Institution.objects.get(id=id)
-        initial = institution.__dict__
-        form = InstitutionForm(initial=initial)
-
+    except:
+        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_institution_form_context(institution, form, context)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
