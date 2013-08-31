@@ -54,8 +54,18 @@
             {% if features.institution %}
             <li><a href="/institution/list/"><span id='active'>Instituições</span></a></li>
             {% endif %}
-            {% if features.occupacy_report %}
-            <li><a href="/reports/occupacy_report/"><span id='active'>Relatório</span></a></li>
+            {% if features.occupacy_report or features.period_report %}
+            <li>
+                <a href="#">Relatório</a>
+                <ul style='margin-top: -5px;'>
+                {% if features.occupacy_report %}
+                    <li><a href="/reports/occupacy_report/"><span id='active'>Ocupação</span></a></li>
+                {% endif %}
+                {% if features.period_report %}
+                    <li><a href="/reports/period_report/"><span id='active'>Período</span></a></li>
+                {% endif %}
+                </ul>
+            </li>
             {% endif %}
             {% if features.user or features.profile %}
             <li>

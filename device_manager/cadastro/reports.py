@@ -46,7 +46,7 @@ def occupacy_report(request, id=None):
     return HttpResponse(html)
 
 @my_login_required
-def trainee_report(request, id=None):
+def period_report(request, id=None):
     weekdays = {u'Segunda': 'monday', u'Terça': 'tuesday', u"Quarta": 'wednesday', u"Quinta": 'thursday', u'Sexta': 'friday'}
     t = get_template('report.html')
     obj_list = trainee_report_query.all()
