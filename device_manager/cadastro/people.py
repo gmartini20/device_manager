@@ -19,8 +19,15 @@ def list_people(request):
     values_dict = {}
     for person in people_list:
         person.list_values = [person.name, person.level, person.role, person.institution.name]
-    html = t.render(Context({'page_title': u'Pessoas', 'header_name_list': people_list_header, 'object_list': people_list, 'edit_name': 'people', 'features':get_user_features(request)}))
+    html = t.render(Context({'page_title': u'Pessoas', 'header_name_list': people_list_header, 'object_list': people_list, 'edit_name': 'people', 'can_remove': True, 'features':get_user_features(request)}))
     return HttpResponse(html)
+
+@my_login_required
+def remove_people(request, id):
+    obj = Person.objects.get(id=id)
+    obj.is_removed = True
+    obj.save()
+    return list_people(request)
 
 @my_login_required
 def edit_people(request, id=None):

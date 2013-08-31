@@ -10,6 +10,7 @@ from django.shortcuts import render_to_response
 from decorator import my_login_required
 import datetime
 from users import get_user_features
+from stall import edit_stalls
 
 period_list_header = [u'Períodos do dia', u'Dias da Semana']
 translate_weekday = {
@@ -19,6 +20,14 @@ translate_weekday = {
     'thursday': 'Quinta',
     'friday': 'Sexta',
 }
+
+@my_login_required
+def remove_trainee(request, id):
+    obj = StallTrainee.objects.get(id=id)
+    stall = obj.stall
+    obj.is_removed = True
+    obj.save()
+    return edit_stalls(request, stall.id)
 
 @my_login_required
 def edit_trainees(request, id=None):

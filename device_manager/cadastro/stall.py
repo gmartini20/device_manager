@@ -10,12 +10,21 @@ from django.shortcuts import render_to_response
 from datetime import date
 from decorator import my_login_required
 from users import get_user_features
+from room import edit_rooms
 
 trainee_list_header = [u'Nome', u'Hora Início', u'Hora Fim']
 
 @my_login_required
+def remove_stall(request, id):
+    obj = Stall.objects.get(id=id)
+    room = obj.room
+    obj.is_removed = True
+    obj.save()
+    return edit_rooms(request, room.id)
+
+@my_login_required
 def edit_stalls(request, id=None):
-    context = {'page_title': u'Baias', 'edit_name': 'stall', 'list_title': u'Bolsistas', 'list_edit_name': 'trainee', 'header_name_list': trainee_list_header, 'has_back': True, 'back_page_name': u'room', 'features':get_user_features(request)}
+    context = {'page_title': u'Baias', 'edit_name': 'stall', 'list_title': u'Bolsistas', 'list_edit_name': 'trainee', 'header_name_list': trainee_list_header, 'can_remove': True, 'has_back': True, 'back_page_name': u'room', 'features':get_user_features(request)}
     id_room = request.GET.get('parent_object_id', None)
     room = None
     stall = Stall()
@@ -38,7 +47,8 @@ def edit_stalls(request, id=None):
             stall = Stall.objects.get(id=id)
             initial = _get_stall_form_initial_value(stall)
             form = StallForm(initial=initial)
-        form.fields['device'].queryset = Device.objects.filter(Q(stall=None) | Q(stall=stall))
+        all_stall = Stall.objects.all()
+        form.fields['device'].queryset = Device.objects.filter((Q(stall=None) | (~Q(stall__in = all_stall))) | Q(stall=stall))
     except:
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_stall_form_context(stall, form, context)
@@ -75,6 +85,7 @@ def _set_stall_form_context(stall, form, context):
             context['parent_object_id'] = stall.room.id
     
     context['has_list'] = has_list
+    context['can_remove'] = True
     context['child_object_list'] = child_object_list
     context['fields'] = form.as_ul()
     return context

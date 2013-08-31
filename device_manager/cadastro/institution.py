@@ -19,8 +19,15 @@ def list_institution(request):
     values_dict = {}
     for institution in institution_list:
         institution.list_values = [institution.name, institution.country, institution.observation]
-    html = t.render(Context({'page_title': u'Instituições', 'header_name_list': institution_list_header, 'object_list': institution_list, 'edit_name': 'institution', 'features':get_user_features(request)}))
+    html = t.render(Context({'page_title': u'Instituições', 'header_name_list': institution_list_header, 'object_list': institution_list, 'edit_name': 'institution', 'can_remove': True, 'features':get_user_features(request)}))
     return HttpResponse(html)
+
+@my_login_required
+def remove_institution(request, id):
+    obj = Institution.objects.get(id=id)
+    obj.is_removed = True
+    obj.save()
+    return list_institution(request)
 
 @my_login_required
 def edit_institution(request, id=None):

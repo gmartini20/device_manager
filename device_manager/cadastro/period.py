@@ -10,6 +10,15 @@ from django.shortcuts import render_to_response
 from django import forms
 from decorator import my_login_required
 from users import get_user_features
+from trainee import edit_trainees
+
+@my_login_required
+def remove_period(request, id):
+    obj = StallTraineePeriod.objects.get(id=id)
+    stall_trainee = obj.stall_trainee
+    obj.is_removed = True
+    obj.save()
+    return edit_trainees(request, stall_trainee.id)
 
 @my_login_required
 def edit_period(request, id=None):

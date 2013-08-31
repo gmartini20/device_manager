@@ -72,6 +72,7 @@
                 {% for value in child_object.list_values %}
                     <td onClick="linkTo('/{{ list_edit_name }}/edit/', {{ child_object.id }})">{{ value }}</td>
                 {% endfor %}
+                <td onClick="if(confirm('Tem certeza que deseja apagar?'))linkTo('/{{ list_edit_name }}/remove/{{ child_object.id }}', '')"><span style="font-size: 130%;" class="glyphicon glyphicon-remove"></span></td>
                 </tr>
             {% endfor %}
         </tbody>

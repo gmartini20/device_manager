@@ -27,8 +27,15 @@ def list_user(request):
     values_dict = {}
     for user in user_list:
         user.list_values = [user.person.name, user.username]
-    html = t.render(Context({'page_title': u'Usuários', 'header_name_list': user_list_header, 'object_list': user_list, 'edit_name': 'user', 'can_remove': False, 'features':get_user_features(request)}))
+    html = t.render(Context({'page_title': u'Usuários', 'header_name_list': user_list_header, 'object_list': user_list, 'edit_name': 'user', 'can_remove': True, 'features':get_user_features(request)}))
     return HttpResponse(html)
+
+@my_login_required
+def remove_user(request, id):
+    obj = User.objects.get(id=id)
+    obj.is_removed = True
+    obj.save()
+    return list_user(request)
 
 @my_login_required
 def edit_user(request, id=None):

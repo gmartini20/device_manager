@@ -27,7 +27,7 @@
                     <td onClick="linkTo('/{{ edit_name }}/edit/', {{ object.id }})">{{ value }}</td>
                 {% endfor %}
                 {% if can_remove %}
-                    <td onClick="if(confirm('Tem certeza que deseja apagar?'))linkTo('/{{ edit_name }}/remove/{{ object.id }}', '')"><img src='/resources/delete.png' width=20 height=20/></td>
+                    <td onClick="if(confirm('Tem certeza que deseja apagar?'))linkTo('/{{ edit_name }}/remove/{{ object.id }}', '')"><span style="font-size: 130%;" class="glyphicon glyphicon-remove"></span></td>
                 {% endif %}
                 </tr>
             {% endfor %}

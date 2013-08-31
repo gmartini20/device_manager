@@ -24,7 +24,9 @@ def list_device(request):
 
 @my_login_required
 def remove_device(request, id):
-    Device.objects.get(id=id).delete()
+    device = Device.objects.get(id=id)
+    device.is_removed = True
+    device.save()
     return list_device(request)
 
 @my_login_required

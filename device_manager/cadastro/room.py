@@ -21,8 +21,15 @@ def list_rooms(request):
     values_dict = {}
     for room in room_list:
         room.list_values = [room.number, room.description, len(room.stall_set.all())]
-    html = t.render(Context({'page_title': u'Salas', 'header_name_list': room_list_header, 'object_list': room_list, 'edit_name': 'room', 'features':get_user_features(request)}))
+    html = t.render(Context({'page_title': u'Salas', 'header_name_list': room_list_header, 'object_list': room_list, 'can_remove': True, 'edit_name': 'room', 'features':get_user_features(request)}))
     return HttpResponse(html)
+
+@my_login_required
+def remove_room(request, id):
+    obj = Room.objects.get(id=id)
+    obj.is_removed = True
+    obj.save()
+    return list_rooms(request)
 
 @my_login_required
 def edit_rooms(request, id=None):

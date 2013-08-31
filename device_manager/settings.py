@@ -76,6 +76,7 @@ STATICFILES_DIRS = (
     "/home/guilherme/TCC/project/device_manager/resources/css/",
     "/home/guilherme/TCC/project/device_manager/resources/images/",
     "/home/guilherme/TCC/project/device_manager/resources/js/",
+    "/home/guilherme/TCC/project/device_manager/resources/fonts/",
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

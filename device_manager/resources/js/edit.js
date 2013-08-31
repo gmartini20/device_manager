@@ -51,8 +51,8 @@ function(){
                       type: "POST",
                       url: url,
                       data: data,
-                      success: function(data){ window.location.href = url.replace('edit', 'list')}
-                      error: setErrorMessage("Ocorreu um erro processando a requisição, por favor tente novamente.")
+                      success: function(data){ window.location.href = url.replace('edit', 'list')},
+                      error: function(jqXHR, textStatus, errorThrown) {setErrorMessage("Ocorreu um erro processando a requisição, por favor tente novamente.")}
                     });
                 }
             }
