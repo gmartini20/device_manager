@@ -44,8 +44,8 @@ def edit_user(request, id=None):
     user = None
     form = UserForm()
     if request.method == 'POST':
-        if request.POST['username'] and len(User.objects.filter(username=request.POST['username']).all()) > 0:
-            messages.error(request, 'Erro ao salvar usuário, já existe outro usuário com este username.')
+        if request.POST['username'] and (len(User.objects.filter(username=request.POST['username']).all()) > 0 and not request.POST['id']):
+            return HttpResponse('Erro ao salvar usuário, já existe outro usuário com este username.', status=400)
         else:
             user = _save_user(request)
             initial = user.__dict__

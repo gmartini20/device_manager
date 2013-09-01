@@ -52,7 +52,14 @@ function(){
                       url: url,
                       data: data,
                       success: function(data){ window.location.href = url.replace('edit', 'list')},
-                      error: function(jqXHR, textStatus, errorThrown) {setErrorMessage("Ocorreu um erro processando a requisição, por favor tente novamente.")}
+                      error: function(jqXHR, textStatus, errorThrown) {
+                        if(jqXHR.responseText){
+                            setErrorMessage(jqXHR.responseText);
+                        }
+                        else{
+                            setErrorMessage("Ocorreu um erro processando a requisição, por favor tente novamente.");
+                        }
+                      }
                     });
                 }
             }
