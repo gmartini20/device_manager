@@ -23,10 +23,9 @@ translate_weekday = {
 
 @my_login_required
 def remove_trainee(request, id):
-    obj = StallTrainee.objects.get(id=id)
+    obj = StallTrainee.objects.select_related().get(id=id)
     stall = obj.stall
-    obj.is_removed = True
-    obj.save()
+    obj.delete()
     return edit_stalls(request, stall.id)
 
 @my_login_required

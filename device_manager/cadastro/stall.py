@@ -16,10 +16,14 @@ trainee_list_header = [u'Nome', u'Hora Início', u'Hora Fim']
 
 @my_login_required
 def remove_stall(request, id):
-    obj = Stall.objects.get(id=id)
+    obj = Stall.objects.select_related().get(id=id)
     room = obj.room
-    obj.is_removed = True
-    obj.save()
+    obj.delete()
+#   for trainee in obj.stalltrainee_set.all():
+#       remove_trainee(request, trainee.id)
+#   room = obj.room
+#   obj.is_removed = True
+#   obj.save()
     return edit_rooms(request, room.id)
 
 @my_login_required

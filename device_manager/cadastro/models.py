@@ -11,10 +11,21 @@ class Room(models.Model):
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
 
+    def delete(self):
+        for stall in self.stall_set.all():
+            stall.delete()
+        self.is_removed = True
+        self.save()
+
+
 class DeviceCategory(models.Model):
     name = models.CharField(max_length=90)
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
+
+    def delete(self):
+        self.is_removed = True
+        self.save()
 
 class Device(models.Model):
     patrimony_number = models.CharField(max_length=50)
@@ -22,6 +33,10 @@ class Device(models.Model):
     category = models.ForeignKey(DeviceCategory)
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
+
+    def delete(self):
+        self.is_removed = True
+        self.save()
 
 class Period(models.Model):
     name = models.CharField(max_length=200)
@@ -36,6 +51,10 @@ class Institution(models.Model):
     country = models.CharField(max_length=155)
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
+    
+    def delete(self):
+        self.is_removed = True
+        self.save()
 
 class Person(models.Model):
     name = models.CharField(max_length=90) 
@@ -45,6 +64,10 @@ class Person(models.Model):
     institution = models.ForeignKey(Institution)
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
+    
+    def delete(self):
+        self.is_removed = True
+        self.save()
 
 class Stall(models.Model):
     name = models.CharField(max_length=200)
@@ -55,6 +78,12 @@ class Stall(models.Model):
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
 
+    def delete(self):
+        for trainee in self.stalltrainee_set.all():
+            trainee.delete()
+        self.is_removed = True
+        self.save()
+
 class StallTrainee(models.Model):
     trainee = models.ForeignKey(Person)
     stall = models.ForeignKey(Stall)
@@ -62,6 +91,13 @@ class StallTrainee(models.Model):
     finish_period = models.DateField()
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
+
+    def delete(self):
+        for period in self.stalltraineeperiod_set.all():
+            period.delete()
+        self.is_removed = True
+        self.save()
+
 
 class StallTraineePeriod(models.Model):
     monday = models.BooleanField()
@@ -73,6 +109,10 @@ class StallTraineePeriod(models.Model):
     stall_trainee = models.ForeignKey(StallTrainee)
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
+
+    def delete(self):
+        self.is_removed = True
+        self.save()
 
 class Feature(models.Model):
     name = models.CharField(max_length=50)
@@ -86,6 +126,10 @@ class Profile(models.Model):
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
 
+    def delete(self):
+        self.is_removed = True
+        self.save()
+
 class User(models.Model):
     username = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
@@ -93,3 +137,7 @@ class User(models.Model):
     profile = models.ForeignKey(Profile, null=True)
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
+
+    def delete(self):
+        self.is_removed = True
+        self.save()

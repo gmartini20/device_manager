@@ -25,8 +25,7 @@ def list_device_category(request):
 @my_login_required
 def remove_category_device(request, id):
     device_category = DeviceCategory.objects.get(id=id)
-    device_category.is_removed = True
-    device_category.save()
+    device_category.delete()
     return list_device_category(request)
 
 @my_login_required

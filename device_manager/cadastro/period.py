@@ -16,8 +16,7 @@ from trainee import edit_trainees
 def remove_period(request, id):
     obj = StallTraineePeriod.objects.get(id=id)
     stall_trainee = obj.stall_trainee
-    obj.is_removed = True
-    obj.save()
+    obj.delete()
     return edit_trainees(request, stall_trainee.id)
 
 @my_login_required
@@ -29,46 +28,46 @@ def edit_period(request, id=None):
     new_form_initial = {}
     period = StallTraineePeriod()
     form = StallTraineePeriodForm()
-    try:
-        if id_trainee:
-            trainee = StallTrainee.objects.get(id = id_trainee)
-            period.stall_trainee = trainee
-            form = StallTraineePeriodForm(initial={'stalltrainee': trainee.id})
-        if request.method == 'POST':
-            form = StallTraineePeriodForm(request.POST)
-            if form.is_valid():
-                cd = form.cleaned_data
-                period, is_valid = _save_stall_trainee_period(cd)
-                initial = period.__dict__
-                initial['stalltrainee'] = period.stall_trainee.id
-                form = StallTraineePeriodForm(initial=initial)
-                if is_valid:
-                    messages.success(request, 'Período salvo com sucesso.')
-                else:
-                    messages.error(request, 'Erro ao salvar Período, já existe outro período nesta baia.')
-        elif id:
-            period = StallTraineePeriod.objects.get(id=id)
+#   try:
+    if id_trainee:
+        trainee = StallTrainee.objects.get(id = id_trainee)
+        period.stall_trainee = trainee
+        form = StallTraineePeriodForm(initial={'stalltrainee': trainee.id})
+    if request.method == 'POST':
+        form = StallTraineePeriodForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            period, is_valid = _save_stall_trainee_period(cd)
             initial = period.__dict__
             initial['stalltrainee'] = period.stall_trainee.id
             form = StallTraineePeriodForm(initial=initial)
-            context['parent_object_id'] = period.stall_trainee.id
-        if period:
-            if period.id:
-                new_form_initial['periods'] = period.periods.all()
-        new_form = forms.Form(initial=new_form_initial)
-        new_form.fields['periods'] = form.fields.pop('periods')
-        new_form.fields['stalltrainee'] = form.fields['stalltrainee']
-    except:
-        messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
+            if is_valid:
+                messages.success(request, 'Período salvo com sucesso.')
+            else:
+                messages.error(request, 'Erro ao salvar Período, já existe outro período nesta baia.')
+    elif id:
+        period = StallTraineePeriod.objects.get(id=id)
+        initial = period.__dict__
+        initial['stalltrainee'] = period.stall_trainee.id
+        form = StallTraineePeriodForm(initial=initial)
+        context['parent_object_id'] = period.stall_trainee.id
+    if period:
+        if period.id:
+            new_form_initial['periods'] = period.periods.all()
+    new_form = forms.Form(initial=new_form_initial)
+    new_form.fields['periods'] = form.fields.pop('periods')
+    new_form.fields['stalltrainee'] = form.fields['stalltrainee']
     context = _set_period_form_context(period, form, context)
     context['fields'] = new_form.as_ul()
     context['aux_fields'] = form.as_ul()
+#   except:
+#       messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context['has_auxiliar_form'] = True
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _save_stall_trainee_period(cd):
     period = StallTraineePeriod()
-    period.id = cd['id']
+    period.id = cd.has_key('id') and cd['id'] or None
     period.monday = cd['monday']
     period.tuesday = cd['tuesday']
     period.wednesday = cd['wednesday']
@@ -92,11 +91,10 @@ def _set_period_form_context(period, form, context):
     return context
 
 def validate_period(period, period_list):
-    #TODO revisar validacao
     stall = period.stall_trainee.stall
-    stall_trainees = StallTrainee.objects.filter(stall = stall, start_period__gte=period.stall_trainee.start_period, finish_period__lte=period.stall_trainee.finish_period)
+    stall_trainees = StallTrainee.objects.select_related().filter(stall = stall, start_period__gte=period.stall_trainee.start_period, finish_period__lte=period.stall_trainee.finish_period)
     for trainee in stall_trainees:
-        periods_found = StallTraineePeriod.objects.filter(stall_trainee = trainee).filter(Q(monday = period.monday) | Q(tuesday = period.tuesday) | Q(wednesday = period.wednesday) | Q(thursday = period.thursday) | Q(friday = period.friday)).filter(periods__in=period_list)
+        periods_found = trainee.stalltraineeperiod_set.filter(Q(monday = period.monday) | Q(tuesday = period.tuesday) | Q(wednesday = period.wednesday) | Q(thursday = period.thursday) | Q(friday = period.friday)).filter(periods__in=period_list)
         if (period.id and len(periods_found) > 1) or ((not period.id) and len(periods_found)):
             return False
     return True

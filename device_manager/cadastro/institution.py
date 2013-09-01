@@ -25,8 +25,7 @@ def list_institution(request):
 @my_login_required
 def remove_institution(request, id):
     obj = Institution.objects.get(id=id)
-    obj.is_removed = True
-    obj.save()
+    obj.delete()
     return list_institution(request)
 
 @my_login_required

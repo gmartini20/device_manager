@@ -33,8 +33,7 @@ def list_user(request):
 @my_login_required
 def remove_user(request, id):
     obj = User.objects.get(id=id)
-    obj.is_removed = True
-    obj.save()
+    obj.delete()
     return list_user(request)
 
 @my_login_required

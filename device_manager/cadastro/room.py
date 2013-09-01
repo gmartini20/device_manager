@@ -26,9 +26,10 @@ def list_rooms(request):
 
 @my_login_required
 def remove_room(request, id):
-    obj = Room.objects.get(id=id)
-    obj.is_removed = True
-    obj.save()
+    obj = Room.objects.select_related().get(id=id)
+    for stall in obj.stall_set.all():
+        stall.delete()
+    obj.delete()
     return list_rooms(request)
 
 @my_login_required

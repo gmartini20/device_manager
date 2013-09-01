@@ -25,8 +25,7 @@ def list_profile(request):
 @my_login_required
 def remove_profile(request, id):
     obj = Profile.objects.get(id=id)
-    obj.is_removed = True
-    obj.save()
+    obj.delete()
     return list_profile(request)
 
 @my_login_required
