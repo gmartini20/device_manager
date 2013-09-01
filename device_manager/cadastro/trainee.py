@@ -106,9 +106,9 @@ def _save_trainee(cd):
     return trainee, is_valid
 
 def validate_trainee(trainee, period, period_list):
-    stall_trainees = StallTrainee.objects.filter(stall = trainee.stall, start_period__gte=trainee.start_period, finish_period__lte=trainee.finish_period)
+    stall_trainees = StallTrainee.objects.select_related().filter(stall = trainee.stall, start_period__gte=trainee.start_period, finish_period__lte=trainee.finish_period)
     for trainee in stall_trainees:
-        period = StallTraineePeriod.objects.filter(Q(monday = period.monday) | Q(tuesday = period.tuesday) | Q(wednesday = period.wednesday) | Q(thursday = period.thursday) | Q(friday = period.friday)).filter(periods__in=period_list)
+        period = trainee.stalltraineeperiod_set.filter(Q(monday = period.monday) | Q(tuesday = period.tuesday) | Q(wednesday = period.wednesday) | Q(thursday = period.thursday) | Q(friday = period.friday)).filter(periods__in=period_list)
         if len(period):
             return False
     return True
