@@ -13,6 +13,9 @@ insert into cadastro_feature (name, description, uri) VALUES ('report', 'Visuali
 insert into cadastro_feature (name, description, uri) VALUES ('occupacy_report', 'Visualizar relatório por ocupação', 'occupacy_report');
 insert into cadastro_feature (name, description, uri) VALUES ('period_report', 'Visualizar relatório por período', 'period_report');
 
+--permissoes internas do sistema
+insert into cadastro_feature (name, description, uri) VALUES ('home_message', 'Visualizar mensagens de aviso de expiração na home', 'home_message');
+
 insert into cadastro_period (name, time_start, time_finish, is_removed) VALUES ('até as 10:30', '00:00', '10:30', false);
 insert into cadastro_period (name, time_start, time_finish, is_removed) VALUES ('das 10:30 às 12:00', '10:30', '12:00', false);
 insert into cadastro_period (name, time_start, time_finish, is_removed) VALUES ('das 12:00 às 15:30', '12:00', '15:30', false);

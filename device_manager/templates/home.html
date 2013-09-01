@@ -6,19 +6,21 @@
         <h3>{{ welcome_message }}</h3>
     {% endif %}
 </div>
-<div id='message'>
-    <h4>Lembretes: <h4>
-    <ul>
-    {% if message %}
-        {% for msg in message %}
-            <li><span>{{ msg }}</span></li>
-        {% endfor %}
-    {% endif %}
-    {% if not message %}
-        <li>
-            <span>Não há lembretes</span>
-        </li>
-    {% endif %}
-    </ul>
-</div>
+{% if has_message %}
+    <div id='message'>
+        <h4>Lembretes: <h4>
+        <ul>
+        {% if message %}
+            {% for msg in message %}
+                <li><span>{{ msg }}</span></li>
+            {% endfor %}
+        {% endif %}
+        {% if not message %}
+            <li>
+                <span>Não há lembretes</span>
+            </li>
+        {% endif %}
+        </ul>
+    </div>
+{% endif %}
 {% endblock %}
