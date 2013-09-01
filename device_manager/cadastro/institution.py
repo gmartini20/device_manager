@@ -14,13 +14,12 @@ institution_list_header = [u'Nome', u'País', u'Observação']
 
 @my_login_required
 def list_institution(request):
-    t = get_template('list.html')
     institution_list = Institution.objects.all().order_by('id')
     values_dict = {}
     for institution in institution_list:
         institution.list_values = [institution.name, institution.country, institution.observation]
-    html = t.render(Context({'page_title': u'Instituições', 'header_name_list': institution_list_header, 'object_list': institution_list, 'edit_name': 'institution', 'can_remove': True, 'features':get_user_features(request)}))
-    return HttpResponse(html)
+    context = {'page_title': u'Instituições', 'header_name_list': institution_list_header, 'object_list': institution_list, 'edit_name': 'institution', 'can_remove': True, 'features':get_user_features(request)}
+    return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
 def remove_institution(request, id):

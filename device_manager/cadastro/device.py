@@ -19,8 +19,8 @@ def list_device(request):
     values_dict = {}
     for device in device_list:
         device.list_values = [device.description, device.patrimony_number, device.category.name]
-    html = t.render(Context({'page_title': u'Dispositivos', 'header_name_list': device_list_header, 'object_list': device_list, 'edit_name': 'device', 'can_remove': True, 'features':get_user_features(request)}))
-    return HttpResponse(html)
+    context = {'page_title': u'Dispositivos', 'header_name_list': device_list_header, 'object_list': device_list, 'edit_name': 'device', 'can_remove': True, 'features':get_user_features(request)}
+    return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
 def remove_device(request, id):

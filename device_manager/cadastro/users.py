@@ -22,13 +22,12 @@ def get_user_features(request):
 
 @my_login_required
 def list_user(request):
-    t = get_template('list.html')
     user_list = User.objects.all().order_by('id')
     values_dict = {}
     for user in user_list:
         user.list_values = [user.person.name, user.username]
-    html = t.render(Context({'page_title': u'Usuários', 'header_name_list': user_list_header, 'object_list': user_list, 'edit_name': 'user', 'can_remove': True, 'features':get_user_features(request)}))
-    return HttpResponse(html)
+    context = {'page_title': u'Usuários', 'header_name_list': user_list_header, 'object_list': user_list, 'edit_name': 'user', 'can_remove': True, 'features':get_user_features(request)}
+    return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
 def remove_user(request, id):

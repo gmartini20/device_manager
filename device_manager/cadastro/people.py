@@ -14,13 +14,12 @@ people_list_header = [u'Nome', u'Nível', u'Papel', u'Instituição']
 
 @my_login_required
 def list_people(request):
-    t = get_template('list.html')
     people_list = Person.objects.all().order_by('name')
     values_dict = {}
     for person in people_list:
         person.list_values = [person.name, person.level, person.role, person.institution.name]
-    html = t.render(Context({'page_title': u'Pessoas', 'header_name_list': people_list_header, 'object_list': people_list, 'edit_name': 'people', 'can_remove': True, 'features':get_user_features(request)}))
-    return HttpResponse(html)
+    context = {'page_title': u'Pessoas', 'header_name_list': people_list_header, 'object_list': people_list, 'edit_name': 'people', 'can_remove': True, 'features':get_user_features(request)}
+    return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
 def remove_people(request, id):

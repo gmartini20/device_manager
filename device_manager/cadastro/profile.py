@@ -14,13 +14,12 @@ profile_list_header = [u'Nome', u'Descrição']
 
 @my_login_required
 def list_profile(request):
-    t = get_template('list.html')
     profile_list = Profile.objects.all().order_by('id')
     values_dict = {}
     for profile in profile_list:
         profile.list_values = [profile.name, profile.description]
-    html = t.render(Context({'page_title': u'Perfis', 'header_name_list': profile_list_header, 'object_list': profile_list, 'edit_name': 'profile', 'can_remove': True, 'features':get_user_features(request)}))
-    return HttpResponse(html)
+    context = {'page_title': u'Perfis', 'header_name_list': profile_list_header, 'object_list': profile_list, 'edit_name': 'profile', 'can_remove': True, 'features':get_user_features(request)}
+    return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
 def remove_profile(request, id):

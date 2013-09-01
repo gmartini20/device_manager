@@ -14,13 +14,12 @@ category_list_header = [u'Nome']
 
 @my_login_required
 def list_device_category(request):
-    t = get_template('list.html')
     category_list = DeviceCategory.objects.all().order_by('name')
     values_dict = {}
     for category in category_list:
         category.list_values = [category.name]
-    html = t.render(Context({'page_title': u'Categorias de Dispositivos', 'header_name_list': category_list_header, 'object_list': category_list, 'edit_name': 'categorydevice', 'can_remove': True, 'features':get_user_features(request)}))
-    return HttpResponse(html)
+    context = {'page_title': u'Categorias de Dispositivos', 'header_name_list': category_list_header, 'object_list': category_list, 'edit_name': 'categorydevice', 'can_remove': True, 'features':get_user_features(request)}
+    return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
 def remove_category_device(request, id):
