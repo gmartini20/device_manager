@@ -21,7 +21,6 @@ trainee_screen_filter_list = [{'Nome': u'Número da Sala', 'Valor' :'room_number
 
 @my_login_required
 def occupacy_report(request, id=None):
-    t = get_template('report.html')
     obj_list = occupacy_report_query.all()
     try:
         if id:
@@ -44,13 +43,12 @@ def occupacy_report(request, id=None):
                 used_data.append(obj.room.number + obj.leader.name)
     except:
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
-    html = t.render(Context({'page_title': u'Relatório por ocupação', 'header_name_list': occupacy_report_list_header, 'object_list': obj_list, 'filters': screen_filter_list, 'acumulated_value': id and id or "", 'features':get_user_features(request)}))
-    return HttpResponse(html)
+    context = {'page_title': u'Relatório por ocupação', 'header_name_list': occupacy_report_list_header, 'object_list': obj_list, 'filters': screen_filter_list, 'acumulated_value': id and id or "", 'features':get_user_features(request)}
+    return render_to_response('report.html', context, context_instance=RequestContext(request))
 
 @my_login_required
 def period_report(request, id=None):
     weekdays = {u'Segunda': 'monday', u'Terça': 'tuesday', u"Quarta": 'wednesday', u"Quinta": 'thursday', u'Sexta': 'friday'}
-    t = get_template('report.html')
     obj_list = trainee_report_query.all()
     try:
         if id:
@@ -86,5 +84,5 @@ def period_report(request, id=None):
     except:
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
 
-    html = t.render(Context({'page_title': u'Relatório por Períodos', 'header_name_list': trainee_report_list_header, 'object_list': obj_list, 'filters': trainee_screen_filter_list, 'acumulated_value': id and id or "", 'features':get_user_features(request)}))
-    return HttpResponse(html)
+    context = {'page_title': u'Relatório por Períodos', 'header_name_list': trainee_report_list_header, 'object_list': obj_list, 'filters': trainee_screen_filter_list, 'acumulated_value': id and id or "", 'features':get_user_features(request)}
+    return render_to_response('report.html', context, context_instance=RequestContext(request))
