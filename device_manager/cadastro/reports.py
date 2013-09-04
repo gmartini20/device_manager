@@ -6,7 +6,6 @@ from models import Room, Stall, Person, StallTrainee, StallTraineePeriod
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
-from reports_model import RoomsOccupacyReport
 from decorator import my_login_required
 from users import get_user_features
 
