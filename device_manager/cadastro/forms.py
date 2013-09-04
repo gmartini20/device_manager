@@ -18,7 +18,7 @@ class DeviceModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 
 class FeatureModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
-         return ("%s" % (obj.name))
+         return ("%s" % (obj.description))
 
 class CategoryModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
@@ -102,4 +102,4 @@ class ProfileForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     name = forms.CharField(label=u"Nome", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'50'}))
     description = forms.CharField(label=u"Descrição", required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'200'}))
-    features = FeatureModelMultipleChoiceField(queryset=Feature.objects.all(), label=u'Funcionalidades', required=True, error_messages=my_default_errors)
+    features = FeatureModelMultipleChoiceField(queryset=Feature.objects.all(), widget=forms.SelectMultiple(attrs={'class': 'wide form-control'}), label=u'Funcionalidades', required=True, error_messages=my_default_errors)

@@ -180,6 +180,7 @@ body {
 #form_div ul li select{
     width: 60%;
     background-color: white;
+    float: left;
 }
 
 #form_div ul li textarea{
