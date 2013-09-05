@@ -8,6 +8,8 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from decorator import my_login_required
+import logging
+log = logging.getLogger(__name__)
 
 features = {}
 user_list_header = [u'Nome', u'Username']
