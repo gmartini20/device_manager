@@ -60,7 +60,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/guilherme/TCC/project/device_manager/resources/'
+STATIC_ROOT = '/home/devicemanager/device_manager/resources/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -73,10 +73,10 @@ ADMIN_MEDIA_PREFIX = '/resources/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    "/home/guilherme/TCC/project/device_manager/resources/css/",
-    "/home/guilherme/TCC/project/device_manager/resources/images/",
-    "/home/guilherme/TCC/project/device_manager/resources/js/",
-    "/home/guilherme/TCC/project/device_manager/resources/fonts/",
+    "/home/devicemanager/device_manager/resources/css/",
+    "/home/devicemanager/device_manager/resources/images/",
+    "/home/devicemanager/device_manager/resources/js/",
+    "/home/devicemanager/device_manager/resources/fonts/",
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -115,7 +115,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/home/guilherme/TCC/project/device_manager/templates",
+    "/home/devicemanager/device_manager/templates",
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -150,18 +150,46 @@ INSTALLED_APPS = (
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+    },
     'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
+        'null': {
+            'level':'DEBUG',
+            'class':'django.utils.log.NullHandler',
+        },
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': "/home/devicemanager/device_manager/logfile",
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'standard',
+        },
+        'console':{
+            'level':'INFO',
+            'class':'logging.StreamHandler',
+            'formatter': 'standard'
+        },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+        'django': {
+            'handlers':['console'],
             'propagate': True,
+            'level':'WARN',
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'device_manager': {
+            'handlers': ['console', 'logfile'],
+            'level': 'DEBUG',
         },
     }
 }
