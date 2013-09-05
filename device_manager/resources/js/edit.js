@@ -17,13 +17,14 @@ function(){
             event.preventDefault();
             event.stopPropagation();
             var pass = $("input[name='password']").val();
-            console.log("pass ", pass);
             var confirmed_pass = $("input[name='confirmed_password']").val();
             if (pass != confirmed_pass){
                 setErrorMessage("senhas informadas são diferentes")
             }
             else{
-                var url = "http://localhost:8080" + $($('form')[0]).attr('action');
+                var href = window.location.href;
+                href = href.split("/user")[0]
+                var url = href + $($('form')[0]).attr('action');
                 var crypted_pass = criptografar(pass);
                 var username = $("input[name='username']").val();
                 var id = $("input[name='id']").val();
