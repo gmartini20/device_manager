@@ -13,11 +13,11 @@
             </li>
         </ul>
     </div>
-    <table class="table">
+    <table id="list_table" class="table tablesorter">
         <thead>
         <tr>
         {% for header_name in header_name_list %}
-            <th style='text-align: center'>{{ header_name }}</th>
+            <th class="header" style='text-align: center'>{{ header_name }}</th>
         {% endfor %}
         </tr>
         </thead>
