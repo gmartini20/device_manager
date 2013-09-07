@@ -19,8 +19,14 @@
     </ul>
 </div>
 <div id='table_content'>
-    <div id='table_title'>
-        <h3>{{page_title}}</h3>
+    <div id="wrapper">
+        <div id='table_title' style="float: left;">
+            <h3>{{page_title}}</h3>
+        </div>
+        <div style="float: right; margin-right: 65px;">
+            <input type="hidden" id="reportUrl" name="reportUrl" value='{{ report_url }}'>
+            <button class='btn btn-info' id="reportButton">Gerar Relatório</button>
+        </div>
     </div>
     <table id="list_table" class='table tablesorter'>
         <thead>

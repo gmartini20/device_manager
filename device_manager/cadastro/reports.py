@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.shortcuts import render_to_response
 from decorator import my_login_required
 from users import get_user_features
+import xlwt
 
 occupacy_report_query = Stall.objects.select_related().distinct() 
 occupacy_report_list_header = [u'Número da Sala', u'Professor', u'Quantidade de baias do Professor', u'Total de Baias']
@@ -22,19 +23,20 @@ trainee_screen_filter_list = [{'Nome': u'Número da Sala', 'Valor' :'room_number
 def occupacy_report(request, id=None):
     obj_list = occupacy_report_query.all()
     try:
-        if id:
-            parameters = id.split("&")
-            for prm in parameters:
-                ftr, value = prm.split('=')
-                filtered_list = []
-                if filter_list.has_key(ftr):
-                    for obj in obj_list:
-                        if eval(filter_list[ftr]) == value:
-                            filtered_list.append(obj)
-                    obj_list = filtered_list
+#       if id:
+#           parameters = id.split("&")
+#           for prm in parameters:
+#               ftr, value = prm.split('=')
+#               filtered_list = []
+#               if filter_list.has_key(ftr):
+#                   for obj in obj_list:
+#                       if eval(filter_list[ftr]) == value:
+#                           filtered_list.append(obj)
+#                   obj_list = filtered_list
+        obj_list = filter_elements(obj_list, filter_list, id)
         
         #preparando dados para tela
-        values_dict = {}
+#       obj_list = prepare_data(obj_list)
         used_data = []
         for obj in obj_list:
             if not obj.room.number+obj.leader.name in used_data:
@@ -42,8 +44,72 @@ def occupacy_report(request, id=None):
                 used_data.append(obj.room.number + obj.leader.name)
     except:
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
-    context = {'page_title': u'Relatório por ocupação', 'header_name_list': occupacy_report_list_header, 'object_list': obj_list, 'filters': screen_filter_list, 'acumulated_value': id and id or "", 'features':get_user_features(request)}
+    context = {'page_title': u'Relatório por ocupação', 'header_name_list': occupacy_report_list_header, 'object_list': obj_list, 'filters': screen_filter_list, 'acumulated_value': id and id or "", 'features':get_user_features(request), 'report_url': 'export_occupacy'}
     return render_to_response('report.html', context, context_instance=RequestContext(request))
+
+#TODO
+def prepare_occupacy_data(obj_list):
+    used_data = []
+    new_obj_list = []
+    for obj in obj_list:
+        if not obj.room.number+obj.leader.name in used_data:
+            obj.list_values = [obj.room.number, obj.leader.name, len(obj.room.stall_set.filter(leader = obj.leader)), len(obj.room.stall_set.all())]
+            new_obj_list.append(obj)
+            used_data.append(obj.room.number + obj.leader.name)
+    return new_obj_list
+
+def filter_elements(obj_list, filter_list, id):
+    if id:
+        parameters = id.split("&")
+        for prm in parameters:
+            ftr, value = prm.split('=')
+            filtered_list = []
+            if filter_list.has_key(ftr):
+                for obj in obj_list:
+                    if eval(filter_list[ftr]) == value:
+                        filtered_list.append(obj)
+                obj_list = filtered_list
+    return obj_list
+
+@my_login_required
+def export_occupacy_report(request, id=None):
+    obj_list = occupacy_report_query.all()
+    obj_list = filter_elements(obj_list, filter_list, id)
+
+    used_data = []
+    list_values = []
+    for obj in obj_list:
+        if not obj.room.number+obj.leader.name in used_data:
+            list_values.append([obj.room.number, obj.leader.name, len(obj.room.stall_set.filter(leader = obj.leader)), len(obj.room.stall_set.all())])
+            used_data.append(obj.room.number + obj.leader.name)
+
+    book = xlwt.Workbook(encoding='utf8')
+    sheet = book.add_sheet(u'Ocupação')
+
+    default_style = xlwt.Style.default_style
+    datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
+    date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+
+    style = xlwt.easyxf('pattern: pattern solid, fore_colour grey25')
+    for col, val in enumerate(occupacy_report_list_header):
+        sheet.write(0, col, val, style=style)
+        if get_width(len(unicode(val))) > sheet.col(col).width:
+            sheet.col(col).width = get_width(len(unicode(val)))
+        
+
+    for row, rowdata in enumerate(list_values):
+        for col, val in enumerate(rowdata):
+            sheet.write(row+1, col, val, style=default_style)
+            if get_width(len(unicode(val))) > sheet.col(col).width:
+                sheet.col(col).width = get_width(len(unicode(val)))
+
+    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=example.xls'
+    book.save(response)
+    return response
+
+def get_width(num_characters):
+    return int((1+num_characters) * 256)
 
 @my_login_required
 def period_report(request, id=None):
@@ -65,7 +131,6 @@ def period_report(request, id=None):
                     obj_list = filtered_list
         
         #preparando dados para tela
-        values_dict = {}
         for obj in obj_list:
             weekdays = []
             if obj.monday:

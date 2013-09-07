@@ -40,6 +40,16 @@ $('#filterButton').click(function(){
         window.location.href = url + acumulatedValeu + '/';
     }
 })
+
+$('#reportButton').click(function(){
+    var acumulatedValeu = $("#acumulatedFilter").val();
+    var url = document.URL;
+    var report_url = $("#reportUrl").val();
+    url = url.split("/reports/")[0] + "/reports/";
+    url = url + report_url + "/";
+    url = url + acumulatedValeu;
+    window.location.href = url;
+})
 })
 
 function deleteFilter(e){
