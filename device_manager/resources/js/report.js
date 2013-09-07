@@ -4,6 +4,7 @@ function linkTo(url, id){
 
 $(document).ready(
 function(){
+$("#list_table").tablesorter(); 
 var acumulatedValeu = $("#acumulatedFilter").val();
 var filters = acumulatedValeu.split("&");
 console.log(filters);
