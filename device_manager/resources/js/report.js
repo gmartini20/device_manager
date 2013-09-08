@@ -10,8 +10,6 @@ var filters = acumulatedValeu.split("&");
 console.log(filters);
 var html = "<li class='filter'><a class='filters' onClick='deleteFilter(this)' href='#'>{0}</a></li>";
 for (var i = 0; i < filters.length; i++){
-    console.log("Filtro", filters[i]);
-    console.log($('#choosen_filters'))
     $("#choosen_filters").append(html.replace("{0}", filters[i]));
 }
 
@@ -26,14 +24,14 @@ $('#filterButton').click(function(){
     var acumulatedValeu = $("#acumulatedFilter").val();
     var textFilter = $("#filterText").val();
     var selectedOption = $("#filterKind").find(":selected").val();
-    var url = ""
+    var url = "";
     if(textFilter && selectedOption){
         if(!acumulatedValeu || acumulatedValeu == ""){
             acumulatedValeu = "";
-            url = document.URL
+            url = document.URL;
         }
         else{
-            url = document.URL.split(replaceAll(acumulatedValeu, ' ', '%20'))[0]
+            url = document.URL.split(replaceAll(acumulatedValeu, ' ', '%20'))[0];
             acumulatedValeu += "&";
         }
         acumulatedValeu += selectedOption + "=" + textFilter;
@@ -48,6 +46,8 @@ $('#reportButton').click(function(){
     url = url.split("/reports/")[0] + "/reports/";
     url = url + report_url + "/";
     url = url + acumulatedValeu;
+    if (acumulatedValeu && acumulatedValeu != "")
+        url = url + '/';
     window.location.href = url;
 })
 })
@@ -99,7 +99,7 @@ function deleteFilter(e){
         }
     }
     if (url.indexOf('/', url.length -1) === -1){
-        url += '/'
+        url += '/';
     }
     else if(url.indexOf('//', url.length -2) !== -1){
         url = url.substring(0, url.length - 1);
