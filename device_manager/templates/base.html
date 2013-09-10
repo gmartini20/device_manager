@@ -41,7 +41,7 @@
                     {% if features.home %}
                     <li><a href="/home/"><span id='active'>Home</span></a></li>
                     {% endif %}
-                    {% if features.room %}
+                    {% if features.room or features.syndic_room %}
                     <li><a href="/room/list/"><span id='active'>Salas</span></a></li>
                     {% endif %}
                     {% if features.people %}
