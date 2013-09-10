@@ -129,7 +129,7 @@ def filter_elements(obj_list, filter_list, id):
                     if ftr == 'weekday' and weekdays.has_key(value):
                         if eval(filter_list[ftr].format(weekdays[value])): 
                             filtered_list.append(obj)
-                    elif eval(filter_list[ftr]) == value:
+                    elif eval(filter_list[ftr]).__contains__(value):
                         filtered_list.append(obj)
                 obj_list = filtered_list
     return obj_list
