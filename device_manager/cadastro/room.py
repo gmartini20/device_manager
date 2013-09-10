@@ -2,8 +2,8 @@
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import Context, RequestContext
-from models import Room, Stall, Device, Person, DeviceCategory, StallTrainee
-from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceForm, TraineeForm
+from models import Room, Stall, Person, User
+from forms import RoomForm
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
@@ -17,7 +17,13 @@ stall_list_header = [u'Localização', u'Computador', u'Professor Responsável',
 @my_login_required
 def list_rooms(request):
     t = get_template('list.html')
-    room_list = Room.objects.all().order_by('number')
+    username=request.COOKIES.get("logged_user");
+    user = User.objects.select_related().get(username=username)
+    
+    if user.profile.features.filter(name="room"):
+        room_list = Room.objects.all().order_by('number')
+    elif user.profile.features.filter(name="syndic_room"):
+        room_list = user.person.room_set.all().order_by('number')
     values_dict = {}
     for room in room_list:
         room.list_values = [room.number, room.description, len(room.stall_set.all())]
@@ -45,15 +51,19 @@ def edit_rooms(request, id=None):
                 cd = form.cleaned_data
                 room = _save_room(cd)
                 messages.success(request, 'Sala salva com sucesso.')
-                form = RoomForm(initial=room.__dict__)
+                initial=room.__dict__
+                initial['syndic'] = room.syndic
+                form = RoomForm(initial=initial)
 
         elif id:
             room = Room.objects.get(id=id)
-            form = RoomForm(initial=room.__dict__)
+            initial=room.__dict__
+            initial['syndic'] = room.syndic
+            form = RoomForm(initial=initial)
     except:
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
 
-    context = _set_room_form_context(room, form, context)
+    context = _set_room_form_context(room, form, context, request)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _save_room(cd):
@@ -61,15 +71,22 @@ def _save_room(cd):
     room.id = cd['id'] or None
     room.number = cd['number']
     room.description = cd['description']
+    room.syndic = cd['syndic']
     room.save()
     return room
 
-def _set_room_form_context(room, form, context):
+def _set_room_form_context(room, form, context, request):
     has_list = False
     child_object_list = None
     if room:
-        has_list = room.id is not None
-        child_object_list = _get_stall_list(room.stall_set.all().order_by('id'))
+        username=request.COOKIES.get("logged_user");
+        user = User.objects.select_related().get(username=username)
+
+        if user.profile.features.filter(name="stall"):
+            has_list = room.id is not None
+            child_object_list = _get_stall_list(room.stall_set.all().order_by('id'))
+        else:
+            has_list = False
         context['object_id'] = room.id
     
     context['has_list'] = has_list

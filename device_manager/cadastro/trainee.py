@@ -2,8 +2,8 @@
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import Context, RequestContext
-from models import Room, Stall, Device, Person, DeviceCategory, StallTrainee, StallTraineePeriod
-from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceForm, TraineeForm, StallTraineePeriodForm
+from models import Person, StallTrainee, StallTraineePeriod, User
+from forms import TraineeForm, StallTraineePeriodForm
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
@@ -69,7 +69,7 @@ def edit_trainees(request, id=None):
         form.fields['trainee'].queryset = Person.objects.exclude(role='Orientador')
     except:
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
-    context = _set_period_form_context(trainee, form, context)
+    context = _set_period_form_context(trainee, form, context, request)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _get_trainee_form_initial_value(trainee):
@@ -112,13 +112,20 @@ def validate_trainee(trainee, period, period_list):
             return False
     return True
 
-def _set_period_form_context(trainee, form, context):
+def _set_period_form_context(trainee, form, context, request):
     if trainee and trainee.id:
         context['object_id'] = trainee.id
-        child_object_list = _get_period_list(trainee.stalltraineeperiod_set.all())
-        context['child_object_list'] = child_object_list
-        context['has_list'] = True
         context['parent_object_id'] = trainee.stall.id
+
+        username=request.COOKIES.get("logged_user");
+        user = User.objects.select_related().get(username=username)
+
+        if user.profile.features.filter(name="period"):
+            child_object_list = _get_period_list(trainee.stalltraineeperiod_set.all())
+            context['child_object_list'] = child_object_list
+            context['has_list'] = True
+        else:
+            context['has_list'] = False
     
     context['fields'] = form.as_ul()
     return context

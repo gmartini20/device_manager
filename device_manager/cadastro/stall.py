@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import Context, RequestContext
-from models import Room, Stall, Device, Person, DeviceCategory, StallTrainee
+from models import Room, Stall, Device, Person, StallTrainee, User
 from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceForm, TraineeForm
 from django.db.models import Q
 from django.contrib import messages
@@ -19,11 +19,6 @@ def remove_stall(request, id):
     obj = Stall.objects.select_related().get(id=id)
     room = obj.room
     obj.delete()
-#   for trainee in obj.stalltrainee_set.all():
-#       remove_trainee(request, trainee.id)
-#   room = obj.room
-#   obj.is_removed = True
-#   obj.save()
     return edit_rooms(request, room.id)
 
 @my_login_required
@@ -55,7 +50,7 @@ def edit_stalls(request, id=None):
         form.fields['device'].queryset = Device.objects.filter((Q(stall=None) | (~Q(stall__in = all_stall))) | Q(stall=stall))
     except:
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
-    context = _set_stall_form_context(stall, form, context)
+    context = _set_stall_form_context(stall, form, context, request)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _get_stall_form_initial_value(stall):
@@ -78,12 +73,18 @@ def _save_stall(cd):
     stall.save()
     return stall
 
-def _set_stall_form_context(stall, form, context):
+def _set_stall_form_context(stall, form, context, request):
     has_list = False
     child_object_list = None
     if stall:
-        has_list = stall.id is not None
-        child_object_list = _get_trainee_list(stall)
+        username=request.COOKIES.get("logged_user");
+        user = User.objects.select_related().get(username=username)
+
+        if user.profile.features.filter(name="trainee"):
+            has_list = stall.id is not None
+            child_object_list = _get_trainee_list(stall)
+        else:
+            has_list = False
         context['object_id'] = stall.id
         if hasattr(stall, 'room'):
             context['parent_object_id'] = stall.room.id
