@@ -40,6 +40,7 @@ class RoomForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     number = forms.CharField(label=u"Número", error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'50'}))
     description = forms.CharField(label=u"Descrição", required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'100'}))
+    syndic = PersonModelChoiceField(queryset=Person.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), label=u'Síndico', required=False, error_messages=my_default_errors)
 
 class StallForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)

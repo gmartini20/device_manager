@@ -4,20 +4,6 @@ class GenericManager(models.Manager):
     def get_query_set(self):
         return super(GenericManager, self).get_query_set().exclude(is_removed=True)
 
-class Room(models.Model):
-    id = models.AutoField(primary_key=True)
-    number = models.CharField(max_length=50)
-    description = models.CharField(max_length=100)
-    is_removed = models.BooleanField(default=False)
-    objects = GenericManager()
-
-    def delete(self):
-        for stall in self.stall_set.all():
-            stall.delete()
-        self.is_removed = True
-        self.save()
-
-
 class DeviceCategory(models.Model):
     name = models.CharField(max_length=90)
     is_removed = models.BooleanField(default=False)
@@ -66,6 +52,20 @@ class Person(models.Model):
     objects = GenericManager()
     
     def delete(self):
+        self.is_removed = True
+        self.save()
+
+class Room(models.Model):
+    id = models.AutoField(primary_key=True)
+    number = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+    is_removed = models.BooleanField(default=False)
+    syndic = models.ForeignKey(Person, null=True)
+    objects = GenericManager()
+
+    def delete(self):
+        for stall in self.stall_set.all():
+            stall.delete()
         self.is_removed = True
         self.save()
 
