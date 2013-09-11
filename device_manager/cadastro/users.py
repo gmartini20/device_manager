@@ -39,6 +39,12 @@ def remove_user(request, id):
 
 @my_login_required
 def edit_user(request, id=None):
+    username=request.COOKIES.get("logged_user");
+    user = User.objects.select_related().get(username=username)
+    #se usuario tiver permissao para editar seu usuario 
+    if user.profile.features.filter(name="edit_own_user") and not user.profile.features.filter(name="user"):
+        id = user.id
+
     context = {'page_title': u'Usuários', 'edit_name': 'user', 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')
     user = None

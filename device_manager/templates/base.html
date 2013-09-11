@@ -80,11 +80,11 @@
                         </ul>
                     </li>
                     {% endif %}
-                    {% if features.user or features.profile %}
+                    {% if features.user %}
                     <li class="dropdown" data-dropdown="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Gerenciar <span class="caret"></span></a>
                         <ul style='margin-top: -5px;' class="dropdown-menu">
-                            {% if features.user %}
+                            {% if features.user or features.edit_own_user %}
                             <li>
                                 <a href="/user/list/"><span id='active'>Usuários</span></a>
                             </li>
@@ -96,6 +96,9 @@
                             {% endif %}
                         </ul>
                     </li>
+                    {% endif %}
+                    {% if not features.user and features.edit_own_user %}
+                    <li><a href="/user/edit/"><span id='active'>Usuário</span></a></li>
                     {% endif %}
                     <li class="pull-right"style="float: right"><a href="/logout/"><span id='active'>Sair</span></a></li>
                 </ul>
