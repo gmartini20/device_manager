@@ -118,7 +118,7 @@ def export_period_report(request, id=None):
     return response
 
 def filter_elements(obj_list, filter_list, id):
-    weekdays = {u'Segunda': 'monday', u'Terça': 'tuesday', u"Quarta": 'wednesday', u"Quinta": 'thursday', u'Sexta': 'friday'}
+    weekdays = {u'segunda': 'monday', u'terça': 'tuesday', u"quarta": 'wednesday', u"quinta": 'thursday', u'sexta': 'friday'}
     if id:
         parameters = id.split("&")
         for prm in parameters:
@@ -126,10 +126,10 @@ def filter_elements(obj_list, filter_list, id):
             filtered_list = []
             if filter_list.has_key(ftr):
                 for obj in obj_list:
-                    if ftr == 'weekday' and weekdays.has_key(value):
-                        if eval(filter_list[ftr].format(weekdays[value])): 
+                    if ftr == 'weekday' and weekdays.has_key(value.lower()):
+                        if eval(filter_list[ftr].format(weekdays[value.lower()])): 
                             filtered_list.append(obj)
-                    elif eval(filter_list[ftr]).__contains__(value):
+                    elif eval(filter_list[ftr]).lower().__contains__(value.lower()):
                         filtered_list.append(obj)
                 obj_list = filtered_list
     return obj_list
