@@ -24,14 +24,12 @@ $('#filterButton').click(function(){
     var acumulatedValeu = $("#acumulatedFilter").val();
     var textFilter = $("#filterText").val();
     var selectedOption = $("#filterKind").find(":selected").val();
-    var url = "";
+    var url = getUrl();
     if(textFilter && selectedOption){
         if(!acumulatedValeu || acumulatedValeu == ""){
             acumulatedValeu = "";
-            url = document.URL;
         }
         else{
-            url = document.URL.split(replaceAll(acumulatedValeu, ' ', '%20'))[0];
             acumulatedValeu += "&";
         }
         acumulatedValeu += selectedOption + "=" + textFilter;
@@ -59,45 +57,28 @@ function deleteFilter(e){
     var filter = filters[0] + filters[1];
     separated_filter = filter.split('&');
     var new_filter = '';
+    var is_first = true;
     for (var i = 0; i < separated_filter.length; i++){
-        if (i == 0 && (separated_filter[i])){
+        if (i == 0 && (separated_filter[i] && separated_filter[i] != "")){
             new_filter = separated_filter[i];
+            is_first = false;
         }
         else{
             if (separated_filter[i]){
-                console.log('novo_filtro', separated_filter[i]);
-                new_filter += '&' + separated_filter[i];
-            }
-        }
-    }
-    e.parentNode.removeChild(e);
-    $("#acumulatedFilter").val(new_filter);
-    var splited_urls = document.URL.split(text);
-    if(splited_urls[1])
-        var splited_url = splited_urls[0] + splited_urls[1];
-    else
-        var splited_url = splited_urls[0];
-    splited_url = splited_url.split('&');
-    var url = "";
-    var is_first = true;
-    for (var i = 0; i < splited_url.length; i++){
-        if (i == 0 && (splited_url[i] && splited_url[i] != "")){
-            url = splited_url[i];
-            if(splited_url[i].indexOf('=') != -1)
-                is_first = false;
-        }
-        else{
-            if (splited_url[i] && splited_url[i].indexOf('=') != -1){
-                if (is_first){
-                    url += splited_url[i];
+                if(is_first){
+                    console.log('novo_filtro', separated_filter[i]);
+                    new_filter += separated_filter[i];
                     is_first = false;
                 }
                 else{
-                    url += '&' + splited_url[i];
+                    new_filter += '&' + separated_filter[i];
                 }
             }
         }
     }
+    var url = getUrl() + new_filter;
+    e.parentNode.removeChild(e);
+    $("#acumulatedFilter").val(new_filter);
     if (url.indexOf('/', url.length -1) === -1){
         url += '/';
     }
@@ -106,6 +87,11 @@ function deleteFilter(e){
     }
     window.location.href = url;
 };
+
+function getUrl(){
+    var splited_url = document.URL.split("/reports/");
+    return splited_url[0] + "/reports/" + splited_url[1].split("/")[0] + '/'
+}
 
 function replaceAll(string, token, newtoken) {
     while (string.indexOf(token) != -1) {
