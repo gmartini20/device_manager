@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context, RequestContext
 from models import Room, Stall, Device, Person, DeviceCategory, StallTrainee
@@ -44,6 +44,7 @@ def edit_device(request, id=None):
                 messages.success(request, 'Dispositivo salvo com sucesso.')
                 initial['category'] = device.category.id
                 form = DeviceForm(initial=initial)
+                return HttpResponseRedirect('/device/list/')
 
         elif id:
             device = Device.objects.get(id=id)

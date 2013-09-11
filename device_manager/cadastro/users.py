@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context, RequestContext
 from models import User, Person, Profile, Feature
@@ -26,6 +26,13 @@ def get_user_features(request):
 def list_user(request):
     user_list = User.objects.all().order_by('id')
     values_dict = {}
+
+    username=request.COOKIES.get("logged_user");
+    user = User.objects.select_related().get(username=username)
+    #se usuario tiver permissao para editar seu usuario 
+    if user.profile.features.filter(name="edit_own_user") and not user.profile.features.filter(name="user"):
+        user_list = [user]
+
     for user in user_list:
         user.list_values = [user.person.name, user.username]
     context = {'page_title': u'Usuários', 'header_name_list': user_list_header, 'object_list': user_list, 'edit_name': 'user', 'can_remove': True, 'features':get_user_features(request)}
@@ -58,6 +65,7 @@ def edit_user(request, id=None):
             messages.success(request, u'Usuário salvo com sucesso.')
             initial['person'] = user.person.id
             form = UserForm(initial=initial)
+            return HttpResponseRedirect('/user/list/')
 
     elif id:
         user = User.objects.get(id=id)

@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context, RequestContext
 from models import Room, Stall, Device, Person, DeviceCategory, StallTrainee
@@ -41,6 +41,7 @@ def edit_device_category(request, id=None):
                 category = _save_device_category(cd)
                 messages.success(request, 'Categoria salva com sucesso.')
                 form = DeviceCategoryForm(initial=category.__dict__)
+                return HttpResponseRedirect('/categorydevice/list/')
 
         elif id:
             category = DeviceCategory.objects.get(id=id)

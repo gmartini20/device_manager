@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context, RequestContext
 from models import Feature, Profile
@@ -43,6 +43,7 @@ def edit_profile(request, id=None):
                 messages.success(request, 'Perfil salvo com sucesso.')
                 initial['features'] = profile.features.all()
                 form = ProfileForm(initial=initial)
+                return HttpResponseRedirect('/profile/list/')
 
         elif id:
             profile = Profile.objects.get(id=id)

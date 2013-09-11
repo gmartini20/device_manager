@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context, RequestContext
 from models import Room, Stall, Device, Person, DeviceCategory, StallTrainee
@@ -43,6 +43,7 @@ def edit_people(request, id=None):
                 initial = person.__dict__
                 initial['institution'] = person.institution.id
                 form = PersonForm(initial=initial)
+                return HttpResponseRedirect('/people/list/')
         elif id:
             person = Person.objects.get(id=id)
             initial = person.__dict__

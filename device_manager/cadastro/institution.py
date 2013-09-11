@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context, RequestContext
 from models import Institution
@@ -42,6 +42,7 @@ def edit_institution(request, id=None):
                 initial = institution.__dict__
                 messages.success(request, 'Instituição salva com sucesso.')
                 form = InstitutionForm(initial=initial)
+                return HttpResponseRedirect('/institution/list/')
 
         elif id:
             institution = Institution.objects.get(id=id)
