@@ -1,10 +1,14 @@
 # -*- coding: utf8 -*-
 from models import User
+from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 
 
 def my_login_required(function):
     def wrapper(request, *args, **kw):
+        #limpando mensagens de erro ou de sucesso a cada requisicao
+        messages.get_messages(request).used = True
+
         username=request.COOKIES.get("logged_user")
         if not username:
             return HttpResponseRedirect('/login/')
