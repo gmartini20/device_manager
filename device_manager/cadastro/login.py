@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context, RequestContext
 from models import User
@@ -8,6 +8,10 @@ from django.contrib import messages
 from django.shortcuts import render_to_response
 
 def login(request, id=None):
+    username=request.COOKIES.get("logged_user");
+    #se usuario estiver logado redireciona para a home
+    if username:
+        return HttpResponseRedirect('/home/')
     context = {'page_title': u'Dispositivos', 'edit_name': 'device', 'has_back': False}
     t = get_template('login.html')
     device = None
@@ -32,6 +36,9 @@ def _check_login(username, password):
     elif user.password == password:
         return user
     return None
+
+def redirect_login(request):
+    return HttpResponseRedirect("/login/")
 
 def logout(request):
     response = render_to_response('login.html', {}, context_instance=RequestContext(request))
