@@ -8,13 +8,14 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from datetime import date
-from decorator import my_login_required
+from decorator import my_login_required, test_access_permission
 from users import get_user_features
 from room import edit_rooms
 
 trainee_list_header = [u'Nome', u'Hora Início', u'Hora Fim']
 
 @my_login_required
+@test_access_permission
 def remove_stall(request, id):
     obj = Stall.objects.select_related().get(id=id)
     room = obj.room
@@ -22,6 +23,7 @@ def remove_stall(request, id):
     return edit_rooms(request, room.id)
 
 @my_login_required
+@test_access_permission
 def edit_stalls(request, id=None):
     context = {'page_title': u'Baias', 'edit_name': 'stall', 'list_title': u'Bolsistas', 'list_edit_name': 'trainee', 'header_name_list': trainee_list_header, 'can_remove': True, 'has_back': True, 'back_page_name': u'room', 'features':get_user_features(request)}
     id_room = request.GET.get('parent_object_id', None)

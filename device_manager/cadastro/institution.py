@@ -7,12 +7,13 @@ from forms import InstitutionForm
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
-from decorator import my_login_required
+from decorator import my_login_required, test_access_permission
 from users import get_user_features
 
 institution_list_header = [u'Nome', u'País', u'Observação']
 
 @my_login_required
+@test_access_permission
 def list_institution(request):
     institution_list = Institution.objects.all().order_by('id')
     values_dict = {}
@@ -22,12 +23,14 @@ def list_institution(request):
     return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
+@test_access_permission
 def remove_institution(request, id):
     obj = Institution.objects.get(id=id)
     obj.delete()
     return list_institution(request)
 
 @my_login_required
+@test_access_permission
 def edit_institution(request, id=None):
     context = {'page_title': u'Instituição', 'edit_name': 'institution', 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')

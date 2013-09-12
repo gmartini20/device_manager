@@ -7,12 +7,13 @@ from forms import RoomForm, StallForm, PersonForm, DeviceCategoryForm, DeviceFor
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
-from decorator import my_login_required
+from decorator import my_login_required, test_access_permission
 from users import get_user_features
 
 people_list_header = [u'Nome', u'Nível', u'Papel', u'Instituição']
 
 @my_login_required
+@test_access_permission
 def list_people(request):
     people_list = Person.objects.all().order_by('name')
     values_dict = {}
@@ -22,12 +23,14 @@ def list_people(request):
     return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
+@test_access_permission
 def remove_people(request, id):
     obj = Person.objects.get(id=id)
     obj.delete()
     return list_people(request)
 
 @my_login_required
+@test_access_permission
 def edit_people(request, id=None):
     context = {'page_title': u'Pessoas', 'edit_name': 'people', 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')

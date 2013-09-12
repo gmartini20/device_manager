@@ -7,12 +7,13 @@ from forms import ProfileForm
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
-from decorator import my_login_required
+from decorator import my_login_required, test_access_permission
 from users import get_user_features
 
 profile_list_header = [u'Nome', u'Descrição']
 
 @my_login_required
+@test_access_permission
 def list_profile(request):
     profile_list = Profile.objects.all().order_by('id')
     values_dict = {}
@@ -22,12 +23,14 @@ def list_profile(request):
     return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
+@test_access_permission
 def remove_profile(request, id):
     obj = Profile.objects.get(id=id)
     obj.delete()
     return list_profile(request)
 
 @my_login_required
+@test_access_permission
 def edit_profile(request, id=None):
     context = {'page_title': u'Perfis', 'edit_name': 'profile', 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')

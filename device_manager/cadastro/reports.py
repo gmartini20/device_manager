@@ -6,7 +6,7 @@ from models import Room, Stall, Person, StallTrainee, StallTraineePeriod
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
-from decorator import my_login_required
+from decorator import my_login_required, test_access_permission
 from users import get_user_features
 import xlwt
 
@@ -20,6 +20,7 @@ trainee_filter_list = {u'room_number' :'obj.stall_trainee.stall.room.number', u'
 trainee_screen_filter_list = [{'Nome': u'Número da Sala', 'Valor' :'room_number'}, {'Nome': u'Nome do professor', 'Valor': 'professor_name'}, {'Nome': u'Nome do bolsista', 'Valor': 'trainee_name'}, {'Nome': u'Dia da semana', 'Valor': 'weekday'}, {'Nome': u'Localização', 'Valor' :'localization'}, {'Nome': u'Papel', 'Valor': 'trainee_role'}, {'Nome': u'Nível', 'Valor': 'trainee_level'}]
 
 @my_login_required
+@test_access_permission
 def occupacy_report(request, id=None):
     obj_list = occupacy_report_query.all()
     try:
@@ -37,6 +38,7 @@ def occupacy_report(request, id=None):
     return render_to_response('report.html', context, context_instance=RequestContext(request))
 
 @my_login_required
+@test_access_permission
 def export_occupacy_report(request, id=None):
     obj_list = occupacy_report_query.all()
     obj_list = filter_elements(obj_list, occupacy_filter_list, id)
@@ -60,6 +62,7 @@ def export_occupacy_report(request, id=None):
     return response
 
 @my_login_required
+@test_access_permission
 def period_report(request, id=None):
     obj_list = trainee_report_query.all()
     try:
@@ -87,6 +90,7 @@ def period_report(request, id=None):
     return render_to_response('report.html', context, context_instance=RequestContext(request))
 
 @my_login_required
+@test_access_permission
 def export_period_report(request, id=None):
     obj_list = trainee_report_query.all()
     obj_list = filter_elements(obj_list, trainee_filter_list, id)

@@ -7,7 +7,7 @@ from forms import UserForm
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
-from decorator import my_login_required
+from decorator import my_login_required, test_access_permission
 import logging
 log = logging.getLogger(__name__)
 
@@ -23,6 +23,7 @@ def get_user_features(request):
     return features
 
 @my_login_required
+@test_access_permission
 def list_user(request):
     user_list = User.objects.all().order_by('id')
     values_dict = {}
@@ -39,12 +40,14 @@ def list_user(request):
     return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
+@test_access_permission
 def remove_user(request, id):
     obj = User.objects.get(id=id)
     obj.delete()
     return list_user(request)
 
 @my_login_required
+@test_access_permission
 def edit_user(request, id=None):
     username=request.COOKIES.get("logged_user");
     user = User.objects.select_related().get(username=username)

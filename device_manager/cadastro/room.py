@@ -7,7 +7,7 @@ from forms import RoomForm
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
-from decorator import my_login_required
+from decorator import my_login_required, test_access_permission
 from users import get_user_features
 
 
@@ -15,6 +15,7 @@ room_list_header = [u'Número', u'Descrição', u'Quantidade de baias']
 stall_list_header = [u'Localização', u'Computador', u'Professor Responsável', u'Bolsistas', u'Observação']
 
 @my_login_required
+@test_access_permission
 def list_rooms(request):
     t = get_template('list.html')
     username=request.COOKIES.get("logged_user");
@@ -31,6 +32,7 @@ def list_rooms(request):
     return render_to_response('list.html', context, context_instance=RequestContext(request))
 
 @my_login_required
+@test_access_permission
 def remove_room(request, id):
     obj = Room.objects.select_related().get(id=id)
     for stall in obj.stall_set.all():
@@ -39,6 +41,7 @@ def remove_room(request, id):
     return list_rooms(request)
 
 @my_login_required
+@test_access_permission
 def edit_rooms(request, id=None):
     context = {'page_title': u'Salas', 'edit_name': 'room', 'list_title': u'Baias', 'list_edit_name': 'stall', 'header_name_list': stall_list_header, 'has_back': False, 'features':get_user_features(request)}
     t = get_template('edit.html')

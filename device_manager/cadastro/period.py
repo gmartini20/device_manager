@@ -8,11 +8,12 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from django import forms
-from decorator import my_login_required
+from decorator import my_login_required, test_access_permission
 from users import get_user_features
 from trainee import edit_trainees
 
 @my_login_required
+@test_access_permission
 def remove_period(request, id):
     obj = StallTraineePeriod.objects.get(id=id)
     stall_trainee = obj.stall_trainee
@@ -20,6 +21,7 @@ def remove_period(request, id):
     return edit_trainees(request, stall_trainee.id)
 
 @my_login_required
+@test_access_permission
 def edit_period(request, id=None):
     context = {'page_title': u'Períodos', 'edit_name': 'period', 'has_back': True, 'back_page_name': u'trainee', 'features':get_user_features(request)}
     id_trainee = request.GET.get('parent_object_id', None)
