@@ -6,12 +6,13 @@ from models import User
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render_to_response
+from home import show_home
 
 def login(request, id=None):
     username=request.COOKIES.get("logged_user");
     #se usuario estiver logado redireciona para a home
     if username:
-        return HttpResponseRedirect('/home/')
+        return show_home(request)
     context = {'page_title': u'Dispositivos', 'edit_name': 'device', 'has_back': False}
     t = get_template('login.html')
     device = None

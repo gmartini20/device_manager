@@ -8,6 +8,7 @@ function(){
         var href = window.location.href;
         href = href.split("/login")[0]
         href = href.split("/logout")[0]
+        href = href.split("/")[0]
         var url = href + $($('form')[0]).attr('action');
         var crypted_pass = criptografar(pass);
         var username = $("input[name='username']").val();
