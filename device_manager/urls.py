@@ -20,7 +20,7 @@ from device_manager.cadastro.forbidden import forbidden
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', redirect_login),
+    url(r'^$', login),
     url(r'^login/$', login),
     url(r'^logout/$', logout),
     url(r'^forbidden/$', forbidden),
