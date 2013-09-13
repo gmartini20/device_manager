@@ -9,6 +9,8 @@ from django.contrib import messages
 from django.shortcuts import render_to_response
 from decorator import my_login_required, test_access_permission
 from users import get_user_features
+import logging
+log = logging.getLogger(__name__)
 
 people_list_header = [u'Nome', u'Nível', u'Papel', u'Instituição']
 
@@ -53,7 +55,8 @@ def edit_people(request, id=None):
             initial['institution'] = person.institution.id
             form = PersonForm(initial=initial)
 
-    except:
+    except Exception as e:
+        log.error(e)
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_person_form_context(person, form, context)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))

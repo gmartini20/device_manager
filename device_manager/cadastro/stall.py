@@ -11,6 +11,8 @@ from datetime import date
 from decorator import my_login_required, test_access_permission
 from users import get_user_features
 from room import edit_rooms
+import logging
+log = logging.getLogger(__name__)
 
 trainee_list_header = [u'Nome', u'Hora Início', u'Hora Fim']
 
@@ -50,7 +52,8 @@ def edit_stalls(request, id=None):
             form = StallForm(initial=initial)
         all_stall = Stall.objects.all()
         form.fields['device'].queryset = Device.objects.filter((Q(stall=None) | (~Q(stall__in = all_stall))) | Q(stall=stall))
-    except:
+    except Exception as e:
+        log.error(e)
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_stall_form_context(stall, form, context, request)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))

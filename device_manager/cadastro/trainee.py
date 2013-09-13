@@ -11,6 +11,8 @@ from decorator import my_login_required, test_access_permission
 import datetime
 from users import get_user_features
 from stall import edit_stalls
+import logging
+log = logging.getLogger(__name__)
 
 period_list_header = [u'Períodos do dia', u'Dias da Semana']
 translate_weekday = {
@@ -69,7 +71,8 @@ def edit_trainees(request, id=None):
             context['has_auxiliar_form'] = True
             context['fields'] = form.as_ul()
         form.fields['trainee'].queryset = Person.objects.exclude(role='Orientador')
-    except:
+    except Exception as e:
+        log.error(e)
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
     context = _set_period_form_context(trainee, form, context, request)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
