@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 from django import forms
-from models import Person, Device, DeviceCategory, Period, Institution, Feature, Profile
+from models import Person, Device, DeviceCategory, Period, Institution, Feature, Profile, Role
 from country_options import *
 
 my_default_errors = {
@@ -28,6 +28,10 @@ class InstitutionModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
          return "%s" % (obj.name)
 
+class RoleModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+         return "%s" % (obj.name)
+
 class PeriodModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
          return ("%s" % obj.name)
@@ -35,6 +39,10 @@ class PeriodModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 class ProfileModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
          return obj.name
+
+class RoleForm(forms.Form):
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    name = forms.CharField(label=u"Nome", error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'250'}))
 
 class RoomForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -47,14 +55,14 @@ class StallForm(forms.Form):
     room = forms.CharField(widget=forms.HiddenInput())
     name = forms.CharField(label=u"Identificador de localização", required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'200'}))
     obs = forms.CharField(label=u"Observação", required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'200'}))
-    leader = PersonModelChoiceField(queryset=Person.objects.filter(role=u'Orientador'), widget=forms.Select(attrs={'class': 'form-control'}), label=u'Orientador', required=True, error_messages=my_default_errors)
+    leader = PersonModelChoiceField(queryset=Person.objects.filter(role=Role.objects.get(name='Orientador')), widget=forms.Select(attrs={'class': 'form-control'}), label=u'Orientador', required=True, error_messages=my_default_errors)
     device = DeviceModelMultipleChoiceField(queryset=Device.objects.all(), label=u'Dispositivo', required=True, error_messages=my_default_errors)
 
 class PersonForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     name = forms.CharField(label=u"Nome", required=True, error_messages=my_default_errors, widget=forms.TextInput(attrs={'class': 'form-control', 'maxlength':'90'}))
     level = forms.ChoiceField(label=u"Nível", widget=forms.Select(attrs={'class': 'form-control'}), choices=[('', u'--------'), (u'Graduação', u'Graduação'), (u'Especial', u'Especial'), (u'Mestrado', u'Mestrado'), (u'Doutorado', u'Doutorado'), (u'Doutorado Sanduíche', u'Doutorado Sanduíche'), (u'Pós-Doutorado', u'Pós-Doutorado')], required=True, error_messages=my_default_errors)
-    role = forms.ChoiceField(label=u"Papel", widget=forms.Select(attrs={'class': 'form-control'}), choices=[('', u'--------'), (u'Bolsista', u'Bolsista'), (u'Orientador', u'Orientador'), (u'Visitante', u'Visitante'), (u'Temporário', u'Temporário')], required=True, error_messages=my_default_errors)
+    role = RoleModelChoiceField(label=u"Papel", widget=forms.Select(attrs={'class': 'form-control'}), queryset=Role.objects.all(), required=True, error_messages=my_default_errors)
     institution = InstitutionModelChoiceField(queryset=Institution.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}), label=u'Instituição', required=True, error_messages=my_default_errors)
     observation = forms.CharField(widget=forms.Textarea(attrs={'class' :'wide form-control', 'maxlength': '555'}), label=u"Observação", required=True, error_messages=my_default_errors)
 

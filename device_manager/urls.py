@@ -14,6 +14,7 @@ from device_manager.cadastro.users import list_user, edit_user, remove_user
 from device_manager.cadastro.reports import occupacy_report,period_report,export_occupacy_report,export_period_report
 from device_manager.cadastro.profile import list_profile, edit_profile, remove_profile
 from device_manager.cadastro.forbidden import forbidden
+from device_manager.cadastro.role import list_role, edit_role, remove_role
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -70,6 +71,10 @@ urlpatterns = patterns('',
     url(r'^profile/edit/$', edit_profile),
     url(r'^profile/edit/(?P<id>\d+)/$', edit_profile),
     url(r'^profile/remove/(?P<id>\d+)/$', remove_profile),
+    url(r'^role/list/$', list_role),
+    url(r'^role/edit/$', edit_role),
+    url(r'^role/remove/(?P<id>\d+)/$', remove_role),
+    url(r'^role/edit/(?P<id>\d+)/$', edit_role),
     
     
     # Examples:

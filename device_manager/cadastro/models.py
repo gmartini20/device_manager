@@ -24,6 +24,15 @@ class Device(models.Model):
         self.is_removed = True
         self.save()
 
+class Role(models.Model):
+    name = models.CharField(max_length=255)
+    is_removed = models.BooleanField(default=False)
+    objects = GenericManager()
+
+    def delete(self):
+        self.is_removed = True
+        self.save()
+
 class Period(models.Model):
     name = models.CharField(max_length=200)
     time_start = models.TimeField()
@@ -48,6 +57,7 @@ class Person(models.Model):
     role = models.CharField(max_length=50)
     observation = models.CharField(max_length=555)
     institution = models.ForeignKey(Institution)
+    role = models.ForeignKey(Role)
     is_removed = models.BooleanField(default=False)
     objects = GenericManager()
     

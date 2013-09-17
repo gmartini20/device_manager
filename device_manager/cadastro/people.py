@@ -20,7 +20,7 @@ def list_people(request):
     people_list = Person.objects.all().order_by('name')
     values_dict = {}
     for person in people_list:
-        person.list_values = [person.name, person.level, person.role, person.institution.name]
+        person.list_values = [person.name, person.level, person.role.name, person.institution.name]
     context = {'page_title': u'Pessoas', 'header_name_list': people_list_header, 'object_list': people_list, 'edit_name': 'people', 'can_remove': True, 'features':get_user_features(request)}
     return render_to_response('list.html', context, context_instance=RequestContext(request))
 
@@ -47,12 +47,14 @@ def edit_people(request, id=None):
                 messages.success(request, 'Pessoa salva com sucesso.')
                 initial = person.__dict__
                 initial['institution'] = person.institution.id
+                initial['role'] = person.role.id
                 form = PersonForm(initial=initial)
                 return HttpResponseRedirect('/people/list/')
         elif id:
             person = Person.objects.get(id=id)
             initial = person.__dict__
             initial['institution'] = person.institution.id
+            initial['role'] = person.role.id
             form = PersonForm(initial=initial)
 
     except Exception as e:
