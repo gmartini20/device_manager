@@ -46,8 +46,7 @@ def edit_institution(request, id=None):
                 institution = _save_institution(cd)
                 initial = institution.__dict__
                 messages.success(request, 'Instituição salva com sucesso.')
-                form = InstitutionForm(initial=initial)
-                return HttpResponseRedirect('/institution/list/')
+                form = InstitutionForm(initial={})
 
         elif id:
             institution = Institution.objects.get(id=id)

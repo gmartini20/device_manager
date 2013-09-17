@@ -45,8 +45,7 @@ def edit_device_category(request, id=None):
                 cd = form.cleaned_data
                 category = _save_device_category(cd)
                 messages.success(request, 'Categoria salva com sucesso.')
-                form = DeviceCategoryForm(initial=category.__dict__)
-                return HttpResponseRedirect('/categorydevice/list/')
+                form = DeviceCategoryForm(initial={})
 
         elif id:
             category = DeviceCategory.objects.get(id=id)

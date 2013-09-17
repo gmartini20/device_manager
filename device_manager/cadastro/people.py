@@ -45,11 +45,10 @@ def edit_people(request, id=None):
                 cd = form.cleaned_data
                 person = _save_person(cd)
                 messages.success(request, 'Pessoa salva com sucesso.')
-                initial = person.__dict__
-                initial['institution'] = person.institution.id
-                initial['role'] = person.role.id
-                form = PersonForm(initial=initial)
-                return HttpResponseRedirect('/people/list/')
+#               initial = person.__dict__
+#               initial['institution'] = person.institution.id
+#               initial['role'] = person.role.id
+                form = PersonForm(initial={})
         elif id:
             person = Person.objects.get(id=id)
             initial = person.__dict__

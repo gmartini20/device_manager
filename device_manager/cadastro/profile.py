@@ -44,11 +44,8 @@ def edit_profile(request, id=None):
             if form.is_valid():
                 cd = form.cleaned_data
                 profile = _save_profile(cd)
-                initial = profile.__dict__
                 messages.success(request, 'Perfil salvo com sucesso.')
-                initial['features'] = profile.features.all()
-                form = ProfileForm(initial=initial)
-                return HttpResponseRedirect('/profile/list/')
+                form = ProfileForm(initial={})
 
         elif id:
             profile = Profile.objects.get(id=id)
