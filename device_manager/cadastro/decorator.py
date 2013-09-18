@@ -2,6 +2,7 @@
 from models import User
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
+from forbidden import forbidden
 
 
 def my_login_required(function):
@@ -28,5 +29,5 @@ def test_access_permission(function):
             for feature in user.profile.features.all():
                 if path.find(feature.uri) != -1:
                     return function(request, *args, **kw)
-        return HttpResponseRedirect('/forbidden/')
+        return forbidden(request)
     return wrapper

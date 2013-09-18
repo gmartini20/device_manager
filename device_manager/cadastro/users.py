@@ -68,7 +68,6 @@ def edit_user(request, id=None):
             messages.success(request, u'Usuário salvo com sucesso.')
             initial['person'] = user.person.id
             form = UserForm(initial=initial)
-            return HttpResponseRedirect('/user/list/')
 
     elif id:
         user = User.objects.get(id=id)
