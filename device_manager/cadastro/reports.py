@@ -16,7 +16,7 @@ occupacy_filter_list = {u'room_number' :'obj.room.number', u'professor_name': 'o
 screen_filter_list = [{'Nome': u'Número da Sala', 'Valor' :'room_number'}, {'Nome': u'Nome do professor', 'Valor': 'professor_name'}]
 trainee_report_query = StallTraineePeriod.objects.select_related()
 trainee_report_list_header = [u"Bolsista", u"Papel", u"Nível", u'Sala', u'Baia', u'Professor', u'Data Inicial', u'Data Final', u'Dias da semana', u"Períodos"]
-trainee_filter_list = {u'room_number' :'obj.stall_trainee.stall.room.number', u'professor_name': 'obj.stall_trainee.stall.leader.name', u'trainee_name': 'obj.stall_trainee.trainee.name', 'weekday': 'obj.{0}', u'localization' :'obj.stall_trainee.stall.name', u'trainee_role': 'obj.stall_trainee.trainee.role', u'trainee_level': 'obj.stall_trainee.trainee.level'}
+trainee_filter_list = {u'room_number' :'obj.stall_trainee.stall.room.number', u'professor_name': 'obj.stall_trainee.stall.leader.name', u'trainee_name': 'obj.stall_trainee.trainee.name', 'weekday': 'obj.{0}', u'localization' :'obj.stall_trainee.stall.name', u'trainee_role': 'obj.stall_trainee.trainee.role.name', u'trainee_level': 'obj.stall_trainee.trainee.level'}
 trainee_screen_filter_list = [{'Nome': u'Número da Sala', 'Valor' :'room_number'}, {'Nome': u'Nome do professor', 'Valor': 'professor_name'}, {'Nome': u'Nome do bolsista', 'Valor': 'trainee_name'}, {'Nome': u'Dia da semana', 'Valor': 'weekday'}, {'Nome': u'Localização', 'Valor' :'localization'}, {'Nome': u'Papel', 'Valor': 'trainee_role'}, {'Nome': u'Nível', 'Valor': 'trainee_level'}]
 
 @my_login_required
@@ -82,7 +82,7 @@ def period_report(request, id=None):
             if obj.friday:
                 weekdays.append(u"Sexta")
             day_periods = [p.name for p in obj.periods.all()]
-            obj.list_values = [obj.stall_trainee.trainee.name, obj.stall_trainee.trainee.role, obj.stall_trainee.trainee.level, obj.stall_trainee.stall.room.number, obj.stall_trainee.stall.name, obj.stall_trainee.stall.leader.name, obj.stall_trainee.start_period.strftime('%d/%m/%Y'), obj.stall_trainee.finish_period.strftime('%d/%m/%Y'), u", ".join(weekdays), u", ".join(day_periods)]
+            obj.list_values = [obj.stall_trainee.trainee.name, obj.stall_trainee.trainee.role.name, obj.stall_trainee.trainee.level, obj.stall_trainee.stall.room.number, obj.stall_trainee.stall.name, obj.stall_trainee.stall.leader.name, obj.stall_trainee.start_period.strftime('%d/%m/%Y'), obj.stall_trainee.finish_period.strftime('%d/%m/%Y'), u", ".join(weekdays), u", ".join(day_periods)]
     except:
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
 
@@ -109,7 +109,7 @@ def export_period_report(request, id=None):
         if obj.friday:
             weekdays.append(u"Sexta")
         day_periods = [p.name for p in obj.periods.all()]
-        list_values.append([obj.stall_trainee.trainee.name, obj.stall_trainee.trainee.role, obj.stall_trainee.trainee.level, obj.stall_trainee.stall.room.number, obj.stall_trainee.stall.name, obj.stall_trainee.stall.leader.name, obj.stall_trainee.start_period.strftime('%d/%m/%Y'), obj.stall_trainee.finish_period.strftime('%d/%m/%Y'), u", ".join(weekdays), u", ".join(day_periods)])
+        list_values.append([obj.stall_trainee.trainee.name, obj.stall_trainee.trainee.role.name, obj.stall_trainee.trainee.level, obj.stall_trainee.stall.room.number, obj.stall_trainee.stall.name, obj.stall_trainee.stall.leader.name, obj.stall_trainee.start_period.strftime('%d/%m/%Y'), obj.stall_trainee.finish_period.strftime('%d/%m/%Y'), u", ".join(weekdays), u", ".join(day_periods)])
 
     book = xlwt.Workbook(encoding='utf8')
     sheet = book.add_sheet(u'Períodos')
