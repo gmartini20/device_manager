@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import Context, RequestContext
-from models import Person, StallTrainee, StallTraineePeriod, User
+from models import Person, StallTrainee, StallTraineePeriod, User, Stall, Role
 from forms import TraineeForm, StallTraineePeriodForm
 from django.db.models import Q
 from django.contrib import messages
@@ -70,11 +70,11 @@ def edit_trainees(request, id=None):
             context['aux_fields'] = form_period.as_ul()
             context['has_auxiliar_form'] = True
             context['fields'] = form.as_ul()
-        form.fields['trainee'].queryset = Person.objects.exclude(role='Orientador')
+        form.fields['trainee'].queryset = Person.objects.exclude(role=Role.objects.get(name='Orientador'))
+        context = _set_period_form_context(trainee, form, context, request)
     except Exception as e:
         log.error(e)
         messages.error(request, u'Ocorreu um erro ao processar a requisição, por favor tente novamente.')
-    context = _set_period_form_context(trainee, form, context, request)
     return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 def _get_trainee_form_initial_value(trainee):
