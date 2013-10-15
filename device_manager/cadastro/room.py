@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 room_list_header = [u'Número', u'Descrição', u'Quantidade de baias']
-stall_list_header = [u'Localização', u'Computador', u'Professor Responsável', u'Bolsistas', u'Observação']
+stall_list_header = [u'Localização', u'Dispositivos', u'Professor Responsável', u'Bolsistas', u'Observação']
 
 @my_login_required
 @test_access_permission
@@ -109,8 +109,11 @@ def _get_stall_list(stall_list):
             trainee_list.append(trainee.trainee.name)
         trainee_names = ', '.join(trainee_list)
         device_name = ""
+        device_list = []
         if len(stall.devices.all()):
-            device_name = stall.devices.all()[0].patrimony_number
+            for device in stall.devices.all():
+                device_list.append(device.patrimony_number)
+            device_name = ", ".join(device_list)
         stall.list_values = [stall.name, device_name, stall.leader.name, trainee_names, stall.obs]
         new_list.append(stall)
     return new_list

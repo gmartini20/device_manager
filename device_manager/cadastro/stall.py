@@ -14,7 +14,7 @@ from room import edit_rooms
 import logging
 log = logging.getLogger(__name__)
 
-trainee_list_header = [u'Nome', u'Hora Início', u'Hora Fim']
+trainee_list_header = [u'Nome', u'Data Início', u'Data Fim']
 
 @my_login_required
 @test_access_permission
