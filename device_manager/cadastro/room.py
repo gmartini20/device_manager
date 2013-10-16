@@ -106,7 +106,8 @@ def _get_stall_list(stall_list):
         trainee_names = ''
         trainee_list = []
         for trainee in stall.stalltrainee_set.all():
-            trainee_list.append(trainee.trainee.name)
+            if trainee.trainee.name not in trainee_list:
+                trainee_list.append(trainee.trainee.name)
         trainee_names = ', '.join(trainee_list)
         device_name = ""
         device_list = []
